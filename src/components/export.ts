@@ -1,7 +1,5 @@
-import Header from "./header/Header";
-import Footer from "./footer/Footer";
-import Dropdown from "./dropdown/Dropdown";
-import Navbar from "./navbar/Navbar";
-import NavlinkButton from "./navlinkbutton/NavlinkButton";
-
-export { Header, Footer, Dropdown, Navbar, NavlinkButton };
+export { default as Header } from "./header/Header";
+export { default as Footer } from "./footer/Footer";
+export { default as Dropdown } from "./dropdown/Dropdown";
+export { default as Navbar } from "./navbar/Navbar";
+export { default as NavlinkButton } from "./navlinkbutton/NavlinkButton";

@@ -1,0 +1,32 @@
+@import "normalize.css";
+@import "sanitize.css";
+@import "fontface.css";
+
+:root {
+  --primary-color: #dcdcdc;
+  --secondary-color: #e3e3e3;
+  --active-color: #9933cc;
+  --dark-color: #121212;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+}
+
+body {
+  font-family: "OpenSans-Regular", sans-serif;
+}
+
+h2 {
+  font-size: 50px;
+  display: block;
+  background-color: white;
+}
+
+::placeholder {
+  /*test for autoprefixer in postcss*/
+  color: antiquewhite;
+}

@@ -1,4 +1,4 @@
-import Navlink from "../navlinkbutton/NavlinkButton";
+import Navlink from "../Navlinkbutton/NavlinkButton";
 import { NavLink } from "react-router-dom";
 import css from "./Dropdown.module.css";
 

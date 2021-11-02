@@ -1,5 +1,5 @@
-import Dropdown from "../dropdown/Dropdown";
-import Navlink from "../navlinkbutton/NavlinkButton";
+import { Dropdown } from "../export";
+import Navlink from "../Navlinkbutton/NavlinkButton";
 
 export default function Navbar(): JSX.Element {
   return (

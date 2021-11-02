@@ -1,4 +1,4 @@
-import Dropdown from "../dropdown/Dropdown";
+import { Dropdown } from "../export";
 import { NavLink, Link } from "react-router-dom";
 import css from "./Header.module.css";
 
@@ -19,25 +19,19 @@ export default function Header({ siteName, link }: Props): JSX.Element {
         <nav className={css.navigation}>
           <ul>
             <li>
-              <NavLink  to="/" exact={true}>
+              <NavLink to="/" exact={true}>
                 Home
               </NavLink>
             </li>
-            <Dropdown  text="Products" link="/products" />
+            <Dropdown text="Products" link="/products" />
             <li>
-              <NavLink  to="/about">
-                About
-              </NavLink>
+              <NavLink to="/about">About</NavLink>
             </li>
             <li>
-              <NavLink  to="/sign-in">
-                Sign In
-              </NavLink>
+              <NavLink to="/sign-in">Sign In</NavLink>
             </li>
             <li>
-              <NavLink  to="/sign-up">
-                Sign Up
-              </NavLink>
+              <NavLink to="/sign-up">Sign Up</NavLink>
             </li>
           </ul>
         </nav>

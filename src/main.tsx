@@ -4,14 +4,7 @@ import "./styles/main.scss";
 import { Component, StrictMode } from "react";
 import ReactDom from "react-dom";
 import someTypeScript from "./someTypeScript";
-import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
-import { Header, Footer } from "./components/export";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import About from "./pages/About";
-import Products from "./pages/Products";
-import Home from "./pages/Home";
-import * as Constants from "./constants";
+import { MainApp } from "./MainApp";
 
 interface AppProps {
   nothing: boolean;
@@ -38,27 +31,7 @@ class AppContainer extends Component<AppProps, AppState> {
   render() {
     return (
       <StrictMode>
-        <Router>
-          <Header siteName={Constants.SITE_NAME} link={Constants.HOME_URL} />
-          <Switch>
-            <Route path={Constants.PRODUCTS_URL}>
-              <Products />
-            </Route>
-            <Route path={Constants.ABOUT_URL}>
-              <About />
-            </Route>
-            <Route path={Constants.SIGNIN_URL}>
-              <SignIn />
-            </Route>
-            <Route path={Constants.SIGNUP_URL}>
-              <SignUp />
-            </Route>
-            <Route path={Constants.HOME_URL}>
-              <Home />
-            </Route>
-          </Switch>
-          <Footer siteName={Constants.SITE_NAME} />
-        </Router>
+        <MainApp />
       </StrictMode>
     );
   }

@@ -1,4 +1,4 @@
-export default function SignUp() {
+export function SignUp() {
   return (
     <form>
       <input type="text" placeholder="Name" />

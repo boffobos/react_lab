@@ -1,4 +1,4 @@
-export default function SignIn() {
+export function SignIn() {
   return (
     <form>
       <input type="email" placeholder="email" />

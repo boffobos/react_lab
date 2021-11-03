@@ -6,7 +6,7 @@ interface Props {
   text: string;
 }
 
-export default function NavlinkButton({ text, link = "#" }: Props): JSX.Element {
+export const NavlinkButton = ({ text, link = "#" }: Props): JSX.Element => {
   return (
     <li className={css.active}>
       <a href={link}>{text}</a>

@@ -1,25 +1,20 @@
-import { Component, ErrorInfo } from "react";
+import { Component } from "react";
 import * as Constants from "./constants";
-import { Header, Footer } from "./components/export";
-import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
-import { Home, Products, About, SignIn, SignUp } from "./pages/export";
+import { Header, Footer } from "./components/components";
+import { Route, Switch } from "react-router-dom";
+import { Home, Products, About, SignIn, SignUp } from "./pages/pages";
 
 interface Props {}
 
-export class MainApp extends Component {
+export class MainApp extends Component<Props> {
   constructor(props: Props) {
     super(props);
-    this.state = { errorMessage: "" };
   }
 
-  componentDidCatch(error: Error, info: ErrorInfo): void {
-    this.setState({ errorMessare: info });
-    console.log(error);
-  }
 
   render() {
     return (
-      <Router>
+      <>
         <Header siteName={Constants.SITE_NAME} link={Constants.HOME_URL} />
         <Switch>
           <Route path={Constants.PRODUCTS_URL}>
@@ -39,7 +34,9 @@ export class MainApp extends Component {
           </Route>
         </Switch>
         <Footer siteName={Constants.SITE_NAME} />
-      </Router>
+      </>
     );
   }
 }
+
+

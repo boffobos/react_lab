@@ -4,7 +4,7 @@ interface Props {
   siteName: string;
 }
 
-export default function Footer({ siteName }: Props): JSX.Element {
+export const Footer = ({ siteName }: Props): JSX.Element => {
   return (
     <footer>
       <div className={css.container}>

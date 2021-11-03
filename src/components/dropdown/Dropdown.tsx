@@ -1,4 +1,4 @@
-import Navlink from "../Navlinkbutton/NavlinkButton";
+import { NavlinkButton } from "../Navlinkbutton/NavlinkButton";
 import { NavLink } from "react-router-dom";
 import css from "./Dropdown.module.css";
 
@@ -8,17 +8,17 @@ interface Props {
   text: string;
 }
 
-export default function Dropdown({ link = "#", text }: Props): JSX.Element {
+export const Dropdown = ({ link = "#", text }: Props): JSX.Element => {
   return (
     <li className={css.navigation}>
       <NavLink to={link}>
         {text} <span>&#11206;</span>
       </NavLink>
       <ul className={css.dropdown}>
-        <Navlink text="PC" link="#" className={""} />
-        <Navlink text="Console" link="#" className={""} />
-        <Navlink text="Mobile" link="#" className={""} />
+        <NavlinkButton text="PC" link="#" className={""} />
+        <NavlinkButton text="Console" link="#" className={""} />
+        <NavlinkButton text="Mobile" link="#" className={""} />
       </ul>
     </li>
   );
-}
+};

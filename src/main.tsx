@@ -4,7 +4,8 @@ import "./styles/main.scss";
 import { Component, StrictMode } from "react";
 import ReactDom from "react-dom";
 import someTypeScript from "./someTypeScript";
-import { MainApp } from "./MainApp";
+import { MainApp }  from "./MainApp";
+import { BrowserRouter as Router } from "react-router-dom";
 
 interface AppProps {
   nothing: boolean;
@@ -31,7 +32,9 @@ class AppContainer extends Component<AppProps, AppState> {
   render() {
     return (
       <StrictMode>
-        <MainApp />
+        <Router>
+          <MainApp />
+        </Router>
       </StrictMode>
     );
   }

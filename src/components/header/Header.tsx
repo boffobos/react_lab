@@ -1,4 +1,4 @@
-import { Dropdown } from "../export";
+import { Dropdown } from "../components";
 import { NavLink, Link } from "react-router-dom";
 import css from "./Header.module.css";
 
@@ -7,7 +7,7 @@ interface Props {
   link?: string;
 }
 
-export default function Header({ siteName, link }: Props): JSX.Element {
+export const Header = ({ siteName, link }: Props): JSX.Element => {
   return (
     <header className={css.navbar}>
       <div>

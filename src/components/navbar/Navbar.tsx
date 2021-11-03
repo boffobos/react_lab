@@ -1,16 +1,16 @@
-import { Dropdown } from "../export";
-import Navlink from "../Navlinkbutton/NavlinkButton";
+import { Dropdown } from "../components";
+import { NavlinkButton } from "../components";
 
-export default function Navbar(): JSX.Element {
+export const Navbar = (): JSX.Element => {
   return (
     <nav className="navigation">
       <ul>
-        <Navlink text="Home" link="#" />
+        <NavlinkButton text="Home" link="#" />
         <Dropdown text="Products" />
-        <Navlink text="About" />
-        <Navlink text="Sign In" />
-        <Navlink text="Sign Up" />
+        <NavlinkButton text="About" />
+        <NavlinkButton text="Sign In" />
+        <NavlinkButton text="Sign Up" />
       </ul>
     </nav>
   );
-}
+};

@@ -1,24 +1,25 @@
-import { NavlinkButton } from "../Navlinkbutton/NavlinkButton";
-import { NavLink } from "react-router-dom";
 import css from "./Dropdown.module.css";
+import Dropdown, { Option } from "react-dropdown";
 
 interface Props {
-  className?: string;
-  link?: string;
-  text: string;
+  dropdownOptions: Option[];
 }
 
-export const Dropdown = ({ link = "#", text }: Props): JSX.Element => {
+export const DropdownMenu = (props: Props): JSX.Element => {
+  const handler = () => {
+    //some code to handle menu
+  };
+
   return (
-    <li className={css.navigation}>
-      <NavLink to={link}>
-        {text} <span>&#11206;</span>
-      </NavLink>
-      <ul className={css.dropdown}>
-        <NavlinkButton text="PC" link="#" className={""} />
-        <NavlinkButton text="Console" link="#" className={""} />
-        <NavlinkButton text="Mobile" link="#" className={""} />
-      </ul>
-    </li>
+    <Dropdown
+      options={props.dropdownOptions}
+      arrowClosed={<span className="arrow-closed">&#11206;</span>}
+      arrowOpen={<span className="arrow-open">&#11205;</span>}
+      placeholder="Products"
+      className={css.DropdownRoot}
+      controlClassName={css.dropdownControl}
+      menuClassName={css.menu}
+      onChange={handler}
+    />
   );
 };

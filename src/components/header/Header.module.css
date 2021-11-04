@@ -21,7 +21,8 @@
 
 .navigation ul li {
   position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
   list-style: none;
 }
 

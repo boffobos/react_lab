@@ -1,11 +1,11 @@
-import { Redirect } from "react-router-dom";
-import { useState } from "react";
+// import { Redirect } from "react-router-dom";
+// import { useState } from "react";
 
 export const SignIn = () => {
-  const [isError, setIsError] = useState(true);
-  if (isError) {
-    return <Redirect to="/" />;
-  }
+  // const [isError, setIsError] = useState(true);
+  // if (isError) {
+  //   return <Redirect to="/" />;
+  // }
 
   return (
     <form>

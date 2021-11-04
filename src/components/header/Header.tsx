@@ -1,5 +1,6 @@
-import { Dropdown } from "../components";
+import { DropdownMenu } from "../components";
 import { NavLink, Link } from "react-router-dom";
+import * as constants from "../../constants";
 import css from "./Header.module.css";
 
 interface Props {
@@ -23,7 +24,9 @@ export const Header = ({ siteName, link }: Props): JSX.Element => {
                 Home
               </NavLink>
             </li>
-            <Dropdown text="Products" link="/products" />
+            <li>
+              <DropdownMenu dropdownOptions={constants.DROPDOWN_OPTIONS} />
+            </li>
             <li>
               <NavLink to="/about">About</NavLink>
             </li>
@@ -38,4 +41,4 @@ export const Header = ({ siteName, link }: Props): JSX.Element => {
       </div>
     </header>
   );
-}
+};

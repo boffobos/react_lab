@@ -5,3 +5,4 @@ export * from "./Navbar";
 export * from "./Navlinkbutton";
 export * from "./SearchBar";
 export * from "./Section";
+export * from "./PlatformSelector";

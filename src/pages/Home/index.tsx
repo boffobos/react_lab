@@ -1,6 +1,11 @@
-import { SearchBar, Section } from "../../components/components";
+import { SearchBar, Section, PlatformSelector } from "../../components/components";
 import style from "./style.module.css";
 export const Home = () => {
+  const gamePlatforms = [
+    { title: "PC", img: "/assets/images/pc.png", alt: "PC" },
+    { title: "XBox One", img: "/assets/images/xbox.png", alt: "XBox One" },
+    { title: "Playstation 5", img: "/assets/images/playstation.png", alt: "Playstation 5" },
+  ];
   return (
     <main
       className={style.homePage}
@@ -10,7 +15,9 @@ export const Home = () => {
     >
       <SearchBar searchPlaceholder="Search..." />
       <Section title="Platforms">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo, assumenda?</p>
+        {gamePlatforms.map((item) => {
+          return <PlatformSelector imgAlt={item.alt} imgURL={item.img} categoryTitle={item.title} />;
+        })}
       </Section>
     </main>
   );

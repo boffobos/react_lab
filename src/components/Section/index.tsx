@@ -9,7 +9,7 @@ export const Section = ({ title, children }: Props) => {
   return (
     <section className={style.sectionWrapper}>
       <p className={style.titleStyle}>{title}</p>
-      <div>{children}</div>
+      <div className={style.children}>{children}</div>
     </section>
   );
 };

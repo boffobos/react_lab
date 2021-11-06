@@ -1,23 +1,24 @@
 import { DropdownMenu } from "../components";
 import { NavLink, Link } from "react-router-dom";
 import * as constants from "../../constants";
-import css from "./Header.module.css";
+import style from "./style.module.css";
+import { ReactElement } from "react";
 
 interface Props {
-  siteName: string;
   link?: string;
 }
 
-export const Header = ({ siteName, link }: Props): JSX.Element => {
+export const Header = ({ link }: Props): ReactElement => {
+  console.log(style);
   return (
-    <header className={css.navbar}>
+    <header className={style.navbar}>
       <div>
-        <Link to={link || "#"} className={css.logo}>
-          {siteName}
+        <Link to={link || "#"} className={style.logo}>
+          {constants.SITE_NAME}
         </Link>
       </div>
       <div>
-        <nav className={css.navigation}>
+        <nav className={style.navigation}>
           <ul>
             <li>
               <NavLink to="/" exact={true}>

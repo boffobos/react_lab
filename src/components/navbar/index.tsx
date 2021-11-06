@@ -1,8 +1,10 @@
 import { DropdownMenu } from "../components";
 import { NavlinkButton } from "../components";
 import * as constants from "../../constants";
+import { ReactElement } from "react";
+import style from "./style.module.css";
 
-export const Navbar = (): JSX.Element => {
+export const Navbar = (): ReactElement => {
   return (
     <nav className="navigation">
       <ul>

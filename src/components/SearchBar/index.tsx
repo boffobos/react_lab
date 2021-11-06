@@ -6,8 +6,6 @@ interface Props {
 
 export const SearchBar = (props: Props): ReactElement => {
   return (
-    <div>
       <input type="text" placeholder={props.searchPlaceholder} className={style.searchBar} />
-    </div>
   );
 };

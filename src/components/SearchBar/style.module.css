@@ -1,6 +1,5 @@
 .searchBar {
   background-color: var(--dark-color-second);
-  /* border-color: var(--primary-color); */
   border: var(--primary-color) 1px solid;
   border-radius: 15px;
   padding: 0.8rem;
@@ -8,4 +7,5 @@
   margin: 0 auto;
   width: 80vw;
   color: var(--primary-color);
+  max-width: 800px;
 }

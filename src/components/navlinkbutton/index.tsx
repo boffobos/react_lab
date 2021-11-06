@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import style from "./style.module.css";
 import { NavLink } from "react-router-dom";
 
 interface Props {

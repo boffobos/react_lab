@@ -11,10 +11,21 @@ export const Home = () => {
       }}
     >
       <SearchBar searchPlaceholder="Search..." />
-      <Section title="Platforms">
+      <Section title="Categoies">
         {constants.GAME_PLATFORMS.map((item) => {
-          return <PlatformSelector key={item.id} imgAlt={item.alt} imgURL={item.icon} categoryTitle={item.title} />;
+          return (
+            <PlatformSelector
+              key={item.id}
+              imgAlt={item.alt}
+              imgURL={item.icon}
+              categoryTitle={item.title}
+              categoryURL={item.url}
+            />
+          );
         })}
+      </Section>
+      <Section title="New games">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, esse!</p>
       </Section>
     </main>
   );

@@ -2,6 +2,7 @@ import { Option } from "react-dropdown";
 
 export const HOME_URL: string = "/";
 export const PRODUCTS_URL: string = "/products";
+export const PRODUCT_CATEGORIE_URL: string[] = ["/products/pc", "/products/xbox", "products/playstation5"];
 export const ABOUT_URL: string = "/about";
 export const SIGNIN_URL: string = "/sign-in";
 export const SIGNUP_URL: string = "/sign-up";
@@ -20,7 +21,13 @@ export const NAVBAR_OPTIONS = [
   { id: 5, title: "Sign up", url: "/sign-up" },
 ];
 export const GAME_PLATFORMS = [
-  { id: 1, title: "PC", icon: "/assets/images/pc.png", alt: "PC icon" },
-  { id: 2, title: "XBox One", icon: "/assets/images/xbox.png", alt: "XBox One icon" },
-  { id: 3, title: "Playstation 5", icon: "/assets/images/playstation.png", alt: "Playstation icon" },
+  { id: 1, title: "PC", icon: "/assets/images/pc.png", alt: "PC icon", url: "/products/pc" },
+  { id: 2, title: "XBox One", icon: "/assets/images/xbox.png", alt: "XBox One icon", url: "/products/xbox" },
+  {
+    id: 3,
+    title: "Playstation 5",
+    icon: "/assets/images/playstation.png",
+    alt: "Playstation icon",
+    url: "products/playstation5",
+  },
 ];

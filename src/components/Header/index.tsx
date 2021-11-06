@@ -6,6 +6,7 @@ import { ReactElement } from "react";
 
 interface Props {
   link?: string;
+  siteName: string;
 }
 
 export const Header = ({ link = "#" }: Props): ReactElement => {

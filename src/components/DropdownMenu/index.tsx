@@ -5,6 +5,7 @@ import { ReactElement } from "react";
 
 interface Props {
   dropdownOptions: Option[];
+  placeholder: string;
 }
 
 export const DropdownMenu = (props: Props): ReactElement => {
@@ -18,7 +19,7 @@ export const DropdownMenu = (props: Props): ReactElement => {
       options={props.dropdownOptions}
       arrowClosed={<span className="arrow-closed">&#11206;</span>}
       arrowOpen={<span className="arrow-open">&#11205;</span>}
-      placeholder="Products"
+      placeholder={props.placeholder}
       className={style.DropdownRoot}
       controlClassName={style.dropdownControl}
       menuClassName={style.menu}

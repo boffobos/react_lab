@@ -1,18 +1,40 @@
 import { DropdownMenu } from "../components";
 import { NavlinkButton } from "../components";
-import * as constants from "../../constants";
 import { ReactElement } from "react";
 import style from "./style.module.css";
+import { Option } from "react-dropdown";
 
-export const Navbar = (): ReactElement => {
+interface Options {
+  id: number;
+  title: string;
+  url: string;
+  dropdown?: Option[];
+}
+
+interface Props {
+  options: Options[];
+}
+
+export const Navbar = (props: Props): ReactElement => {
+  const options = props.options;
   return (
-    <nav className="navigation">
+    <nav className={style.navigation}>
       <ul>
-        <NavlinkButton text="Home" link="#" />
-        <DropdownMenu dropdownOptions={constants.DROPDOWN_OPTIONS} />
-        <NavlinkButton text="About" />
-        <NavlinkButton text="Sign In" />
-        <NavlinkButton text="Sign Up" />
+        {options.map((option) => {
+          if (option.dropdown) {
+            return (
+              <li key={option.id}>
+                <DropdownMenu dropdownOptions={option.dropdown} placeholder={option.title} />
+              </li>
+            );
+          } else {
+            return (
+              <li key={option.id}>
+                <NavlinkButton title={option.title} link={option.url} />
+              </li>
+            );
+          }
+        })}
       </ul>
     </nav>
   );

@@ -1,16 +1,16 @@
 import { ReactElement } from "react";
 import style from "./style.module.css";
+import { NavLink } from "react-router-dom";
 
 interface Props {
-  className?: string;
-  link?: string;
-  text: string;
+  link: string;
+  title: string;
 }
 
-export const NavlinkButton = ({ text, link = "#" }: Props): ReactElement => {
+export const NavlinkButton = ({ title, link = "#" }: Props): ReactElement => {
   return (
-    <li className={style.active}>
-      <a href={link}>{text}</a>
-    </li>
+    <NavLink to={link} exact={link === "/"}>
+      {title}
+    </NavLink>
   );
 };

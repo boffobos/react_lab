@@ -7,6 +7,7 @@ export const SignIn = () => {
   //   return <Redirect to="/" />;
   // }
 
+  throw new Error("test");
   return (
     <form>
       <input type="email" placeholder="email" />

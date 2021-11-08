@@ -1,13 +1,26 @@
-import { SearchBar, Section, PlatformSelector, GameCard } from "../../components/components";
+import { SearchBar, Section, PlatformSelector, GameCard, Spinner } from "../../components/components";
 import style from "./style.module.css";
 import * as constants from "../../constants";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
-    
-  }, [])
+    axios
+      .get("/testMock")
+      .then((response) => {
+        setItems(items.concat(response.data));
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+      });
+  }, []);
+
   return (
     <main
       className={style.homePage}
@@ -30,7 +43,13 @@ export const Home = () => {
         })}
       </Section>
       <Section title="New games">
-        <GameCard />
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          items.map((item, index) => {
+            return <GameCard key={item.id} data={item} />;
+          })
+        )}
       </Section>
     </main>
   );

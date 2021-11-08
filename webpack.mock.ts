@@ -27,11 +27,22 @@ export default webpackMockServer.add((app, helper) => {
         price: 59.99,
         currency: "$",
         image: "/assets/images/Starcraft_card.jpg",
-        rating: 5,
+        rating: 4,
         platforms: ["/assets/images/pc.png"],
         description:
           "The story of StarCraft is concluded by following the Protoss Race in their quest to reclaim their homeworld and for Kerrigan to ultimately slay the greatest.",
         ageRating: 12,
+      },
+      {
+        id: 3,
+        title: "Mortal Combat 11",
+        price: 39.99,
+        currency: "$",
+        image: "/assets/images/MK_11.jpg",
+        rating: 4.5,
+        platforms: ["/assets/images/xbox.png", "/assets/images/playstation.png"],
+        description: "Mortal Kombat is back and better than ever in the next evolution of the iconic franchise.",
+        ageRating: 18,
       },
     ];
 

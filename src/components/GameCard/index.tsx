@@ -1,6 +1,6 @@
 import style from "./style.module.css";
 
-interface GameData {
+export interface GameData {
   id: number;
   title: string;
   price: number;
@@ -13,28 +13,17 @@ interface GameData {
 }
 
 interface Props {
-  data?: GameData;
+  data: GameData;
 }
 
 export const GameCard = (props: Props) => {
-  const game = props.data || {
-    id: 1,
-    title: "World of warcraft",
-    price: 23.99,
-    currency: "$",
-    image: "/assets/images/wow_card.jpg",
-    rating: 5,
-    platforms: ["/assets/images/pc.png", "/assets/images/xbox.png", "/assets/images/playstation.png"],
-    description: "The World of Warcraft Trading Card Game draws from the rich lore of the Warcraft universe. T",
-    ageRating: 14,
-  };
+  const game = props.data;
 
   const rating = (rate: number) => {
     let arr = [];
     for (let i = 1; i <= rate; i++) {
       arr.push("★");
     }
-    console.log(arr);
     return arr;
   };
 

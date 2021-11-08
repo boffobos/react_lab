@@ -21,19 +21,15 @@ export const Navbar = (props: Props): ReactElement => {
     <nav className={style.navigation}>
       <ul>
         {options.map((option) => {
-          if (option.dropdown) {
-            return (
-              <li key={option.id}>
+          return (
+            <li key={option.id}>
+              {option.dropdown ? (
                 <DropdownMenu dropdownOptions={option.dropdown} placeholder={option.title} />
-              </li>
-            );
-          } else {
-            return (
-              <li key={option.id}>
+              ) : (
                 <NavlinkButton title={option.title} link={option.url} />
-              </li>
-            );
-          }
+              )}
+            </li>
+          );
         })}
       </ul>
     </nav>

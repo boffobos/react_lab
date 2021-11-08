@@ -1,8 +1,13 @@
-import { SearchBar, Section, PlatformSelector } from "../../components/components";
+import { SearchBar, Section, PlatformSelector, GameCard } from "../../components/components";
 import style from "./style.module.css";
 import * as constants from "../../constants";
+import { useEffect } from "react";
 
 export const Home = () => {
+
+  useEffect(() => {
+    
+  }, [])
   return (
     <main
       className={style.homePage}
@@ -25,7 +30,7 @@ export const Home = () => {
         })}
       </Section>
       <Section title="New games">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, esse!</p>
+        <GameCard />
       </Section>
     </main>
   );

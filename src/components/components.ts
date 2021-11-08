@@ -6,3 +6,4 @@ export * from "./Navlinkbutton";
 export * from "./SearchBar";
 export * from "./Section";
 export * from "./PlatformSelector";
+export * from "./GameCard";

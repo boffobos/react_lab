@@ -1,9 +1,18 @@
 .container {
   width: 95%;
+  height: 95%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: var(--dark-color);
+  padding: 5px;
+  border: solid 1px var(--primary-color);
+  margin-bottom: 5px;
+}
+
+.container:hover {
+  border: var(--active-color) solid 1px;
+  cursor: pointer;
 }
 
 .image {

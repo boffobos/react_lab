@@ -1,26 +1,17 @@
-import { ReactElement } from "react";
+import { MouseEventHandler, ReactElement } from "react";
 import style from "./style.module.css";
 import { GameData } from "../GameCard/index";
 
 interface Props {
   data: GameData;
+  onClick: MouseEventHandler;
 }
 
-export const SearchCard = ({ data }: Props): ReactElement => {
+export const SearchCard = ({ data, onClick }: Props): ReactElement => {
   const line = data;
-  // const line = {
-  //   id: 3,
-  //   title: "Mortal Combat 11",
-  //   price: 39.99,
-  //   currency: "$",
-  //   image: "/assets/images/MK_11.jpg",
-  //   rating: 4.5,
-  //   platforms: ["/assets/images/xbox.png", "/assets/images/playstation.png"],
-  //   description: "Mortal Kombat is back and better than ever in the next evolution of the iconic franchise.",
-  //   ageRating: 18,
-  // };
+
   return (
-    <div className={style.container}>
+    <div className={style.container} onClick={onClick}>
       <div className={style.image}>
         <img src={line.image} alt={line.title} />
       </div>

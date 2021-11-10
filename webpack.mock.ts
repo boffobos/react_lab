@@ -84,6 +84,29 @@ export default webpackMockServer.add((app, helper) => {
         description: "Mortal Kombat is back and better than ever in the next evolution of the iconic franchise.",
         ageRating: 18,
       },
+      {
+        id: 4,
+        title: "Battle City",
+        price: 0.99,
+        currency: "$",
+        image: "/assets/images/BattleCity.png",
+        rating: 5,
+        platforms: ["/assets/images/xbox.png", "/assets/images/playstation.png"],
+        description:
+          "Battle City is a multi-directional shooter video game for the Family Computer produced and published in 1985 by Namco.",
+        ageRating: 3,
+      },
+      {
+        id: 5,
+        title: "Dune",
+        price: 5.99,
+        currency: "$",
+        image: "/assets/images/Dune.png",
+        rating: 4,
+        platforms: ["/assets/images/pc.png"],
+        description: "A number of games have been published based on the Dune universe created by Frank Herbert.",
+        ageRating: 10,
+      },
     ];
     const response = [];
     data.forEach((item) => {

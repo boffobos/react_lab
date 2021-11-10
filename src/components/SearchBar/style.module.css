@@ -1,25 +1,33 @@
+.container {
+  width: 60vw;
+  max-width: 800px;
+  position: relative;
+  margin: auto;
+}
+
 .searchBar {
   background-color: var(--dark-color-second);
+  width: 100%;
   border: var(--primary-color) 1px solid;
   border-radius: 15px;
   padding: 0.8rem;
   display: block;
-  margin: 0 auto;
-  width: 60vw;
+  margin: 0;
   color: var(--primary-color);
-  max-width: 800px;
 }
 
-.searchBar:focus {
+/* .searchBar:focus {
   border-radius: 15px 15px 0 0;
   border-bottom: var(--dark-color);
-}
+} */
 
 .results {
+  position: absolute;
+  top: 43px;
+  left: 0;
+  width: 100%;
   background-color: var(--dark-color);
   z-index: 1;
-  width: 60vw;
-  max-width: 800px;
   padding: 0.8rem;
   margin: auto;
   color: var(--primary-color);

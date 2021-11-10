@@ -1,0 +1,33 @@
+.DropdownRoot {
+  text-decoration: none;
+  min-width: 140px;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 0.8rem;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.menu {
+  text-align: center;
+  min-width: inherit;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--dark-color);
+  z-index: 1;
+}
+
+.menu > * {
+  padding: 1.2rem 0;
+}
+
+.dropdownControl {
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu > *:hover {
+  background-color: var(--active-color-second);
+  cursor: pointer;
+}

@@ -1,4 +1,4 @@
-export default function SignUp() {
+export const SignUp = () => {
   return (
     <form>
       <input type="text" placeholder="Name" />

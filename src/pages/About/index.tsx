@@ -1,3 +1,3 @@
-export default function About() {
+export const About = () => {
   return <div>About page</div>;
 }

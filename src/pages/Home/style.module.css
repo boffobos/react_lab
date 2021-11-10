@@ -1,0 +1,5 @@
+.homePage {
+  background: var(--dark-color-second);
+  min-height: 50vh;
+  padding: 0.8rem;
+}

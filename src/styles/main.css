@@ -6,7 +6,9 @@
   --primary-color: #dcdcdc;
   --secondary-color: #e3e3e3;
   --active-color: #9933cc;
+  --active-color-second: #9933cc86;
   --dark-color: #121212;
+  --dark-color-second: #1212129f;
 }
 
 * {

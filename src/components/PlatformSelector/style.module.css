@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-top: var(--primary-color) 1px solid;
+  border-left: var(--primary-color) 1px solid;
+  border-right: var(--primary-color) 1px solid;
+  border-bottom: var(--primary-color) 4px solid;
+  border-radius: 15px;
+  width: 300px;
+  height: 200px;
+  background-color: var(--dark-color);
+  margin: 0.8rem;
+}
+
+.categoryIcon {
+  width: 100px;
+  height: 100px;
+}
+
+.categoryIcon img {
+  width: 100%;
+  height: auto;
+  filter: invert(30%);
+}
+
+.categotyTitle {
+  color: var(--primary-color);
+  text-align: center;
+  padding: 0.8rem;
+}
+
+.container:hover {
+  border-color: var(--active-color);
+  cursor: pointer;
+}

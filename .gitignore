@@ -33,3 +33,7 @@ node_modules
 .stylelintcache
 
 tsconfig.tsbuildinfo
+
+.vscode
+
+src/assets/images/

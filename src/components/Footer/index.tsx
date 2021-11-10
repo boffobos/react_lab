@@ -1,17 +1,18 @@
-import css from "./Footer.module.css";
+import { ReactElement } from "react";
+import style from "./style.module.css";
 
 interface Props {
   siteName: string;
 }
 
-export default function Footer({ siteName }: Props): JSX.Element {
+export const Footer = ({ siteName }: Props): ReactElement => {
   return (
     <footer>
-      <div className={css.container}>
+      <div className={style.container}>
         <div>
           <p>&copy; 2021 {siteName}. Incredible convenient</p>
         </div>
-        <div className={css.companies}>
+        <div className={style.companies}>
           <div>
             <a href="https://worldoftanks.com/" target="_blank">
               <img src="./assets/images/World_of_Tanks.png" alt="logo" />
@@ -36,4 +37,4 @@ export default function Footer({ siteName }: Props): JSX.Element {
       </div>
     </footer>
   );
-}
+};

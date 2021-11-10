@@ -14,7 +14,7 @@ export interface GameData {
 
 interface Props {
   data: GameData;
-}
+  }
 
 export const GameCard = (props: Props) => {
   const game = props.data;

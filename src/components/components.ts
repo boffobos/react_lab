@@ -8,3 +8,4 @@ export * from "./Section";
 export * from "./PlatformSelector";
 export * from "./GameCard";
 export * from "./Spinner";
+export * from "./SearchCard";

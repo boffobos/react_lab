@@ -10,7 +10,7 @@ export const Home = () => {
 
   useEffect(() => {
     axios
-      .get("/testMock")
+      .get("/api/getTopProducts")
       .then((response) => {
         setItems(items.concat(response.data));
         setIsLoading(false);
@@ -29,7 +29,7 @@ export const Home = () => {
       }}
     >
       <SearchBar searchPlaceholder="Search..." />
-      <Section title="Categoies">
+      <Section title="Categories">
         {constants.GAME_PLATFORMS.map((item) => {
           return (
             <PlatformSelector
@@ -46,7 +46,7 @@ export const Home = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          items.map((item, index) => {
+          items.map((item) => {
             return <GameCard key={item.id} data={item} />;
           })
         )}

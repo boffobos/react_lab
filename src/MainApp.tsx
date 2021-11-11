@@ -1,10 +1,10 @@
 import { Component } from "react";
-import * as Constants from "./constants";
+import * as constants from "./constants";
 import { Header, Footer } from "./components/components";
-import { Route, Switch, withRouter } from "react-router-dom";
+import { Route, Switch, withRouter, RouteComponentProps } from "react-router-dom";
 import { Home, Products, About, SignIn, SignUp } from "./pages/pages";
 
-interface Props {}
+interface Props extends RouteComponentProps {}
 
 class MainApp extends Component<Props> {
   constructor(props: Props) {
@@ -16,28 +16,32 @@ class MainApp extends Component<Props> {
     this.props.history.push("/");
   }
 
+  componentDidMount() {
+    document.title = constants.SITE_NAME;
+  }
+
   render() {
     return (
       <>
-        <Header siteName={Constants.SITE_NAME} link={Constants.HOME_URL} />
+        <Header siteName={constants.SITE_NAME} link={constants.HOME_URL} />
         <Switch>
-          <Route path={Constants.PRODUCTS_URL}>
+          <Route path={constants.PRODUCTS_URL}>
             <Products />
           </Route>
-          <Route path={Constants.ABOUT_URL}>
+          <Route path={constants.ABOUT_URL}>
             <About />
           </Route>
-          <Route path={Constants.SIGNIN_URL}>
+          <Route path={constants.SIGNIN_URL}>
             <SignIn />
           </Route>
-          <Route path={Constants.SIGNUP_URL}>
+          <Route path={constants.SIGNUP_URL}>
             <SignUp />
           </Route>
-          <Route path={Constants.HOME_URL}>
+          <Route path={constants.HOME_URL}>
             <Home />
           </Route>
         </Switch>
-        <Footer siteName={Constants.SITE_NAME} />
+        <Footer siteName={constants.SITE_NAME} />
       </>
     );
   }

@@ -108,7 +108,7 @@ export default webpackMockServer.add((app, helper) => {
         ageRating: 10,
       },
     ];
-    const response = [];
+    const response: Array<object> = [];
     data.forEach((item) => {
       if (item.title.toLowerCase().includes(_req.params.search.toLowerCase())) response.push(item);
     });

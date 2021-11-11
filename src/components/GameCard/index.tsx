@@ -1,6 +1,6 @@
 import style from "./style.module.css";
 
-export interface GameData {
+export interface IGameData {
   id: number;
   title: string;
   price: number;
@@ -13,8 +13,8 @@ export interface GameData {
 }
 
 interface Props {
-  data: GameData;
-  }
+  data: IGameData;
+}
 
 export const GameCard = (props: Props) => {
   const game = props.data;

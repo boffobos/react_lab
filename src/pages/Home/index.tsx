@@ -1,4 +1,4 @@
-import { SearchBar, Section, PlatformSelector, GameCard, Spinner } from "../../components/components";
+import { SearchBar, Section, PlatformSelector, GameCard, Spinner, IGameData } from "../../components/components";
 import style from "./style.module.css";
 import * as constants from "../../constants";
 import { useEffect, useState } from "react";
@@ -6,17 +6,17 @@ import axios from "axios";
 
 export const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<IGameData[]>([]);
 
   useEffect(() => {
     axios
-      .get("/api/getTopProducts")
+      .get<IGameData[]>("/api/getTopProducts")
       .then((response) => {
         setItems(items.concat(response.data));
         setIsLoading(false);
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
         setIsLoading(false);
       });
   }, []);

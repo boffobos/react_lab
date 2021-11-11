@@ -1,9 +1,9 @@
 import { MouseEventHandler, ReactElement } from "react";
 import style from "./style.module.css";
-import { GameData } from "../GameCard/index";
+import { IGameData } from "../GameCard/index";
 
 interface Props {
-  data: GameData;
+  data: IGameData;
   onClick: MouseEventHandler;
 }
 

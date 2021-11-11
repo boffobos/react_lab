@@ -3,7 +3,7 @@ import style from "./style.module.css";
 import { useState, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import axios from "axios";
-import { SearchCard } from "../components";
+import { SearchCard, IGameData } from "../components";
 
 interface Props {
   searchPlaceholder: string;
@@ -14,7 +14,7 @@ export const SearchBar = (props: Props): ReactElement => {
   const debounsedSearch = useDebouncedCallback((value) => {
     setSearch(value);
   }, 300);
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<IGameData[]>([]);
 
   useEffect(() => {
     // setResults([]);

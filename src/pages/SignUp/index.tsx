@@ -1,11 +1,20 @@
+import ReactDOM from "react-dom";
+import { useState } from "react";
+import { Modal, FormMaker } from "../../components/components";
+import { signUpFormConfig } from "@/config/config";
+
 export const SignUp = () => {
+  const [modalOpen, setModalOpen] = useState(true);
+
   return (
-    <form>
-      <input type="text" placeholder="Name" />
-      <input type="email" placeholder="email" />
-      <input type="password" placeholder="password" />
-      <input type="password" placeholder="repeat password" />
-      <button>Sign up</button>
-    </form>
+    <Modal
+      modalName="Sign Up"
+      isOpen={modalOpen}
+      onClose={() => {
+        setModalOpen(false);
+      }}
+    >
+      <FormMaker props={signUpFormConfig} />
+    </Modal>
   );
-}
+};

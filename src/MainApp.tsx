@@ -3,6 +3,7 @@ import * as constants from "./constants";
 import { Header, Footer } from "./components/components";
 import { Route, Switch, withRouter, RouteComponentProps } from "react-router-dom";
 import { Home, Products, About, SignIn, SignUp } from "./pages/pages";
+import { FontAwsomeIcons } from "@fortawesome/fontawesome-free";
 
 interface Props extends RouteComponentProps {}
 
@@ -31,9 +32,7 @@ class MainApp extends Component<Props> {
           <Route path={constants.ABOUT_URL}>
             <About />
           </Route>
-          <Route path={constants.SIGNIN_URL}>
-            <SignIn />
-          </Route>
+          <Route path={constants.SIGNIN_URL} component={SignIn} />
           <Route path={constants.SIGNUP_URL}>
             <SignUp />
           </Route>

@@ -10,13 +10,19 @@
   list-style: none;
 }
 
-.navigation ul li a {
+.navigation ul li a,
+.navigation ul li button {
   display: inline-block;
   padding: 1.1rem 1.2rem;
   text-decoration: none;
   line-height: 1.2rem;
   font-size: 1.2rem;
   color: var(--primary-color);
+}
+
+.navigation ul li button {
+  background-color: transparent;
+  border: none;
 }
 
 .navigation ul li:hover {

@@ -10,3 +10,7 @@ export * from "./PlatformSelector";
 export * from "./GameCard";
 export * from "./Spinner";
 export * from "./SearchCard";
+export * from "./InputField";
+export * from "./FormMaker";
+export * from "./Modal";
+export * from "./NavButton";

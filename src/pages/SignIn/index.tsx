@@ -1,18 +1,16 @@
-// import { Redirect } from "react-router-dom";
-// import { useState } from "react";
+import { Redirect } from "react-router-dom";
+import { useState } from "react";
+import ReactDOM from "react-dom";
+import { FormMaker, Modal } from "../../components/components";
+import { signInFormConfig } from "@/config/config";
 
 export const SignIn = () => {
-  // const [isError, setIsError] = useState(true);
-  // if (isError) {
-  //   return <Redirect to="/" />;
-  // }
+  const [modalOpen, setModalOpen] = useState(true);
 
-  throw new Error("test");
-  return (
-    <form>
-      <input type="email" placeholder="email" />
-      <input type="password" placeholder="password" />
-      <button type="submit">Sign in</button>
-    </form>
+  return ReactDOM.createPortal(
+    <Modal modalName="Sign In" isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+      <FormMaker props={signInFormConfig} />
+    </Modal>,
+    document.body
   );
 };

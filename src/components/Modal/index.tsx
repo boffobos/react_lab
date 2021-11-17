@@ -1,5 +1,5 @@
 import style from "./style.module.css";
-import { ReactEventHandler, ReactNode, useState } from "react";
+import { ReactEventHandler, ReactNode } from "react";
 import ReactDOM from "react-dom";
 
 interface Props {

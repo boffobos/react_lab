@@ -5,7 +5,7 @@ import {
   signInFormConfig,
   signUpFormConfig,
 } from "../../config/config";
-import { NavlinkButton, NavButton, DropdownMenu, Modal, FormMaker } from "../components";
+import { SignInModal, NavlinkButton, NavButton, DropdownMenu, Modal, FormMaker } from "../components";
 import { ReactElement, ReactEventHandler, useState } from "react";
 import style from "./style.module.css";
 import { Option } from "react-dropdown";
@@ -29,7 +29,6 @@ interface Props {
 
 export const Navbar = (props: Props): ReactElement => {
   const options = props.options;
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [signInOpen, setSignInOpen] = useState(false);
   const [signUpOpen, setSignUpOpen] = useState(false);
 
@@ -37,34 +36,16 @@ export const Navbar = (props: Props): ReactElement => {
     setSignInOpen(false);
   };
 
+  const openSignInModal = () => {
+    setSignInOpen(true);
+  };
+
   const closeSignUpModal = () => {
     setSignUpOpen(false);
   };
 
-  const SignInModal = () => {
-    return ReactDOM.createPortal(
-      <Modal modalName="Sign In" isOpen={signInOpen} onClose={() => setSignInOpen(false)}>
-        <FormMaker
-          formFieldOptions={signInFormConfig}
-          handlerForm={props.handlerUserNameSet}
-          closeModal={closeSignInModal}
-        />
-      </Modal>,
-      document.body
-    );
-  };
-  const SignUpModal = () => {
-    return ReactDOM.createPortal(
-      <Modal
-        modalName="Sign Up"
-        isOpen={signUpOpen}
-        onClose={() => setSignUpOpen(false)}
-        handlerUserNameSet={props.handlerUserNameSet}
-      >
-        <FormMaker formFieldOptions={signUpFormConfig} closeModal={closeSignUpModal} />
-      </Modal>,
-      document.body
-    );
+  const openSignUpModal = () => {
+    setSignUpOpen(true);
   };
 
   return (
@@ -85,10 +66,10 @@ export const Navbar = (props: Props): ReactElement => {
           {!props.isLoggedIn ? (
             <>
               <li>
-                <NavButton title="Sign in" handler={() => setSignInOpen(true)} />
+                <NavButton title="Sign in" handler={openSignInModal} />
               </li>
               <li>
-                <NavButton title="Sign up" handler={() => setSignUpOpen(true)} />
+                <NavButton title="Sign up" handler={openSignUpModal} />
               </li>
             </>
           ) : (
@@ -124,7 +105,14 @@ export const Navbar = (props: Props): ReactElement => {
           )}
         </ul>
       </nav>
-      {signInOpen ? <SignInModal /> : null}
+      {signInOpen ? (
+        <SignInModal
+          onClose={closeSignInModal}
+          isOpen={signInOpen}
+          loginHandler={props.handlerUserNameSet}
+          closeModal={closeSignInModal}
+        />
+      ) : null}
       {signUpOpen ? <SignUpModal /> : null}
     </>
   );

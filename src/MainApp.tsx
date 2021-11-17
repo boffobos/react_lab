@@ -2,7 +2,7 @@ import { Component } from "react";
 import * as constants from "./constants";
 import { Header, Footer } from "./components/components";
 import { Route, Switch, withRouter, RouteComponentProps } from "react-router-dom";
-import { Home, Products, About, SignIn, SignUp } from "./pages/pages";
+import { Home, Products, About } from "./pages/pages";
 
 interface Props extends RouteComponentProps {}
 

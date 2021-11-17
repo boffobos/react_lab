@@ -2,18 +2,18 @@ import { FormEventHandler, useState } from "react";
 import style from "./style.module.css";
 import { InputField, IInputField } from "../components";
 
-interface IFormContent {
+export interface IFormContent {
   button: { type: "submit" | "button" | "reset" | undefined; text: string };
   children: IInputField[];
 }
 
-interface IFormMaker extends IFormContent {
+export interface IFormMaker extends IFormContent {
   formFieldOptions: IFormContent;
-  handlerForm: FormEventHandler;
+  onSubmit: FormEventHandler;
   closeModal: Function;
 }
 
-export const FormMaker = ({ formFieldOptions, handlerForm, closeModal }: IFormMaker) => {
+export const FormMaker = ({ formFieldOptions, onSubmit, closeModal }: IFormMaker) => {
   const [formState, setFormState] = useState({});
 
   const fields = formFieldOptions;
@@ -26,8 +26,8 @@ export const FormMaker = ({ formFieldOptions, handlerForm, closeModal }: IFormMa
 
   const handleFormOnSubmit = (e: FormDataEvent) => {
     e.preventDefault();
-    handlerForm(formState["login"]);
-    closeModal();
+    onSubmit(formState["login"] || "", formState["password"] || "");
+    // closeModal();
   };
 
   return (

@@ -1,3 +1,2 @@
-export const Products = () => {
-  return <div>Products page</div>;
-}
+export const Products = () => (<div>Products page</div>);
+

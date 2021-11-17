@@ -1,5 +1,5 @@
 import style from "./style.module.css";
-import { ReactEventHandler, ReactNode } from "react";
+import { ReactEventHandler, ReactNode, useState } from "react";
 import ReactDOM from "react-dom";
 
 interface Props {
@@ -10,7 +10,6 @@ interface Props {
 }
 
 export const Modal = ({ modalName, children, isOpen, onClose }: Props) => {
-  console.log(isOpen);
   if (!isOpen) return null;
   return ReactDOM.createPortal(
     <div className={style.modal}>

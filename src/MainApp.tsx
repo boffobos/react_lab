@@ -3,13 +3,34 @@ import * as constants from "./constants";
 import { Header, Footer } from "./components/components";
 import { Route, Switch, withRouter, RouteComponentProps } from "react-router-dom";
 import { Home, Products, About, SignIn, SignUp } from "./pages/pages";
-import { FontAwsomeIcons } from "@fortawesome/fontawesome-free";
 
 interface Props extends RouteComponentProps {}
 
 class MainApp extends Component<Props> {
   constructor(props: Props) {
     super(props);
+    this.state = {
+      userName: null,
+      cart: 0,
+    };
+    this.handlerUserNameSet = this.handlerUserNameSet.bind(this);
+    this.handlerAddToCart = this.handlerAddToCart.bind(this);
+  }
+
+  handlerUserNameSet(user: string | null) {
+    this.setState({ userName: user });
+  }
+
+  handlerAddToCart() {
+    if (this.state.userName) {
+      this.setState((state) => {
+        return {
+          cart: state.cart + 1,
+        };
+      });
+    } else {
+      alert("Please, log in");
+    }
   }
 
   componentDidCatch(e: Error) {
@@ -24,20 +45,18 @@ class MainApp extends Component<Props> {
   render() {
     return (
       <>
-        <Header siteName={constants.SITE_NAME} link={constants.HOME_URL} />
+        <Header
+          siteName={constants.SITE_NAME}
+          link={constants.HOME_URL}
+          isLoggedIn={this.state.userName}
+          cart={this.state.cart}
+          handlerUserNameSet={this.handlerUserNameSet}
+        />
         <Switch>
-          <Route path={constants.PRODUCTS_URL}>
-            <Products />
-          </Route>
-          <Route path={constants.ABOUT_URL}>
-            <About />
-          </Route>
-          <Route path={constants.SIGNIN_URL} component={SignIn} />
-          <Route path={constants.SIGNUP_URL}>
-            <SignUp />
-          </Route>
+          <Route path={constants.PRODUCTS_URL} component={Products} />
+          <Route path={constants.ABOUT_URL} component={About} />
           <Route path={constants.HOME_URL}>
-            <Home />
+            <Home cartHandler={this.handlerAddToCart} />
           </Route>
         </Switch>
         <Footer siteName={constants.SITE_NAME} />

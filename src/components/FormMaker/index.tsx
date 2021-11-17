@@ -1,48 +1,45 @@
-import { FormEventHandler } from "react";
+import { FormEventHandler, useState } from "react";
 import style from "./style.module.css";
 import { InputField, IInputField } from "../components";
-import { faIdCard, faLock } from "@fortawesome/free-solid-svg-icons";
 
-interface Props {
+interface IFormContent {
   button: { type: "submit" | "button" | "reset" | undefined; text: string };
-  onSubmit: FormEventHandler;
   children: IInputField[];
 }
 
-interface Prop extends Props {
-  props: Props;
+interface IFormMaker extends IFormContent {
+  formFieldOptions: IFormContent;
+  handlerForm: FormEventHandler;
+  closeModal: Function;
 }
 
-export const FormMaker = ({ props }: Prop) => {
-  /*
-  const text = "Submit";
-  const btnType = "submit";
-  const onSubmitf = (e) => {
-    e.prevetDefauld();
-    alert("Form sent");
-  };
-  */
+export const FormMaker = ({ formFieldOptions, handlerForm, closeModal }: IFormMaker) => {
+  const [formState, setFormState] = useState({});
 
-  const opt = props;
-  /*
-   {
-    button: { type: "submit", text: "Register" },
-    onSubmit: onSubmitf,
-    children: [
-      { name: "login", label: "Login", faIcon: faIdCard, type: "text" },
-      { name: "password", label: "Password", faIcon: faLock, type: "password" },
-      { name: "re-password", label: "Repeat Password", faIcon: faLock, type: "password" },
-    ],
-   };
-   */
+  const fields = formFieldOptions;
+
+  /* Making input fields in form controlled by form container */
+  const hanleInputChange = (e) => {
+    const value = e.target.value;
+    setFormState({ ...formState, [e.target.name]: value });
+  };
+
+  const handleFormOnSubmit = (e: FormDataEvent) => {
+    e.preventDefault();
+    handlerForm(formState["login"]);
+    closeModal();
+  };
 
   return (
     <>
-      <form /*autoComplete="off"*/ action="" className={style.form} onSubmit={(e) => opt.onSubmit(e)}>
-        {opt.children.map((item, index) => (
-          <InputField key={index} options={item} />
-        ))}
-        <button type={opt.button.type}>{opt.button.text}</button>
+      <form /*!!!*/ autoComplete="off" action="" className={style.form} onSubmit={handleFormOnSubmit}>
+        {fields.children.map((item) => {
+          const inputName = item.name;
+          return (
+            <InputField key={item.name} options={item} onChange={hanleInputChange} value={formState[inputName] || ""} />
+          );
+        })}
+        <button type={fields.button.type}>{fields.button.text}</button>
       </form>
     </>
   );

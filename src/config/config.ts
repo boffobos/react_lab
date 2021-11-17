@@ -1,14 +1,15 @@
 /* Modal forms config */
-import { faIdCard, faLock } from "@fortawesome/free-solid-svg-icons";
+import {
+  faRightFromBracket,
+  faIdCard,
+  faLock,
+  faUserAstronaut,
+  faShoppingCart,
+} from "@fortawesome/free-solid-svg-icons";
 
 /*Sign up modal config */
 export const signUpFormConfig = {
   button: { type: "submit", text: "Register" },
-  onSubmit: function onSubmitf(e: FormDataEvent) {
-    //some code
-    e.preventDefault();
-    alert("Form handler");
-  },
   children: [
     { name: "login", label: "Login", faIcon: faIdCard, type: "text" },
     { name: "password", label: "Password", faIcon: faLock, type: "password" },
@@ -19,13 +20,12 @@ export const signUpFormConfig = {
 /* Sign in modal config */
 export const signInFormConfig = {
   button: { type: "submit", text: "Login" },
-  onSubmit: function onSubmitf(e: FormDataEvent) {
-    //some code
-    e.preventDefault();
-    alert("Form handler");
-  },
   children: [
     { name: "login", label: "Login", faIcon: faIdCard, type: "text" },
     { name: "password", label: "Password", faIcon: faLock, type: "password" },
   ],
 };
+
+export const userButtonIcon = faUserAstronaut;
+export const cartButtonIcon = faShoppingCart;
+export const exitButtonIcon = faRightFromBracket;

@@ -2,12 +2,17 @@ import { Component } from "react";
 import * as constants from "./constants";
 import { Header, Footer } from "./components/components";
 import { Route, Switch, withRouter, RouteComponentProps } from "react-router-dom";
-import { Home, Products, About } from "./pages/pages";
+import { Home, Products, About, Profile } from "./pages/pages";
 
-interface Props extends RouteComponentProps {}
+interface IProps extends RouteComponentProps {}
 
-class MainApp extends Component<Props> {
-  constructor(props: Props) {
+interface IState {
+  userName: string | null;
+  cart: number;
+}
+
+class MainApp extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       userName: null,
@@ -48,13 +53,16 @@ class MainApp extends Component<Props> {
         <Header
           siteName={constants.SITE_NAME}
           link={constants.HOME_URL}
-          isLoggedIn={this.state.userName}
+          loggedUserName={this.state.userName}
           cart={this.state.cart}
           handlerUserNameSet={this.handlerUserNameSet}
         />
         <Switch>
           <Route path={constants.PRODUCTS_URL} component={Products} />
           <Route path={constants.ABOUT_URL} component={About} />
+          <Route path={constants.PROFILE_URL}>
+            <Profile username={this.state.userName} />
+          </Route>
           <Route path={constants.HOME_URL}>
             <Home cartHandler={this.handlerAddToCart} />
           </Route>

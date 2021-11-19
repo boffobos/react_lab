@@ -133,4 +133,10 @@ export default webpackMockServer.add((app, helper) => {
     });
     res.status(204).send("Auth failed");
   });
+  app.put("/api/auth/signUp", (req, res) => {
+    const data = req.body;
+    if (data.password === data.rePassword) {
+      res.status(200).json(req.body.login);
+    }
+  });
 });

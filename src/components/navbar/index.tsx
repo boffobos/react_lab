@@ -1,16 +1,9 @@
-import {
-  exitButtonIcon,
-  userButtonIcon,
-  cartButtonIcon,
-  signInFormConfig,
-  signUpFormConfig,
-} from "../../config/config";
-import { SignInModal, NavlinkButton, NavButton, DropdownMenu, Modal, FormMaker } from "../components";
-import { ReactElement, ReactEventHandler, useState } from "react";
+import { exitButtonIcon, userButtonIcon, cartButtonIcon } from "../../config/config";
+import { SignInModal, SignUpModal, NavlinkButton, NavButton, DropdownMenu } from "../components";
+import { ReactElement, useState } from "react";
 import style from "./style.module.css";
 import { Option } from "react-dropdown";
-// import { SignIn, SignUp } from "../../pages/pages";
-import ReactDOM from "react-dom";
+import { useHistory } from "react-router-dom";
 
 interface Options {
   id: number;
@@ -21,16 +14,15 @@ interface Options {
 
 interface Props {
   options: Options[];
-  userName: string;
+  loggedUserName?: string | null;
   handlerUserNameSet: Function;
-  isLoggedIn: string;
   cart: number;
 }
 
-export const Navbar = (props: Props): ReactElement => {
-  const options = props.options;
+export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Props): ReactElement => {
   const [signInOpen, setSignInOpen] = useState(false);
   const [signUpOpen, setSignUpOpen] = useState(false);
+  const history = useHistory();
 
   const closeSignInModal = () => {
     setSignInOpen(false);
@@ -63,7 +55,7 @@ export const Navbar = (props: Props): ReactElement => {
               </li>
             );
           })}
-          {!props.isLoggedIn ? (
+          {!loggedUserName ? (
             <>
               <li>
                 <NavButton title="Sign in" handler={openSignInModal} />
@@ -76,16 +68,16 @@ export const Navbar = (props: Props): ReactElement => {
             <>
               <li>
                 <NavButton
-                  title={props.isLoggedIn}
+                  title={loggedUserName}
                   handler={() => {
-                    alert(`Hey, ${props.isLoggedIn}!`);
+                    history.push("/profile");
                   }}
                   icon={userButtonIcon}
                 />
               </li>
               <li>
                 <NavButton
-                  title={props.cart.toString()}
+                  title={cart.toString()}
                   handler={() => {
                     alert("Number of orders!");
                   }}
@@ -96,7 +88,8 @@ export const Navbar = (props: Props): ReactElement => {
                 <NavButton
                   title=""
                   handler={() => {
-                    props.handlerUserNameSet(null);
+                    handlerUserNameSet(null);
+                    history.push("/");
                   }}
                   icon={exitButtonIcon}
                 />
@@ -109,11 +102,17 @@ export const Navbar = (props: Props): ReactElement => {
         <SignInModal
           onClose={closeSignInModal}
           isOpen={signInOpen}
-          loginHandler={props.handlerUserNameSet}
-          closeModal={closeSignInModal}
+          handlerLogin={handlerUserNameSet}
+          history={history}
+        />
+      ) : signUpOpen ? (
+        <SignUpModal
+          onClose={closeSignUpModal}
+          isOpen={signUpOpen}
+          handlerRegister={handlerUserNameSet}
+          history={history}
         />
       ) : null}
-      {signUpOpen ? <SignUpModal /> : null}
     </>
   );
 };

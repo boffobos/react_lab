@@ -1,16 +1,18 @@
-import { ReactEventHandler, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { FormMaker, IFormMaker, Modal } from "../components";
+import { FormMaker, Modal } from "../components";
 import { faLock, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { History } from "history/index";
 
-interface ISignInModal extends IFormMaker {
+interface ISignInModal {
   isOpen: boolean;
   onClose: Function;
-  loginHandler: Function;
+  handlerLogin: Function;
+  history: History;
 }
 
-export const SignInModal = ({ loginHandler, isOpen, onClose }: ISignInModal) => {
+export const SignInModal = ({ handlerLogin, isOpen, onClose, history }: ISignInModal) => {
   const form = {
     button: { type: "submit", text: "Login" },
     children: [
@@ -19,13 +21,8 @@ export const SignInModal = ({ loginHandler, isOpen, onClose }: ISignInModal) => 
     ],
   };
 
-  const [login, setLogin] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [authError, setAuthError] = useState({
-    emptyLogin: false,
-    emptyPassword: false,
-    authFail: false,
-  });
+  const [login, setLogin] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
 
   useEffect(() => {
     if (password && login) {
@@ -36,13 +33,14 @@ export const SignInModal = ({ loginHandler, isOpen, onClose }: ISignInModal) => 
         })
         .then((response) => {
           if (response.status === 201) {
-            loginHandler(login);
+            handlerLogin(login);
             setLogin(null);
             setPassword(null);
+            history.push("/");
             //redirect to requested page
             onClose();
           } else {
-            alert("Authentification failed! Try again");
+            alert("Authentification failed! Check login and password");
           }
         })
         .catch((e) => {
@@ -58,7 +56,7 @@ export const SignInModal = ({ loginHandler, isOpen, onClose }: ISignInModal) => 
     }
   });
 
-  const onSubmit = (login, password) => {
+  const onSubmit = (login: string | null, password: string | null) => {
     setLogin(login);
     setPassword(password);
   };

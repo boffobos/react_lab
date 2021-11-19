@@ -1,11 +1,12 @@
-import { IconDefinition } from "@fortawesome/free-regular-svg-icons";
 import { MouseEventHandler } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { Link } from "react-router-dom";
 
 interface INavButton {
   title: string;
   handler: MouseEventHandler;
-  icon?: IconDefinition;
+  icon?: IconProp;
 }
 
 export const NavButton = ({ title, handler, icon }: INavButton) => {

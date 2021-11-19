@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 
 interface Props {
-  link: string;
+  link: string | undefined;
   title: string;
 }
 

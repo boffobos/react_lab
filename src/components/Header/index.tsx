@@ -7,13 +7,16 @@ import { ReactElement } from "react";
 interface Props {
   link?: string;
   siteName: string;
+  loggedUserName: string | null;
+  cart: number;
+  handlerUserNameSet: Function;
 }
 
 export const Header = (props: Props): ReactElement => {
   return (
     <header className={style.header}>
       <div>
-        <Link to={props.link} className={style.logo}>
+        <Link to={props.link || "#"} className={style.logo}>
           {constants.SITE_NAME}
         </Link>
       </div>
@@ -21,7 +24,7 @@ export const Header = (props: Props): ReactElement => {
         <Navbar
           options={constants.NAVBAR_OPTIONS}
           handlerUserNameSet={props.handlerUserNameSet}
-          isLoggedIn={props.isLoggedIn}
+          loggedUserName={props.loggedUserName}
           cart={props.cart}
         />
       </div>

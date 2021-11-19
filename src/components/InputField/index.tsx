@@ -1,12 +1,12 @@
 import style from "./style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { ReactElement, ReactEventHandler } from "react";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export interface IInputField {
   name: string;
   label: string;
-  faIcon?: IconDefinition;
+  faIcon?: IconProp;
   type: string;
 }
 
@@ -22,11 +22,11 @@ export const InputField = ({ options, value, onChange }: Props): ReactElement =>
     <div className={style.container}>
       <label htmlFor={options.name}>{options.label}</label>
       <input
+        className={style.input}
+        id={options.name}
         onChange={onChange}
         type={options.type}
         name={options.name.toLowerCase()}
-        className={style.input}
-        id={options.name}
         value={value}
       />
       {options.faIcon ? <FontAwesomeIcon icon={options.faIcon} className={style.icon} /> : null}

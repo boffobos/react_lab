@@ -15,3 +15,4 @@ export * from "./FormMaker";
 export * from "./Modal";
 export * from "./NavButton";
 export * from "./SignInModal";
+export * from "./SignUpModal";

@@ -7,6 +7,7 @@ export const PRODUCT_CATEGORIE_URL: string[] = ["/products/pc", "/products/xbox"
 export const ABOUT_URL: string = "/about";
 export const SIGNIN_URL: string = "/sign-in";
 export const SIGNUP_URL: string = "/sign-up";
+export const PROFILE_URL: string = "/profile";
 export const DROPDOWN_OPTIONS: Option[] = [
   { value: "/products/pc", label: "PC" },
   { value: "/products/xbox", label: "XBox One" },

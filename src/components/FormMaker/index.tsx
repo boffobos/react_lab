@@ -1,6 +1,7 @@
 import { FormEventHandler, useState } from "react";
 import style from "./style.module.css";
 import { InputField, IInputField } from "../components";
+import { string } from "yup";
 
 export interface IFormContent {
   button: { type: "submit" | "button" | "reset" | undefined; text: string };
@@ -13,8 +14,14 @@ export interface IFormMaker extends IFormContent {
   closeModal: Function;
 }
 
+interface IState {
+  login: string;
+  password: string;
+  ["re-password"]: string;
+}
+
 export const FormMaker = ({ formFieldOptions, onSubmit, closeModal }: IFormMaker) => {
-  const [formState, setFormState] = useState({});
+  const [formState, setFormState] = useState<IState | {}>({});
 
   const fields = formFieldOptions;
 
@@ -26,7 +33,7 @@ export const FormMaker = ({ formFieldOptions, onSubmit, closeModal }: IFormMaker
 
   const handleFormOnSubmit = (e: FormDataEvent) => {
     e.preventDefault();
-    onSubmit(formState["login"] || "", formState["password"] || "");
+    onSubmit(formState["login"] || "", formState["password"] || "", formState["re-password"] || "");
     // closeModal();
   };
 

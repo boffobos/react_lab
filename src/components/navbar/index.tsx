@@ -4,6 +4,7 @@ import { ReactElement, useState } from "react";
 import style from "./style.module.css";
 import { Option } from "react-dropdown";
 import { useHistory } from "react-router-dom";
+import * as constants from "../../constants";
 
 interface Options {
   id: number;
@@ -58,40 +59,36 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
           {!loggedUserName ? (
             <>
               <li>
-                <NavButton title="Sign in" handler={openSignInModal} />
+                <NavlinkButton title="Sign in" handler={openSignInModal} link="sign-in" />
               </li>
               <li>
-                <NavButton title="Sign up" handler={openSignUpModal} />
+                <NavlinkButton title="Sign up" handler={openSignUpModal} link="sign-up" />
               </li>
             </>
           ) : (
             <>
               <li>
-                <NavButton
-                  title={loggedUserName}
-                  handler={() => {
-                    history.push("/profile");
-                  }}
-                  icon={userButtonIcon}
-                />
+                <NavlinkButton title={loggedUserName} icon={userButtonIcon} link={constants.PROFILE_URL} />
               </li>
               <li>
-                <NavButton
+                <NavlinkButton
                   title={cart.toString()}
                   handler={() => {
                     alert("Number of orders!");
                   }}
                   icon={cartButtonIcon}
+                  link="/cart"
                 />
               </li>
               <li>
-                <NavButton
+                <NavlinkButton
                   title=""
                   handler={() => {
                     handlerUserNameSet(null);
                     history.push("/");
                   }}
                   icon={exitButtonIcon}
+                  link="logout"
                 />
               </li>
             </>

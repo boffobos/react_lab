@@ -11,7 +11,7 @@ import {
 export const signUpFormConfig = {
   button: { type: "submit", text: "Register" },
   children: [
-    { name: "login", label: "Login", faIcon: faIdCard, type: "text" },
+    { name: "login", label: "Login", faIcon: faIdCard, type: "text", autofocus: true },
     { name: "password", label: "Password", faIcon: faLock, type: "password" },
     { name: "re-password", label: "Repeat Password", faIcon: faLock, type: "password" },
   ],
@@ -21,8 +21,8 @@ export const signUpFormConfig = {
 export const signInFormConfig = {
   button: { type: "submit", text: "Login" },
   children: [
-    { name: "login", label: "Login", faIcon: faIdCard, type: "text" },
-    { name: "password", label: "Password", faIcon: faLock, type: "password" },
+    { name: "login", label: "Login", faIcon: faIdCard, type: "text", autofocus: true },
+    { name: "password", label: "Password", faIcon: faLock, type: "password", autofocus: true },
   ],
 };
 

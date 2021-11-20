@@ -12,12 +12,18 @@ interface ISignUpModal {
   history: History;
 }
 
-
-
 export const SignUpModal = ({ handlerRegister, isOpen, onClose, history }: ISignUpModal) => {
   const [login, setLogin] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const [rePassword, setRePassword] = useState<string | null>(null);
+  const form = {
+    button: { type: "submit", text: "Register" },
+    children: [
+      { name: "login", label: "Login", faIcon: faIdCard, type: "text", autofocus: true },
+      { name: "password", label: "Password", faIcon: faLock, type: "password" },
+      { name: "re-password", label: "Repeat Password", faIcon: faLock, type: "password" },
+    ],
+  };
 
   let schema = yup.object().shape({
     login: yup
@@ -75,14 +81,7 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, history }: ISign
     setPassword(pass);
     setRePassword(rePass);
   };
-  const form = {
-    button: { type: "submit", text: "Register" },
-    children: [
-      { name: "login", label: "Login", faIcon: faIdCard, type: "text" },
-      { name: "password", label: "Password", faIcon: faLock, type: "password" },
-      { name: "re-password", label: "Repeat Password", faIcon: faLock, type: "password" },
-    ],
-  };
+
   return ReactDOM.createPortal(
     <Modal modalName="Sign Up" isOpen={isOpen} onClose={onClose}>
       <FormMaker formFieldOptions={form} closeModal={onClose} onSubmit={onSubmit} />

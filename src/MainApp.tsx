@@ -58,12 +58,12 @@ class MainApp extends Component<IProps, IState> {
           handlerUserNameSet={this.handlerUserNameSet}
         />
         <Switch>
-          <Route path={constants.PRODUCTS_URL} component={Products} />
-          <Route path={constants.ABOUT_URL} component={About} />
-          <Route path={constants.PROFILE_URL}>
+          <Route path={constants.PRODUCTS_URL} component={Products} exact />
+          <Route path={constants.ABOUT_URL} component={About} exact />
+          <Route path={constants.PROFILE_URL} exact>
             <Profile username={this.state.userName} />
           </Route>
-          <Route path={constants.HOME_URL}>
+          <Route path={constants.HOME_URL} exact>
             <Home cartHandler={this.handlerAddToCart} />
           </Route>
         </Switch>

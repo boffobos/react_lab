@@ -16,7 +16,7 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose, history }: ISignInM
   const form = {
     button: { type: "submit", text: "Login" },
     children: [
-      { name: "login", label: "Login", faIcon: faIdCard, type: "text" },
+      { name: "login", label: "Login", faIcon: faIdCard, type: "text", autofocus: true },
       { name: "password", label: "Password", faIcon: faLock, type: "password" },
     ],
   };

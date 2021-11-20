@@ -1,6 +1,6 @@
 import style from "./style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactElement, ReactEventHandler } from "react";
+import { ReactElement, ReactEventHandler, useEffect, useRef } from "react";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export interface IInputField {
@@ -8,6 +8,7 @@ export interface IInputField {
   label: string;
   faIcon?: IconProp;
   type: string;
+  autofocus?: boolean | undefined;
 }
 
 interface Props {
@@ -17,7 +18,6 @@ interface Props {
 }
 
 export const InputField = ({ options, value, onChange }: Props): ReactElement => {
-  // let label = "Login";
   return (
     <div className={style.container}>
       <label htmlFor={options.name}>{options.label}</label>
@@ -28,6 +28,7 @@ export const InputField = ({ options, value, onChange }: Props): ReactElement =>
         type={options.type}
         name={options.name.toLowerCase()}
         value={value}
+        autoFocus={options.autofocus}
       />
       {options.faIcon ? <FontAwesomeIcon icon={options.faIcon} className={style.icon} /> : null}
     </div>

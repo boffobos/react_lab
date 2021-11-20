@@ -1,22 +1,25 @@
 import style from "./style.module.css";
 import Dropdown, { Option } from "react-dropdown";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ReactElement, useEffect, useState } from "react";
 
-interface Props extends RouteComponentProps {
+interface Props {
   dropdownOptions: Option[];
   placeholder?: string;
 }
 
-const DropdownMenu = ({ history, dropdownOptions /*placeholder*/ }: Props): ReactElement => {
+const DropdownMenu = ({ /* history, */ dropdownOptions /*placeholder*/ }: Props): ReactElement => {
   const [active, setActive] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [selected, setSelected] = useState<Option>();
   const onChangeHandler = (e: Option): void => {
-    history.push(`${e.value}`);
+    navigate(`${e.value}`);
   };
 
   useEffect(() => {
-    if (history.location.pathname.includes("products")) {
+    if (location.pathname.includes("products")) {
       /* Make switching dropdown selected if redirected from some external links to product page */
       // switch (history.location.pathname) {
       //   case "/products/pc":
@@ -53,4 +56,4 @@ const DropdownMenu = ({ history, dropdownOptions /*placeholder*/ }: Props): Reac
   );
 };
 
-export default withRouter(DropdownMenu);
+export default DropdownMenu;

@@ -16,7 +16,7 @@ export const NavlinkButton = ({ title, link = "#", icon, handler }: Props): Reac
     if (handler) handler();
   };
   return (
-    <NavLink to={link} exact={link === "/"} onClick={handler ? mouseEvent : undefined}>
+    <NavLink to={link} onClick={handler ? mouseEvent : undefined}>
       {icon ? (
         <span>
           <FontAwesomeIcon icon={icon} />{" "}

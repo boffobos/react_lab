@@ -1,9 +1,9 @@
 import { exitButtonIcon, userButtonIcon, cartButtonIcon } from "../../config/config";
-import { SignInModal, SignUpModal, NavlinkButton, NavButton, DropdownMenu } from "../components";
+import { SignInModal, SignUpModal, NavlinkButton, DropdownMenu } from "../components";
 import { ReactElement, useState } from "react";
 import style from "./style.module.css";
 import { Option } from "react-dropdown";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as constants from "../../constants";
 
 interface Options {
@@ -23,7 +23,7 @@ interface Props {
 export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Props): ReactElement => {
   const [signInOpen, setSignInOpen] = useState(false);
   const [signUpOpen, setSignUpOpen] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const closeSignInModal = () => {
     setSignInOpen(false);
@@ -85,7 +85,7 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
                   title=""
                   handler={() => {
                     handlerUserNameSet(null);
-                    history.push("/");
+                    navigate("/");
                   }}
                   icon={exitButtonIcon}
                   link="logout"
@@ -100,14 +100,14 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
           onClose={closeSignInModal}
           isOpen={signInOpen}
           handlerLogin={handlerUserNameSet}
-          history={history}
+          navigate={navigate}
         />
       ) : signUpOpen ? (
         <SignUpModal
           onClose={closeSignUpModal}
           isOpen={signUpOpen}
           handlerRegister={handlerUserNameSet}
-          history={history}
+          navigate={navigate}
         />
       ) : null}
     </>

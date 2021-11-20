@@ -4,15 +4,16 @@ import { Modal, FormMaker } from "../components";
 import { faIdCard, faLock } from "@fortawesome/free-solid-svg-icons";
 import * as yup from "yup";
 import axios from "axios";
+import { NavigateFunction } from "react-router";
 
 interface ISignUpModal {
   isOpen: boolean;
   onClose: Function;
   handlerRegister: Function;
-  history: History;
+  navigate: NavigateFunction;
 }
 
-export const SignUpModal = ({ handlerRegister, isOpen, onClose, history }: ISignUpModal) => {
+export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISignUpModal) => {
   const [login, setLogin] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const [rePassword, setRePassword] = useState<string | null>(null);
@@ -54,7 +55,7 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, history }: ISign
             .then((res) => {
               console.log(res.data);
               handlerRegister(res.data);
-              history.push("/profile");
+              navigate("/profile");
               onClose();
             })
             .catch((e) => {

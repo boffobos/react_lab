@@ -4,15 +4,16 @@ import { FormMaker, Modal } from "../components";
 import { faLock, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { History } from "history/index";
+import { NavigateFunction } from "react-router";
 
 interface ISignInModal {
   isOpen: boolean;
   onClose: Function;
   handlerLogin: Function;
-  history: History;
+  navigate: NavigateFunction;
 }
 
-export const SignInModal = ({ handlerLogin, isOpen, onClose, history }: ISignInModal) => {
+export const SignInModal = ({ handlerLogin, isOpen, onClose, navigate }: ISignInModal) => {
   const form = {
     button: { type: "submit", text: "Login" },
     children: [
@@ -36,7 +37,7 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose, history }: ISignInM
             handlerLogin(login);
             setLogin(null);
             setPassword(null);
-            history.push("/");
+            navigate("/");
             //redirect to requested page
             onClose();
           } else {

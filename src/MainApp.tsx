@@ -92,7 +92,21 @@ class MainApp extends Component<IProps, IState> {
                 <Products />
               </RequireAuth>
             }
-          />
+          >
+            <Route
+              path=":platform"
+              element={
+                <RequireAuth
+                  loggedUserName={this.state.userName}
+                  setUserName={this.handlerUserNameSet}
+                  isModalOpen={this.state.signInOpen}
+                  modalSwitchFunc={this.modalSwitch}
+                >
+                  <Products />
+                </RequireAuth>
+              }
+            />
+          </Route>
           <Route
             path={constants.PROFILE_URL}
             element={

@@ -7,6 +7,7 @@ export const PRODUCT_CATEGORIE_URL: string[] = ["/products/pc", "/products/xbox"
 export const ABOUT_URL: string = "/about";
 export const SIGNIN_URL: string = "/sign-in";
 export const SIGNUP_URL: string = "/sign-up";
+export const PROFILE_URL: string = "/profile";
 export const DROPDOWN_OPTIONS: Option[] = [
   { value: "/products/pc", label: "PC" },
   { value: "/products/xbox", label: "XBox One" },
@@ -17,8 +18,8 @@ export const NAVBAR_OPTIONS = [
   { id: 1, title: "Home", url: "/" },
   { id: 2, title: "Products", url: "/products", dropdown: DROPDOWN_OPTIONS },
   { id: 3, title: "About", url: "/about" },
-  { id: 4, title: "Sign in", url: "/sign-in" },
-  { id: 5, title: "Sign up", url: "/sign-up" },
+  // { id: 4, title: "Sign in" },
+  // { id: 5, title: "Sign up" },
 ];
 export const GAME_PLATFORMS = [
   { id: 1, title: "PC", icon: "/assets/images/pc.png", alt: "PC icon", url: "/products/pc" },

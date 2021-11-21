@@ -1,3 +1,10 @@
+import { useParams } from "react-router-dom";
+
 export const Products = () => {
-  return <div>Products page</div>;
-}
+  const params = useParams();
+  return (
+    <div>
+      Products page for <strong>{params.platform}</strong>
+    </div>
+  );
+};

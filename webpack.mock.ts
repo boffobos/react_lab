@@ -116,6 +116,27 @@ export default webpackMockServer.add((app, helper) => {
     res.json(response);
   });
   app.post("/testPostMock", (req, res) => {
-    res.json({ body: req.body || null, success: true });
+    res.status(201).json({ body: req.body || null, success: true });
+  });
+  app.post("/api/auth/signIn", (req, res) => {
+    const users = [
+      { login: "Denis", password: "1234" },
+      { login: "Admin", password: "qwerty" },
+      { login: "User", password: "test" },
+    ];
+    const pass = req.body.password;
+    const login = req.body.login;
+    users.forEach((user) => {
+      if (pass === user.password && login.toLowerCase() === user.login.toLowerCase()) {
+        res.status(201).send("Auth success!");
+      }
+    });
+    res.status(204).send("Auth failed");
+  });
+  app.put("/api/auth/signUp", (req, res) => {
+    const data = req.body;
+    if (data.password === data.rePassword) {
+      res.status(200).json(req.body.login);
+    }
   });
 });

@@ -7,18 +7,26 @@ import { ReactElement } from "react";
 interface Props {
   link?: string;
   siteName: string;
+  loggedUserName: string | null;
+  cart: number;
+  handlerUserNameSet: Function;
 }
 
-export const Header = ({ link = "#" }: Props): ReactElement => {
+export const Header = (props: Props): ReactElement => {
   return (
     <header className={style.header}>
       <div>
-        <Link to={link} className={style.logo}>
+        <Link to={props.link || "#"} className={style.logo}>
           {constants.SITE_NAME}
         </Link>
       </div>
       <div>
-        <Navbar options={constants.NAVBAR_OPTIONS} />
+        <Navbar
+          options={constants.NAVBAR_OPTIONS}
+          handlerUserNameSet={props.handlerUserNameSet}
+          loggedUserName={props.loggedUserName}
+          cart={props.cart}
+        />
       </div>
     </header>
   );

@@ -14,11 +14,11 @@ export interface IGameData {
 
 interface Props {
   data: IGameData;
+  handler: Function;
 }
 
 export const GameCard = (props: Props) => {
   const game = props.data;
-
   const rating = (rate: number) => {
     let arr = [];
     for (let i = 1; i <= rate; i++) {
@@ -68,7 +68,7 @@ export const GameCard = (props: Props) => {
             {game.ageRating}
             <span>+</span>
           </div>
-          <button type="button" className={style.button}>
+          <button type="button" className={style.button} onClick={props.handler}>
             Add to cart
           </button>
         </div>

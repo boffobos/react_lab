@@ -4,10 +4,9 @@ import * as constants from "../../constants";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export const Home = () => {
+export const Home = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<IGameData[]>([]);
-
   useEffect(() => {
     axios
       .get<IGameData[]>("/api/getTopProducts")
@@ -47,7 +46,7 @@ export const Home = () => {
           <Spinner />
         ) : (
           items.map((item) => {
-            return <GameCard key={item.id} data={item} />;
+            return <GameCard key={item.id} data={item} handler={props.cartHandler} />;
           })
         )}
       </Section>

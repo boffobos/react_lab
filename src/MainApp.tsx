@@ -1,8 +1,9 @@
 import { Component, ReactElement } from "react";
 import * as constants from "./constants";
-import { Header, Footer, SignInModal } from "./components/components";
-import { Route, Routes } from "react-router-dom";
+import { Header, Footer, SignInModal, RequireAuth } from "./components/components";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { Home, Products, About, Profile } from "./pages/pages";
+import { SignIn } from "./pages/SignIn";
 
 interface IProps {}
 
@@ -18,31 +19,19 @@ class MainApp extends Component<IProps, IState> {
     this.state = {
       userName: null,
       cart: 0,
-      signInOpen: false
+      signInOpen: true,
     };
     this.handlerUserNameSet = this.handlerUserNameSet.bind(this);
     this.handlerAddToCart = this.handlerAddToCart.bind(this);
-    this.requireAuth = this.requireAuth.bind(this);
-  }
-
-  requireAuth(children: ReactElement) {
-    const closeSignInModal = () => {
-      this.setState({signInOpen: false});
-    }
-
-    if (this.state.userName) return children;
-    return (
-      <SignInModal
-        onClose={closeSignInModal}
-        isOpen={this.state.signInOpen}
-        handlerLogin={this.handlerUserNameSet}
-        navigate={navigate}
-      />
-    );
+    this.modalSwitch = this.modalSwitch.bind(this);
   }
 
   handlerUserNameSet(user: string | null) {
     this.setState({ userName: user });
+  }
+
+  modalSwitch(state: boolean) {
+    this.setState({ signInOpen: state });
   }
 
   handlerAddToCart() {
@@ -59,7 +48,7 @@ class MainApp extends Component<IProps, IState> {
 
   componentDidCatch(e: Error) {
     console.error("Error: " + e);
-    this.props.history.push("/");
+    <Navigate to="/" />;
   }
 
   componentDidMount() {
@@ -78,9 +67,49 @@ class MainApp extends Component<IProps, IState> {
         />
         <Routes>
           <Route path={constants.HOME_URL} element={<Home cartHandler={this.handlerAddToCart} />} />
-          <Route path={constants.PRODUCTS_URL} element={<Products />} />
-          <Route path={constants.ABOUT_URL} element={<About />} />
-          <Route path={constants.PROFILE_URL} element={<Profile username={this.state.userName} />} />
+          <Route
+            path={constants.ABOUT_URL}
+            element={
+              <RequireAuth
+                loggedUserName={this.state.userName}
+                setUserName={this.handlerUserNameSet}
+                isModalOpen={this.state.signInOpen}
+                modalSwitchFunc={this.modalSwitch}
+              >
+                <About />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={constants.PRODUCTS_URL}
+            element={
+              <RequireAuth
+                loggedUserName={this.state.userName}
+                setUserName={this.handlerUserNameSet}
+                isModalOpen={this.state.signInOpen}
+                modalSwitchFunc={this.modalSwitch}
+              >
+                <Products />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={constants.PROFILE_URL}
+            element={
+              <RequireAuth
+                loggedUserName={this.state.userName}
+                setUserName={this.handlerUserNameSet}
+                isModalOpen={this.state.signInOpen}
+                modalSwitchFunc={this.modalSwitch}
+              >
+                <Profile username={this.state.userName} />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={constants.SIGNIN_URL}
+            element={<SignIn loggedUserName={this.state.userName} setUserName={this.handlerUserNameSet} />}
+          />
         </Routes>
         <Footer siteName={constants.SITE_NAME} />
       </>

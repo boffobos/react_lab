@@ -3,17 +3,17 @@ import ReactDOM from "react-dom";
 import { FormMaker, Modal } from "../components";
 import { faLock, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { History } from "history/index";
-import { NavigateFunction } from "react-router";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 interface ISignInModal {
   isOpen: boolean;
   onClose: Function;
   handlerLogin: Function;
-  navigate: NavigateFunction;
+  navigate?: NavigateFunction;
 }
 
-export const SignInModal = ({ handlerLogin, isOpen, onClose, navigate }: ISignInModal) => {
+export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: ISignInModal) => {
+  const navigate = useNavigate();
   const form = {
     button: { type: "submit", text: "Login" },
     children: [
@@ -37,7 +37,7 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose, navigate }: ISignIn
             handlerLogin(login);
             setLogin(null);
             setPassword(null);
-            navigate("/");
+            //navigate("/");
             //redirect to requested page
             onClose();
           } else {

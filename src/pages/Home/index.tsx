@@ -7,7 +7,6 @@ import axios from "axios";
 export const Home = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<IGameData[]>([]);
-
   useEffect(() => {
     axios
       .get<IGameData[]>("/api/getTopProducts")

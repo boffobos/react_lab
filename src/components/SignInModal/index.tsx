@@ -13,7 +13,6 @@ interface ISignInModal {
 }
 
 export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: ISignInModal) => {
-  const navigate = useNavigate();
   const form = {
     button: { type: "submit", text: "Login" },
     children: [
@@ -26,27 +25,36 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: IS
   const [password, setPassword] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     if (password && login) {
       axios
-        .post("/api/auth/signIn/", {
-          login: login,
-          password: password,
-        })
+        .post(
+          "/api/auth/signIn/",
+          {
+            login: login,
+            password: password,
+          },
+          { signal: signal }
+        )
         .then((response) => {
           if (response.status === 201) {
             handlerLogin(login);
             setLogin(null);
             setPassword(null);
-            //navigate("/");
-            //redirect to requested page
+            //redirect to requested page???
             onClose();
           } else {
             alert("Authentification failed! Check login and password");
           }
         })
         .catch((e) => {
-          console.log("Error during user authentification request");
-          console.warn(e);
+          if (e.name === "AbortError") {
+            console.log("Aborted successfuly!");
+          } else {
+            console.log("Error during user authentification request");
+            console.warn(e);
+          }
         });
     } else if (password === "") {
       alert("Enter password");
@@ -55,6 +63,7 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: IS
     } else if (password === "" && login === "") {
       alert("Enter credentials");
     }
+    return () => controller.abort();
   });
 
   const onSubmit = (login: string | null, password: string | null) => {

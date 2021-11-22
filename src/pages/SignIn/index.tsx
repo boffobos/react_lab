@@ -1,33 +1,27 @@
 import { SignInModal } from "@/components/components";
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, Navigate } from "react-router-dom";
 
 interface Props {
   loggedUserName: string | null;
   setUserName: Function;
-  from?: Location;
 }
 
-export const SignIn = ({ loggedUserName, setUserName, from }: Props) => {
+export const SignIn = ({ loggedUserName, setUserName }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const locations = useLocation();
-  const navigate = useNavigate();
-  const redirectAfterLogin = from?.pathname;
-
-  useEffect(() => {
-    if (loggedUserName) {
-      navigate(redirectAfterLogin);
-    }
-  });
+  const location = useLocation();
+  const fromPage = location.state?.from?.pathname || "/";
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  return (
+  return !loggedUserName ? (
     <>
-      <h3>Login to view this page!</h3>
+      {location.pathname !== "/sign-in" ? <h3>Login to view this page!</h3> : null}
       <SignInModal handlerLogin={setUserName} isOpen={isModalOpen} onClose={closeModal} />;
     </>
+  ) : (
+    <Navigate to={fromPage} />
   );
 };

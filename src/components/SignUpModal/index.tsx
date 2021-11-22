@@ -40,6 +40,8 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
   });
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     if (login && password && rePassword) {
       const form = {
         login: login,
@@ -51,7 +53,7 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
         .then((result) => {
           //if valid data send to server data.
           axios
-            .put("/api/auth/signUp", result)
+            .put("/api/auth/signUp", result, { signal: signal })
             .then((res) => {
               console.log(res.data);
               handlerRegister(res.data);
@@ -59,8 +61,12 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
               onClose();
             })
             .catch((e) => {
-              console.log("error with registration during sending data to server");
-              console.log(e);
+              if (e.name === "AbortError") {
+                console.log("Aborted successfuly!");
+              } else {
+                console.log("error with registration during sending data to server");
+                console.log(e);
+              }
             });
         })
         .catch((e) => {
@@ -75,6 +81,7 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
     } else if (rePassword === "") {
       alert("Repeat password");
     }
+    return () => controller.abort();
   }, [login, password, rePassword]);
 
   const onSubmit = (log: string, pass: string, rePass: string) => {

@@ -10,16 +10,5 @@ interface Props {
 
 export const RequireAuth = ({ children, loggedUserName, setUserName }: Props) => {
   const location = useLocation();
-  console.log("from requireAuth");
-  console.log(location);
-  if (!loggedUserName) {
-    return (
-      <SignIn
-        loggedUserName={loggedUserName}
-        setUserName={setUserName}
-        from={location}
-      /> /* <Navigate to="/sign-in" state={{ from: location }} /> */
-    );
-  }
-  return children;
+  return !loggedUserName ? <Navigate to="/sign-in" state={{ from: location }} /> : children;
 };

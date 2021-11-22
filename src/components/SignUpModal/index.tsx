@@ -55,7 +55,6 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
           axios
             .put("/api/auth/signUp", result, { signal: signal })
             .then((res) => {
-              console.log(res.data);
               handlerRegister(res.data);
               navigate("/profile");
               onClose();

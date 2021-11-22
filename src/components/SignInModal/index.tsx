@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ReactDOM from "react-dom";
 import { FormMaker, Modal } from "../components";
 import { faLock, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { NavigateFunction } from "react-router-dom";
+import { UserContext } from "@/MainApp";
 
 interface ISignInModal {
   isOpen: boolean;
@@ -24,6 +25,8 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: IS
   const [login, setLogin] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
 
+  const { userName, setUserName } = useContext(UserContext);
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -39,7 +42,7 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: IS
         )
         .then((response) => {
           if (response.status === 201) {
-            handlerLogin(login);
+            setUserName(login);
             setLogin(null);
             setPassword(null);
             //redirect to requested page???

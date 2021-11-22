@@ -1,10 +1,11 @@
 import { exitButtonIcon, userButtonIcon, cartButtonIcon } from "../../config/config";
 import { SignInModal, SignUpModal, NavlinkButton, DropdownMenu } from "../components";
-import { ReactElement, useState } from "react";
+import { ReactElement, useState, useContext } from "react";
 import style from "./style.module.css";
 import { Option } from "react-dropdown";
 import { useNavigate } from "react-router-dom";
 import * as constants from "../../constants";
+import { UserContext } from "@/MainApp";
 
 interface Options {
   id: number;
@@ -24,6 +25,8 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
   const [signInOpen, setSignInOpen] = useState(false);
   const [signUpOpen, setSignUpOpen] = useState(false);
   const navigate = useNavigate();
+  const context = useContext(UserContext);
+  console.log(context);
 
   const closeSignInModal = () => {
     setSignInOpen(false);
@@ -56,7 +59,7 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
               </li>
             );
           })}
-          {!loggedUserName ? (
+          {!context.userName ? (
             <>
               <li>
                 <NavlinkButton title="Sign in" handler={openSignInModal} link="sign-in" />
@@ -68,7 +71,7 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
           ) : (
             <>
               <li>
-                <NavlinkButton title={loggedUserName} icon={userButtonIcon} link={constants.PROFILE_URL} />
+                <NavlinkButton title={context.userName} icon={userButtonIcon} link={constants.PROFILE_URL} />
               </li>
               <li>
                 <NavlinkButton
@@ -84,7 +87,7 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
                 <NavlinkButton
                   title=""
                   handler={() => {
-                    handlerUserNameSet(null);
+                    context.setUserName(null);
                     navigate("/");
                   }}
                   icon={exitButtonIcon}
@@ -99,17 +102,19 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
         <SignInModal
           onClose={closeSignInModal}
           isOpen={signInOpen}
-          handlerLogin={handlerUserNameSet}
+          handlerLogin={context.setUserName}
           navigate={navigate}
         />
-      ) : signUpOpen ? (
-        <SignUpModal
-          onClose={closeSignUpModal}
-          isOpen={signUpOpen}
-          handlerRegister={handlerUserNameSet}
-          navigate={navigate}
-        />
-      ) : null}
+      ) : (
+        signUpOpen && (
+          <SignUpModal
+            onClose={closeSignUpModal}
+            isOpen={signUpOpen}
+            handlerRegister={context.setUserName}
+            navigate={navigate}
+          />
+        )
+      )}
     </>
   );
 };

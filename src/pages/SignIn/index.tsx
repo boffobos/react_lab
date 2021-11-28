@@ -1,16 +1,24 @@
 import { SignInModal } from "@/components/components";
 import { useState } from "react";
 import { useLocation, Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 interface Props {
-  loggedUserName: string | null;
-  setUserName: Function;
+  loggedUserName?: string | null;
+  setUserName?: Function;
 }
 
-export const SignIn = ({ loggedUserName, setUserName }: Props) => {
+export const SignIn = ({}: /* loggedUserName, setUserName */ Props) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const location = useLocation();
   const fromPage = location.state?.from?.pathname || "/";
+
+  /* using reduct store */
+  const dispatch = useDispatch();
+  const setUserName = (userName) => {
+    dispatch({ type: "users/login", payload: userName });
+  };
+  const loggedUserName = useSelector((state) => state.users.userName);
 
   const closeModal = () => {
     setIsModalOpen(false);

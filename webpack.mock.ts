@@ -136,6 +136,7 @@ export default webpackMockServer.add((app, helper) => {
   app.put("/api/auth/signUp", (req, res) => {
     const data = req.body;
     if (data.password === data.rePassword) {
+      req.body.login = req.body.login[0].toUpperCase() + req.body.login.slice(1).toLowerCase();
       res.status(200).json(req.body.login);
     }
   });

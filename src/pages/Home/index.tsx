@@ -7,6 +7,11 @@ import axios from "axios";
 export const Home = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<IGameData[]>([]);
+
+  const cartHandler = () => {
+    alert("Added to cart");
+  };
+
   useEffect(() => {
     axios
       .get<IGameData[]>("/api/getTopProducts")
@@ -46,7 +51,7 @@ export const Home = (props) => {
           <Spinner />
         ) : (
           items.map((item) => {
-            return <GameCard key={item.id} data={item} handler={props.cartHandler} />;
+            return <GameCard key={item.id} data={item} handler={cartHandler} />;
           })
         )}
       </Section>

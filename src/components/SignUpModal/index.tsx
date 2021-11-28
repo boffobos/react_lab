@@ -5,11 +5,12 @@ import { faIdCard, faLock } from "@fortawesome/free-solid-svg-icons";
 import * as yup from "yup";
 import axios from "axios";
 import { NavigateFunction } from "react-router";
+import { useDispatch } from "react-redux";
 
 interface ISignUpModal {
   isOpen: boolean;
   onClose: Function;
-  handlerRegister: Function;
+  handlerRegister?: Function;
   navigate: NavigateFunction;
 }
 
@@ -17,6 +18,7 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
   const [login, setLogin] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const [rePassword, setRePassword] = useState<string | null>(null);
+  /* props for making appropriate signup form */
   const form = {
     button: { type: "submit", text: "Register" },
     children: [
@@ -24,6 +26,11 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
       { name: "password", label: "Password", faIcon: faLock, type: "password" },
       { name: "re-password", label: "Repeat Password", faIcon: faLock, type: "password" },
     ],
+  };
+  /* using redux store dispatch*/
+  const dispatch = useDispatch();
+  const setUserName = (userName) => {
+    dispatch({ type: "users/login", payload: userName });
   };
 
   let schema = yup.object().shape({
@@ -55,7 +62,8 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
           axios
             .put("/api/auth/signUp", result, { signal: signal })
             .then((res) => {
-              handlerRegister(res.data);
+              // res.data is userName sent from server
+              setUserName(res.data);
               navigate("/profile");
               onClose();
             })

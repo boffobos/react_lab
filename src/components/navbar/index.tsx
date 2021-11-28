@@ -1,12 +1,12 @@
 import { exitButtonIcon, userButtonIcon, cartButtonIcon } from "../../config/config";
 import { SignInModal, SignUpModal, NavlinkButton, DropdownMenu } from "../components";
-import { ReactElement, useState, useContext } from "react";
+import { ReactElement, useState } from "react";
 import style from "./style.module.css";
 import { Option } from "react-dropdown";
 import { useNavigate } from "react-router-dom";
 import * as constants from "../../constants";
-import { UserContext } from "@/MainApp";
 
+import { useSelector, useDispatch } from "react-redux";
 interface Options {
   id: number;
   title: string;
@@ -16,17 +16,20 @@ interface Options {
 
 interface Props {
   options: Options[];
-  loggedUserName?: string | null;
-  handlerUserNameSet: Function;
-  cart: number;
 }
 
-export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Props): ReactElement => {
+export const Navbar = ({ options }: Props): ReactElement => {
   const [signInOpen, setSignInOpen] = useState(false);
   const [signUpOpen, setSignUpOpen] = useState(false);
   const navigate = useNavigate();
-  const context = useContext(UserContext);
-  console.log(context);
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch({ type: "users/logOut" });
+  };
+  /* using userinfo from redux store */
+  const cartItemsNumber = useSelector((state) => state.users.cartItems.length);
+  const loggedUserName = useSelector((state) => state.users.userName);
 
   const closeSignInModal = () => {
     setSignInOpen(false);
@@ -59,7 +62,7 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
               </li>
             );
           })}
-          {!context.userName ? (
+          {!loggedUserName ? (
             <>
               <li>
                 <NavlinkButton title="Sign in" handler={openSignInModal} link="sign-in" />
@@ -71,11 +74,11 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
           ) : (
             <>
               <li>
-                <NavlinkButton title={context.userName} icon={userButtonIcon} link={constants.PROFILE_URL} />
+                <NavlinkButton title={loggedUserName} icon={userButtonIcon} link={constants.PROFILE_URL} />
               </li>
               <li>
                 <NavlinkButton
-                  title={cart.toString()}
+                  title={cartItemsNumber.toString()}
                   handler={() => {
                     alert("Number of orders!");
                   }}
@@ -87,7 +90,7 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
                 <NavlinkButton
                   title=""
                   handler={() => {
-                    context.setUserName(null);
+                    logout();
                     navigate("/");
                   }}
                   icon={exitButtonIcon}
@@ -99,21 +102,9 @@ export const Navbar = ({ handlerUserNameSet, loggedUserName, options, cart }: Pr
         </ul>
       </nav>
       {signInOpen ? (
-        <SignInModal
-          onClose={closeSignInModal}
-          isOpen={signInOpen}
-          handlerLogin={context.setUserName}
-          navigate={navigate}
-        />
+        <SignInModal onClose={closeSignInModal} isOpen={signInOpen} navigate={navigate} />
       ) : (
-        signUpOpen && (
-          <SignUpModal
-            onClose={closeSignUpModal}
-            isOpen={signUpOpen}
-            handlerRegister={context.setUserName}
-            navigate={navigate}
-          />
-        )
+        signUpOpen && <SignUpModal onClose={closeSignUpModal} isOpen={signUpOpen} navigate={navigate} />
       )}
     </>
   );

@@ -7,9 +7,6 @@ import { ReactElement } from "react";
 interface Props {
   link?: string;
   siteName: string;
-  loggedUserName: string | null;
-  cart: number;
-  handlerUserNameSet: Function;
 }
 
 export const Header = (props: Props): ReactElement => {
@@ -21,12 +18,7 @@ export const Header = (props: Props): ReactElement => {
         </Link>
       </div>
       <div>
-        <Navbar
-          options={constants.NAVBAR_OPTIONS}
-          handlerUserNameSet={props.handlerUserNameSet}
-          loggedUserName={props.loggedUserName}
-          cart={props.cart}
-        />
+        <Navbar options={constants.NAVBAR_OPTIONS} />
       </div>
     </header>
   );

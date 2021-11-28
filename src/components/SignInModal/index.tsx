@@ -5,11 +5,12 @@ import { faLock, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { UserContext } from "@/MainApp";
+import { useDispatch } from "react-redux";
 
 interface ISignInModal {
   isOpen: boolean;
   onClose: Function;
-  handlerLogin: Function;
+  handlerLogin?: Function;
   navigate?: NavigateFunction;
 }
 
@@ -21,11 +22,16 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: IS
       { name: "password", label: "Password", faIcon: faLock, type: "password" },
     ],
   };
-
+  //for form controlled states
   const [login, setLogin] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
-
-  const { userName, setUserName } = useContext(UserContext);
+  //using redux store for login
+  const dispatch = useDispatch();
+  //const { userName, setUserName } = useContext(UserContext);
+  //
+  const setUserName = (userName: string | null) => {
+    dispatch({ type: "users/login", payload: userName });
+  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -42,7 +48,8 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: IS
         )
         .then((response) => {
           if (response.status === 201) {
-            setUserName(login);
+            //setLogin(login[0].toUpperCase() + login.slice(1).toLowerCase());
+            setUserName(login[0].toUpperCase() + login.slice(1).toLowerCase()); //context using
             setLogin(null);
             setPassword(null);
             //redirect to requested page???

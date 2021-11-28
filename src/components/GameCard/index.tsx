@@ -1,4 +1,6 @@
 import style from "./style.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 
 export interface IGameData {
   id: number;
@@ -14,11 +16,22 @@ export interface IGameData {
 
 interface Props {
   data: IGameData;
-  handler: Function;
 }
 
 export const GameCard = (props: Props) => {
+  const userName = useSelector((state) => state.users.userName);
   const game = props.data;
+  const dispatch = useDispatch();
+  //seting up data of particulad card for using it in redux store
+  const [gameCardInfo] = useState({
+    gameId: game.id,
+    gameName: game.title,
+    gamePrice: game.price,
+  });
+  const addToCart = () => {
+    if (userName) dispatch({ type: "users/addedToCart", payload: gameCardInfo });
+    else alert("Please, login");
+  };
   const rating = (rate: number) => {
     let arr = [];
     for (let i = 1; i <= rate; i++) {
@@ -68,7 +81,7 @@ export const GameCard = (props: Props) => {
             {game.ageRating}
             <span>+</span>
           </div>
-          <button type="button" className={style.button} onClick={props.handler}>
+          <button type="button" className={style.button} onClick={addToCart}>
             Add to cart
           </button>
         </div>

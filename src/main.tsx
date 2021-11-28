@@ -6,6 +6,8 @@ import ReactDom from "react-dom";
 import someTypeScript from "./someTypeScript";
 import MainApp from "./MainApp";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./helpers/store";
 
 interface AppProps {
   nothing: boolean;
@@ -26,7 +28,9 @@ const AppContainer = (props: AppProps) => {
   return (
     <StrictMode>
       <Router>
-        <MainApp />
+        <Provider store={store}>
+          <MainApp />
+        </Provider>
       </Router>
     </StrictMode>
   );

@@ -1,10 +1,14 @@
+import { useSelector } from "react-redux";
+
 interface IProfilePage {
-  username: string | null;
+  username?: string | null;
   data?: [];
 }
 
-export const Profile = ({ username, data }: IProfilePage) => {
+export const Profile = ({}: /* username, data */ IProfilePage) => {
   const dataS = ["hello", "world", "again"];
+
+  const username = useSelector((state) => state.users.userName);
 
   return (
     <>

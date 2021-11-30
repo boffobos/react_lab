@@ -1,6 +1,6 @@
-.homePage {
+.profilePage {
   background: var(--dark-color-second);
-  min-height: 50vh;
+  min-height: 95vh;
   width: calc(100vw - (100vw - 100%));
   padding: 0.8rem;
 }

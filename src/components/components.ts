@@ -17,3 +17,7 @@ export * from "./NavButton";
 export * from "./SignInModal";
 export * from "./SignUpModal";
 export * from "./RequireAuth";
+export * from "./CustomButton";
+export * from "./UserProfile/UserPhoto";
+export * from "./UserProfile/UserInfo";
+export * from "./UserProfile/UpdateProfile";

@@ -4,7 +4,7 @@ import * as constants from "../../constants";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export const Home = (props) => {
+export const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<IGameData[]>([]);
 

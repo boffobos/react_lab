@@ -8,10 +8,6 @@ export const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<IGameData[]>([]);
 
-  const cartHandler = () => {
-    alert("Added to cart");
-  };
-
   useEffect(() => {
     axios
       .get<IGameData[]>("/api/getTopProducts")
@@ -51,7 +47,7 @@ export const Home = () => {
           <Spinner />
         ) : (
           items.map((item) => {
-            return <GameCard key={item.id} data={item} handler={cartHandler} />;
+            return <GameCard key={item.id} data={item} />;
           })
         )}
       </Section>

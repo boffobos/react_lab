@@ -1,6 +1,6 @@
 import { FormEventHandler, useState } from "react";
 import style from "./style.module.css";
-import { InputField, IInputField } from "../components";
+import { InputField, IInputField } from "../../components";
 import { string } from "yup";
 
 export interface IFormContent {
@@ -11,7 +11,6 @@ export interface IFormContent {
 export interface IFormMaker extends IFormContent {
   formFieldOptions: IFormContent;
   onSubmit: FormEventHandler;
-  closeModal: Function;
 }
 
 interface IState {
@@ -20,7 +19,7 @@ interface IState {
   ["re-password"]: string;
 }
 
-export const FormMaker = ({ formFieldOptions, onSubmit, closeModal }: IFormMaker) => {
+export const FormMaker = ({ formFieldOptions, onSubmit }: IFormMaker) => {
   const [formState, setFormState] = useState<IState | {}>({});
 
   const fields = formFieldOptions;

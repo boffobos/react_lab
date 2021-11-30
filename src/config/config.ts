@@ -1,4 +1,5 @@
 /* Modal forms config */
+import { IFormContent } from "@/components/components";
 import {
   faRightFromBracket,
   faIdCard,
@@ -26,6 +27,19 @@ export const signInFormConfig = {
   ],
 };
 
+/* Change Passpord modal config */
+
+export const changePasswordFormConfig = {
+  button: { type: "submit", text: "Submit" },
+  children: [
+    { name: "password", label: "Current Password", faIcon: faLock, type: "password", autofocus: true },
+    { name: "new-password", label: "New Password", faIcon: faLock, type: "password", autofocus: true },
+    { name: "re-password", label: "Repeat Password", faIcon: faLock, type: "password", autofocus: true },
+  ],
+} as IFormContent;
+
 export const userButtonIcon = faUserAstronaut;
 export const cartButtonIcon = faShoppingCart;
 export const exitButtonIcon = faRightFromBracket;
+
+export const defaultAvatar = "/assets/images/avatars/AV_1.jpg";

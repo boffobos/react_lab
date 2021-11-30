@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import webpackMockServer from "webpack-mock-server";
+import { date, number, string } from "yup/lib/locale";
 
 const gameDb = [
   {
@@ -81,6 +82,7 @@ const userDb = [
     avatar: "/assets/images/avatars/Morty.jpg",
     city: "Minsk",
     birthDate: new Date("1995-01-09"),
+    description: "Lorem ipsum dolor sit amet.",
   },
   {
     id: 2,
@@ -89,6 +91,7 @@ const userDb = [
     avatar: "/assets/images/avatars/Rick.jpg",
     city: "London",
     birthDate: new Date("1994-04-09"),
+    description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
   },
   {
     id: 3,
@@ -97,6 +100,7 @@ const userDb = [
     avatar: "/assets/images/avatars/Summer.jpg",
     city: "Berlin",
     birthDate: new Date("1991-08-01"),
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, maxime?",
   },
 ];
 
@@ -121,6 +125,7 @@ export default webpackMockServer.add((app, helper) => {
 
     res.json(response);
   });
+
   app.get("/api/search/:search", (_req, res) => {
     const response: Array<object> = [];
     gameDb.forEach((item) => {
@@ -129,9 +134,11 @@ export default webpackMockServer.add((app, helper) => {
 
     res.json(response);
   });
+
   app.post("/testPostMock", (req, res) => {
     res.status(201).json({ body: req.body || null, success: true });
   });
+
   app.post("/api/auth/signIn", (req, res) => {
     const pass = req.body.password;
     const login = req.body.login;
@@ -143,11 +150,42 @@ export default webpackMockServer.add((app, helper) => {
     });
     res.status(204).send("Auth failed");
   });
+
   app.put("/api/auth/signUp", (req, res) => {
     const data = req.body;
     if (data.password === data.rePassword) {
       req.body.login = req.body.login[0].toUpperCase() + req.body.login.slice(1).toLowerCase();
       res.status(200).json(req.body.login);
     }
+  });
+
+  app.get("/api/getProfile/:id", (req, res) => {
+    function getUserDataById(id: number) {
+      //also we should check some token we have sent to user during user authentification due to sequrity reason
+      const userData = {
+        id: 0,
+        login: "",
+        avatar: "",
+        city: "",
+        birthDate: "",
+        description: "",
+      };
+
+      const isUserExist = userDb.some((user) => {
+        if (user.id === id) {
+          userData.id = user.id;
+          userData.login = user.login;
+          userData.avatar = user.avatar;
+          userData.city = user.city;
+          userData.birthDate = user.birthDate.toLocaleString("ru-RU");
+          userData.description = user.description;
+          return true;
+        }
+      });
+      return { userData, isUserExist };
+    }
+    const response = getUserDataById(+req.params.id);
+    if (response.isUserExist) res.json(response.userData);
+    else res.status(204).send("User not found");
   });
 });

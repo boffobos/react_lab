@@ -3,7 +3,7 @@ import style from "./style.module.css";
 import { useState, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import axios from "axios";
-import { SearchCard, IGameData } from "../components";
+import { SearchCard, IGameData } from "../../components";
 
 interface Props {
   searchPlaceholder: string;

@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import { useState, useEffect } from "react";
-import { Modal, FormMaker } from "../components";
+import { Modal, FormMaker } from "../../components";
 import { faIdCard, faLock } from "@fortawesome/free-solid-svg-icons";
 import * as yup from "yup";
 import axios from "axios";

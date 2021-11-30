@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import ReactDOM from "react-dom";
-import { FormMaker, Modal } from "../components";
+import { FormMaker, Modal } from "../../components";
 import { faLock, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { NavigateFunction } from "react-router-dom";

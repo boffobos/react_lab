@@ -1,7 +1,19 @@
 import { useSelector } from "react-redux";
-import { Section, UserPhoto, UserInfo, DataRow, Spinner, UpdateProfile } from "../../components/components";
+import { changePasswordFormConfig, defaultAvatar } from "../../config/config";
+import {
+  Section,
+  UserPhoto,
+  UserInfo,
+  DataRow,
+  Spinner,
+  UpdateProfile,
+  CustomButton,
+  Modal,
+  FormMaker,
+} from "../../components/components";
 import style from "./style.module.css";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 interface IProfilePage {
   username?: string | null;
@@ -9,13 +21,18 @@ interface IProfilePage {
 }
 
 export const Profile = ({}: /* username, data */ IProfilePage) => {
-  const [isLoading, setIsLoading] = useState(false); //change to true after server request set up
+  const [isLoading, setIsLoading] = useState(true); //change to true after server request set up
   const [isEditing, setIsEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //set of states for user information fields
   const [userName, setUserName] = useState("");
   const [city, setCity] = useState("");
-  const [bDate, setBDate] = useState("");
+  const [BOD, setBOD] = useState("");
   const [description, setDescription] = useState("");
+  const [avatar, setAvatar] = useState(defaultAvatar);
+
+  //set initial userId when
+  const userId = useSelector((state) => state.users.userId);
 
   const fielIsEditingSet = (value: boolean) => {
     setIsEditing(value);
@@ -31,72 +48,102 @@ export const Profile = ({}: /* username, data */ IProfilePage) => {
   };
 
   const changeUserBOD = (date: string) => {
-    setBDate(date);
-  }
+    setBOD(date);
+  };
 
   const changeDescription = (descr: string) => {
-    setDescription(descr)
-  }
+    setDescription(descr);
+  };
 
-  const userId = useSelector((state) => state.users.userId);
+  //functions for pressed buttons
+  const saveProfile = () => {};
 
-  useEffect(() => {}, [userId]);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
-  const avatar = useSelector((state) => state.users.avatar);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
-  const username = useSelector((state) => state.users.userName);
+  useEffect(() => {
+    axios.get("/api/getProfile/" + userId).then((response) => {
+      console.log(response);
+      const user = response.data;
+      if (response.status === 200) {
+        setUserName(user.login);
+        setCity(user.city);
+        setAvatar(user.avatar || defaultAvatar);
+        let date = new Date(user.birthDate);
+        setBOD(date.toLocaleDateString("ru-RU", { dateStyle: "short" }));
+        setDescription(user.description);
+        setIsLoading(false);
+      }
+    });
+  }, [userId]);
 
-  const bODate = new Date("1998-09-06");
-  const bdateCont = bODate.toLocaleString("ru-RU", { dateStyle: "short" });
-  const decript = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, nisi?";
+  /*  Substitute data  */
+  //const avatar = useSelector((state) => state.users.avatar);
+  // const username = useSelector((state) => state.users.userName);
+  // const bODate = new Date("1998-09-06");
+  // const bdateCont = bODate.toLocaleString("ru-RU", { dateStyle: "short" });
+  // const decript = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, nisi?";
 
   return (
-    <main
-      className={style.profilePage}
-      style={{
-        background: `url(/assets/images/bg_2.jpg) no-repeat center center/cover`,
-      }}
-    >
-      <Section title={`${username} profile page`}>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <>
-            <UserPhoto userName={userName} avatar={avatar} />
-            <UserInfo>
-              <DataRow
-                isEditable={!isEditing}
-                title={"User Name"}
-                content={"Admin"}
-                onEditing={fielIsEditingSet}
-                onChange={changeUserName}
-              />
-              <DataRow
-                isEditable={!isEditing}
-                title={"City"}
-                content={"London"}
-                onEditing={fielIsEditingSet}
-                onChange={changeUserCity}
-              />
-              <DataRow
-                isEditable={!isEditing}
-                title={"Birth Date"}
-                content={bdateCont}
-                onEditing={fielIsEditingSet}
-                onChange={changeUserBOD}
-              />
-              <DataRow
-                isEditable={!isEditing}
-                title={"Description"}
-                content={decript}
-                onEditing={fielIsEditingSet}
-                onChange={changeDescription}
-              />
-            </UserInfo>
-            <UpdateProfile />
-          </>
-        )}
-      </Section>
-    </main>
+    <>
+      <main
+        className={style.profilePage}
+        style={{
+          background: `url(/assets/images/bg_2.jpg) no-repeat center center/cover`,
+        }}
+      >
+        <Section title={`${userName} profile page`}>
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <>
+              <UserPhoto userName={userName} avatar={avatar} />
+              <UserInfo>
+                <DataRow
+                  isEditable={!isEditing}
+                  title={"User Name"}
+                  content={userName}
+                  onEditing={fielIsEditingSet}
+                  onChange={changeUserName}
+                />
+                <DataRow
+                  isEditable={!isEditing}
+                  title={"City"}
+                  content={city}
+                  onEditing={fielIsEditingSet}
+                  onChange={changeUserCity}
+                />
+                <DataRow
+                  isEditable={!isEditing}
+                  title={"Birth Date"}
+                  content={BOD}
+                  onEditing={fielIsEditingSet}
+                  onChange={changeUserBOD}
+                />
+                <DataRow
+                  isEditable={!isEditing}
+                  title={"Description"}
+                  content={description}
+                  onEditing={fielIsEditingSet}
+                  onChange={changeDescription}
+                />
+              </UserInfo>
+              <UpdateProfile>
+                <CustomButton title={"Save profile"} onClick={saveProfile} />
+                <CustomButton title={"Change password"} onClick={openModal} />
+              </UpdateProfile>
+            </>
+          )}
+        </Section>
+      </main>
+      <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Change Password">
+        <FormMaker formFieldOptions={changePasswordFormConfig} onSubmit={closeModal} />
+      </Modal>
+    </>
   );
 };

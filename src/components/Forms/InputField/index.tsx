@@ -1,12 +1,12 @@
 import style from "./style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactElement, ReactEventHandler, useEffect, useRef } from "react";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 export interface IInputField {
   name: string;
   label: string;
-  faIcon?: IconProp;
+  faIcon?: IconDefinition;
   type: string;
   autofocus?: boolean | undefined;
 }

@@ -1,10 +1,15 @@
 .container {
+  padding-bottom: 1.4rem;
+  text-align: right;
+  position: relative;
+}
+
+.groupControl {
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
   width: 100%;
-  margin-bottom: 1.2rem;
 }
 
 .icon {
@@ -19,7 +24,33 @@
   /* font-size: 1rem; */
 }
 
+.errorIcon {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  text-align: center;
+  color: var(--error-color);
+  /* background-color: var(--error-color); */
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--primary-color);
+}
+
+.errorMessage {
+  position: absolute;
+  display: block;
+  bottom: 1px;
+  right: 1px;
+  width: 100%;
+  color: var(--error-color);
+  padding: 1px;
+  text-shadow: 0 0 2px var(--primary-color);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .input {
+  display: inline-block;
   padding: 10px 25px 10px 10px;
   max-width: 60%;
   background-color: transparent;

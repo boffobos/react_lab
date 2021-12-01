@@ -6,6 +6,8 @@ import {
   faLock,
   faUserAstronaut,
   faShoppingCart,
+  faExclamationCircle,
+  faExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 
 /*Sign up modal config */
@@ -41,5 +43,6 @@ export const changePasswordFormConfig = {
 export const userButtonIcon = faUserAstronaut;
 export const cartButtonIcon = faShoppingCart;
 export const exitButtonIcon = faRightFromBracket;
+export const formErrorIcon = faExclamation;
 
 export const defaultAvatar = "/assets/images/avatars/AV_1.jpg";

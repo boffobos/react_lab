@@ -20,7 +20,7 @@ interface IProfilePage {
   data?: [];
 }
 
-export const Profile = ({}: /* username, data */ IProfilePage) => {
+export const Profile = () => {
   const [isLoading, setIsLoading] = useState(true); //change to true after server request set up
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -81,13 +81,6 @@ export const Profile = ({}: /* username, data */ IProfilePage) => {
       }
     });
   }, [userId]);
-
-  /*  Substitute data  */
-  //const avatar = useSelector((state) => state.users.avatar);
-  // const username = useSelector((state) => state.users.userName);
-  // const bODate = new Date("1998-09-06");
-  // const bdateCont = bODate.toLocaleString("ru-RU", { dateStyle: "short" });
-  // const decript = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, nisi?";
 
   return (
     <>

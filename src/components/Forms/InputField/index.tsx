@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactElement, ReactEventHandler, useEffect, useRef } from "react";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { formErrorIcon } from "@/config/config";
-import { ValidationError } from "webpack";
 
 export interface IInputField {
   name: string;
@@ -32,7 +31,7 @@ export const InputField = ({ options, value, onChange, errorMessage }: Props): R
             id={options.name}
             onChange={onChange}
             type={options.type}
-            name={options.name.toLowerCase()}
+            name={options.name}
             value={value}
             autoFocus={options.autofocus}
           />
@@ -43,8 +42,9 @@ export const InputField = ({ options, value, onChange, errorMessage }: Props): R
               icon={options.faIcon}
               className={style.icon}
             />
+          ) : errorMessage ? (
+            <FontAwesomeIcon icon={formErrorIcon} className={style.errorIcon} />
           ) : null}
-          {errorMessage ? <FontAwesomeIcon icon={formErrorIcon} className={style.errorIcon} /> : null}
         </div>
         {errorMessage ? <span className={style.errorMessage}>{errorMessage}</span> : null}
       </div>

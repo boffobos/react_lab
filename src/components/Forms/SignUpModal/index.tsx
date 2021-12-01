@@ -24,13 +24,13 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
     children: [
       { name: "login", label: "Login", faIcon: faIdCard, type: "text", autofocus: true },
       { name: "password", label: "Password", faIcon: faLock, type: "password" },
-      { name: "re-password", label: "Repeat Password", faIcon: faLock, type: "password" },
+      { name: "rePassword", label: "Repeat Password", faIcon: faLock, type: "password" },
     ],
   };
   /* using redux store dispatch*/
   const dispatch = useDispatch();
-  const setUserName = (userName) => {
-    dispatch({ type: "users/login", payload: userName });
+  const setUserName = (user) => {
+    dispatch({ type: "users/login", payload: user });
   };
 
   let schema = yup.object().shape({
@@ -62,7 +62,7 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
           axios
             .put("/api/auth/signUp", result, { signal: signal })
             .then((res) => {
-              // res.data is userName sent from server
+              // res.data is user info sent from server
               setUserName(res.data);
               navigate("/profile");
               onClose();
@@ -91,10 +91,10 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
     return () => controller.abort();
   }, [login, password, rePassword]);
 
-  const onSubmit = (log: string, pass: string, rePass: string) => {
-    setLogin(log);
-    setPassword(pass);
-    setRePassword(rePass);
+  const onSubmit = ({ login = "" || null, password = "" || null, rePassword = "" || null }) => {
+    setLogin(login);
+    setPassword(password);
+    setRePassword(rePassword);
   };
 
   return ReactDOM.createPortal(

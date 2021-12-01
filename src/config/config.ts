@@ -16,7 +16,7 @@ export const signUpFormConfig = {
   children: [
     { name: "login", label: "Login", faIcon: faIdCard, type: "text", autofocus: true },
     { name: "password", label: "Password", faIcon: faLock, type: "password" },
-    { name: "re-password", label: "Repeat Password", faIcon: faLock, type: "password" },
+    { name: "rePassword", label: "Repeat Password", faIcon: faLock, type: "password" },
   ],
 };
 
@@ -35,8 +35,8 @@ export const changePasswordFormConfig = {
   button: { type: "submit", text: "Submit" },
   children: [
     { name: "password", label: "Current Password", faIcon: faLock, type: "password", autofocus: true },
-    { name: "new-password", label: "New Password", faIcon: faLock, type: "password", autofocus: true },
-    { name: "re-password", label: "Repeat Password", faIcon: faLock, type: "password", autofocus: true },
+    { name: "newPassword", label: "New Password", faIcon: faLock, type: "password", autofocus: true },
+    { name: "rePassword", label: "Repeat Password", faIcon: faLock, type: "password", autofocus: true },
   ],
 } as IFormContent;
 

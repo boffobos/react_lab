@@ -73,7 +73,7 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: IS
     return () => controller.abort();
   });
 
-  const onSubmit = (login: string | null, password: string | null) => {
+  const onSubmit = ({ login = "" || null, password = "" || null }) => {
     setLogin(login);
     setPassword(password);
   };

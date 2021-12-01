@@ -152,10 +152,22 @@ export default webpackMockServer.add((app, helper) => {
   });
 
   app.put("/api/auth/signUp", (req, res) => {
+    const userData = {
+      id: getNextId(),
+      login: "",
+      avatar: "/assets/images/avatars/AV_1.jpg",
+    };
     const data = req.body;
+    function getNextId() {
+      let id = -1;
+      userDb.forEach((user) => {
+        if (user.id > id) id = user.id;
+      });
+      return id + 1;
+    }
     if (data.password === data.rePassword) {
-      req.body.login = req.body.login[0].toUpperCase() + req.body.login.slice(1).toLowerCase();
-      res.status(200).json(req.body.login);
+      userData.login = data.login[0].toUpperCase() + req.body.login.slice(1).toLowerCase();
+      res.status(200).json(userData);
     }
   });
 

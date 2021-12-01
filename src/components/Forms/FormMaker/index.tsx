@@ -33,10 +33,7 @@ export const FormMaker = ({ formFieldOptions, onSubmit }: IFormMaker) => {
 
   const handleFormOnSubmit: FormEventHandler = (e: FormEvent) => {
     e.preventDefault();
-    console.log(formState);
     onSubmit(formState);
-    //onSubmit(formState["login"] || "", formState["password"] || "", formState["re-password"] || "");
-    // closeModal();
   };
 
   return (
@@ -45,7 +42,7 @@ export const FormMaker = ({ formFieldOptions, onSubmit }: IFormMaker) => {
         {inputs.children.map((item) => {
           const inputName = item.name;
           return (
-            <InputField key={item.name} options={item} onChange={hanleInputChange} value={formState[inputName] || ""} />
+            <InputField key={item.name} options={item} onChange={hanleInputChange} value={formState[item.name] || ""} />
           );
         })}
         <button type={inputs.button.type}>{inputs.button.text}</button>

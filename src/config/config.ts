@@ -6,7 +6,6 @@ import {
   faLock,
   faUserAstronaut,
   faShoppingCart,
-  faExclamationCircle,
   faExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 

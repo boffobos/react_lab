@@ -36,6 +36,12 @@ export const Profile = () => {
   const formInputs = formContents.children;
   const [formState, setFormState] = useState({});
 
+  const handleForm = (form) => {
+    console.log(form);
+    setFormState(form);
+    closeModal();
+  };
+
   //set initial userId when
   const userId = useSelector((state) => state.users.userId);
 
@@ -140,7 +146,7 @@ export const Profile = () => {
         </Section>
       </main>
       <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Change Password">
-        <FormMaker formFieldOptions={formContents} onSubmit={closeModal} />
+        <FormMaker formFieldOptions={formContents} onSubmit={handleForm} />
       </Modal>
     </>
   );

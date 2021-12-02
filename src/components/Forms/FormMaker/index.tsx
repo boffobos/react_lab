@@ -1,4 +1,4 @@
-import { FormEvent, FormEventHandler, useState } from "react";
+import { FormEvent, FormEventHandler, useEffect, useState } from "react";
 import style from "./style.module.css";
 import { InputField, IInputField } from "../../components";
 
@@ -17,30 +17,39 @@ interface IState {
   password: string;
   rePassword?: string;
   newPassword?: string;
+  formNotification?: Function;
 }
 
 export const FormMaker = ({ formFieldOptions, onSubmit }: IFormMaker) => {
   const [formState, setFormState] = useState<IState | {}>({});
+  const [notification, setNotification] = useState("");
 
   const inputs = formFieldOptions;
 
   /* Making input fields in form controlled by form container */
-  const hanleInputChange = (e) => {
+  const hanleInputChange = (e, errorSetter) => {
     const value = e.target.value;
     const name = e.target.name;
-    setFormState({ ...formState, [name]: value || "" });
+    setFormState((prevState) => ({ ...prevState, [name]: value || "", [name + "ErrorSetter"]: errorSetter }));
+    // console.log(formState);
   };
 
   const handleFormOnSubmit: FormEventHandler = (e: FormEvent) => {
     e.preventDefault();
     onSubmit(formState);
   };
+  //send function for notification on render
+  useEffect(() => {
+    console.log("from useeffect of formmaker");
+    setFormState((state) => ({ ...state, formNotification: setNotification }));
+    onSubmit(formState);
+  }, []);
 
   return (
     <>
       <form /*!!!*/ autoComplete="off" action="" className={style.form} onSubmit={handleFormOnSubmit}>
+        {notification ? <div className={style.notify}>{notification}</div> : null}
         {inputs.children.map((item) => {
-          const inputName = item.name;
           return (
             <InputField key={item.name} options={item} onChange={hanleInputChange} value={formState[item.name] || ""} />
           );

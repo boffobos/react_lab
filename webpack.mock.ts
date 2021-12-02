@@ -200,4 +200,25 @@ export default webpackMockServer.add((app, helper) => {
     if (response.isUserExist) res.json(response.userData);
     else res.status(204).send("User not found");
   });
+  app.post("/api/changePassword", (req, res) => {
+    function getUserById(id: number) {
+      //also we should check some token we have sent to user during user authentification due to sequrity reason
+      let userFind = null;
+      const isUserExist = userDb.some((user) => {
+        if (user.id === id) {
+          userFind = user;
+          return true;
+        }
+      });
+      return { userFind, isUserExist };
+    }
+    let reqUser = getUserById(req.body.id);
+    if (reqUser.isUserExist && req.body.password === reqUser.userFind.password) {
+      console.log("password changed");
+      res.status(201).send();
+    } else if (reqUser.isUserExist) {
+      console.log("password fail");
+      res.status(204).send();
+    }
+  });
 });

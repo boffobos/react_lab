@@ -1,6 +1,6 @@
 import style from "./style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactElement, ReactEventHandler, useEffect, useRef } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { formErrorIcon } from "@/config/config";
 
@@ -15,11 +15,31 @@ export interface IInputField {
 interface Props {
   options: IInputField;
   value: string;
-  onChange: ReactEventHandler;
-  errorMessage?: string;
+  onChange: Function;
 }
 
-export const InputField = ({ options, value, onChange, errorMessage }: Props): ReactElement => {
+export const InputField = ({ options, value, onChange }: Props): ReactElement => {
+  const [error, setError] = useState("");
+  const errorSetterForParents = (message = "") => {
+    setError(message);
+  };
+
+  const fakeEvent = {
+    target: {
+      value: "",
+      name: options.name,
+    },
+  };
+
+  useEffect(() => {
+     onChange(fakeEvent, errorSetterForParents);
+  }, []);
+
+  //onChange(fakeEvent, errorSetterForParents);
+
+  const inputHandler = (e) => {
+    onChange(e, errorSetterForParents);
+  };
   //errorMessage = "Password too short ";
   return (
     <>
@@ -29,24 +49,24 @@ export const InputField = ({ options, value, onChange, errorMessage }: Props): R
           <input
             className={style.input}
             id={options.name}
-            onChange={onChange}
+            onChange={inputHandler}
             type={options.type}
             name={options.name}
             value={value}
             autoFocus={options.autofocus}
           />
 
-          {options.faIcon && !errorMessage ? (
+          {options.faIcon && !error ? (
             <FontAwesomeIcon
-              style={{ display: `${errorMessage ? "none" : "inline-block"}` }}
+              style={{ display: `${error ? "none" : "inline-block"}` }}
               icon={options.faIcon}
               className={style.icon}
             />
-          ) : errorMessage ? (
+          ) : error ? (
             <FontAwesomeIcon icon={formErrorIcon} className={style.errorIcon} />
           ) : null}
         </div>
-        {errorMessage ? <span className={style.errorMessage}>{errorMessage}</span> : null}
+        {error ? <span className={style.errorMessage}>{error}</span> : null}
       </div>
     </>
   );

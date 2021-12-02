@@ -1,5 +1,7 @@
+import style from "./style.module.css";
 import { useSelector } from "react-redux";
 import { changePasswordFormConfig, defaultAvatar } from "../../config/config";
+import { PASSWORD_LENGTH } from "@/constants";
 import {
   Section,
   UserPhoto,
@@ -11,13 +13,23 @@ import {
   Modal,
   FormMaker,
 } from "../../components/components";
-import style from "./style.module.css";
 import { useState, useEffect } from "react";
+import { ref, string as yup } from "yup";
 import axios from "axios";
 
 interface IProfilePage {
   username?: string | null;
   data?: [];
+}
+
+interface IFormState {
+  formNotification: Function;
+  password: string | null;
+  passwordErrorSetter: Function;
+  newPassword: string | null;
+  newPasswordErrorSetter: Function;
+  rePassword: string | null;
+  rePasswordErrorSetter: Function;
 }
 
 export const Profile = () => {
@@ -31,19 +43,99 @@ export const Profile = () => {
   const [description, setDescription] = useState("");
   const [avatar, setAvatar] = useState(defaultAvatar);
 
-  //creating some state for changing password modal
-  const formContents = changePasswordFormConfig;
-  const formInputs = formContents.children;
-  const [formState, setFormState] = useState({});
+  //creating some state for saving passwords and errors from change password modal
+  const [formState, setFormState] = useState<IFormState>({} as IFormState);
 
-  const handleForm = (form) => {
-    console.log(form);
-    setFormState(form);
-    closeModal();
-  };
+  /* Password change handlers */
 
   //set initial userId when
   const userId = useSelector((state) => state.users.userId);
+
+  const passwordVerifying = () => {
+    const userData = {
+      id: userId,
+      password: "",
+      newPassword: "",
+    };
+    //destructuring data came from inputs
+    const {
+      formNotification,
+      password,
+      passwordErrorSetter,
+      newPassword,
+      newPasswordErrorSetter,
+      rePassword,
+      rePasswordErrorSetter,
+    } = formState;
+    //post request for change password
+    const sendDataToServer = (data: {}) => {
+      axios
+        .post("/api/changePassword", data)
+        .then((result) => {
+          switch (result.status) {
+            case 201: {
+              formNotification("New password set up!");
+              setTimeout(closeModal, 1500);
+              break;
+            }
+            case 204: {
+              passwordErrorSetter("Password incorrect");
+              break;
+            }
+            default:
+              return null;
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+
+    const passwordCheck = yup().required("Enter your current password").trim();
+    const newPassCheck = yup()
+      .required("Enter new password")
+      .trim()
+      .min(PASSWORD_LENGTH, `Password require at least ${PASSWORD_LENGTH} characters`);
+    const rePassCheck = yup().trim().oneOf([newPassword, null], "Password must match");
+    passwordCheck
+      .validate(password)
+      .then((result) => {
+        passwordErrorSetter("");
+        userData.password = result;
+        //when checked password successfuly check new password
+        newPassCheck
+          .validate(newPassword)
+          .then(() => {
+            newPasswordErrorSetter("");
+            //then check new password and repeat
+            rePassCheck
+              .validate(rePassword)
+              .then((result) => {
+                rePasswordErrorSetter("");
+                if (result) {
+                  userData.newPassword = result;
+                  sendDataToServer(userData);
+                }
+              })
+              .catch((e) => {
+                rePasswordErrorSetter(e.message);
+              });
+          })
+          .catch((e) => {
+            newPasswordErrorSetter(e.message);
+          });
+      })
+      .catch((e) => {
+        passwordErrorSetter(e.message);
+      });
+
+    //if (password.length < 6) passwordErrorSetter("Password too short");
+  };
+
+  useEffect(() => {
+    if (!(formState && Object.keys(formState).length === 0 && Object.getPrototypeOf(formState) === Object.prototype))
+      passwordVerifying();
+  }, [formState]);
 
   const fielIsEditingSet = (value: boolean) => {
     setIsEditing(value);
@@ -73,13 +165,12 @@ export const Profile = () => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  function closeModal() {
     setIsModalOpen(false);
-  };
+  }
 
   useEffect(() => {
     axios.get("/api/getProfile/" + userId).then((response) => {
-      console.log(response);
       const user = response.data;
       if (response.status === 200) {
         setUserName(user.login);
@@ -146,7 +237,7 @@ export const Profile = () => {
         </Section>
       </main>
       <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Change Password">
-        <FormMaker formFieldOptions={formContents} onSubmit={handleForm} />
+        <FormMaker formFieldOptions={changePasswordFormConfig} onSubmit={setFormState} />
       </Modal>
     </>
   );

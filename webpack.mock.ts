@@ -81,6 +81,7 @@ const userDb = [
     password: "1234",
     avatar: "/assets/images/avatars/Morty.jpg",
     city: "Minsk",
+    email: "denis@example.com",
     birthDate: new Date("1995-01-09"),
     description: "Lorem ipsum dolor sit amet.",
   },
@@ -90,6 +91,7 @@ const userDb = [
     password: "qwerty",
     avatar: "/assets/images/avatars/Rick.jpg",
     city: "London",
+    email: "admin@example.com",
     birthDate: new Date("1994-04-09"),
     description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
   },
@@ -99,6 +101,7 @@ const userDb = [
     password: "test",
     avatar: "/assets/images/avatars/Summer.jpg",
     city: "Berlin",
+    email: "fun@example.com",
     birthDate: new Date("1991-08-01"),
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, maxime?",
   },
@@ -179,6 +182,7 @@ export default webpackMockServer.add((app, helper) => {
         login: "",
         avatar: "",
         city: "",
+        email: "",
         birthDate: "",
         description: "",
       };
@@ -189,6 +193,7 @@ export default webpackMockServer.add((app, helper) => {
           userData.login = user.login;
           userData.avatar = user.avatar;
           userData.city = user.city;
+          userData.email = user.email;
           userData.birthDate = user.birthDate.toLocaleString("ru-RU");
           userData.description = user.description;
           return true;
@@ -200,6 +205,7 @@ export default webpackMockServer.add((app, helper) => {
     if (response.isUserExist) res.json(response.userData);
     else res.status(204).send("User not found");
   });
+  // api for changing user password
   app.post("/api/changePassword", (req, res) => {
     function getUserById(id: number) {
       //also we should check some token we have sent to user during user authentification due to sequrity reason
@@ -220,5 +226,10 @@ export default webpackMockServer.add((app, helper) => {
       console.log("password fail");
       res.status(204).send();
     }
+  });
+  //api for changing user data from profile page
+  app.post("/api/changeProfile", (req, res) => {
+    const userData = req.body;
+    res.status(201).json(userData).send();
   });
 });

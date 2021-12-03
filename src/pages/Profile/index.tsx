@@ -14,7 +14,7 @@ import {
   FormMaker,
 } from "../../components/components";
 import { useState, useEffect } from "react";
-import { ref, string as yup } from "yup";
+import { string as yup } from "yup";
 import axios from "axios";
 
 interface IProfilePage {
@@ -36,12 +36,15 @@ export const Profile = () => {
   const [isLoading, setIsLoading] = useState(true); //change to true after server request set up
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [notification, setNotification] = useState("");
   //set of states for user information fields
   const [userName, setUserName] = useState("");
-  const [city, setCity] = useState("");
-  const [BOD, setBOD] = useState("");
-  const [description, setDescription] = useState("");
-  const [avatar, setAvatar] = useState(defaultAvatar);
+  const [userEmail, setEmail] = useState("");
+  const [userCity, setCity] = useState("");
+  const [userBOD, setBOD] = useState("");
+  const [userDescription, setDescription] = useState("");
+  const [userAvatar, setAvatar] = useState(defaultAvatar);
+  const [isChanged, setIsChanged] = useState(false);
 
   //creating some state for saving passwords and errors from change password modal
   const [formState, setFormState] = useState<IFormState>({} as IFormState);
@@ -49,6 +52,11 @@ export const Profile = () => {
   /* Password change handlers */
 
   //set initial userId when
+  const notificationTimeout = 2500;
+  const setNotificationMessage = (message: string) => {
+    setNotification(message);
+    setTimeout(() => setNotification(""), notificationTimeout);
+  };
   const userId = useSelector((state) => state.users.userId);
 
   const passwordVerifying = () => {
@@ -74,8 +82,9 @@ export const Profile = () => {
         .then((result) => {
           switch (result.status) {
             case 201: {
-              formNotification("New password set up!");
-              setTimeout(closeModal, 1500);
+              closeModal();
+              //formNotification("New password set up!");
+              setNotificationMessage("New password set up!");
               break;
             }
             case 204: {
@@ -128,8 +137,6 @@ export const Profile = () => {
       .catch((e) => {
         passwordErrorSetter(e.message);
       });
-
-    //if (password.length < 6) passwordErrorSetter("Password too short");
   };
 
   useEffect(() => {
@@ -137,29 +144,57 @@ export const Profile = () => {
       passwordVerifying();
   }, [formState]);
 
-  const fielIsEditingSet = (value: boolean) => {
-    setIsEditing(value);
-  };
-
   //functions for changing user info fields
   const changeUserName = (name: string) => {
     setUserName(name);
+    if (userName !== name) setIsChanged(true);
+  };
+
+  const changeUserEmail = (email: string) => {
+    setEmail(email);
+    if (userEmail !== email) setIsChanged(true);
   };
 
   const changeUserCity = (city: string) => {
     setCity(city);
+    if (userCity !== city) setIsChanged(true);
   };
 
   const changeUserBOD = (date: string) => {
     setBOD(date);
+    if (userBOD !== date) setIsChanged(true);
   };
 
   const changeDescription = (descr: string) => {
     setDescription(descr);
+    if (userDescription !== descr) setIsChanged(true);
   };
 
   //functions for pressed buttons
-  const saveProfile = () => {};
+  const saveProfile = () => {
+    const userChangedData = {
+      login: "",
+      email: "",
+      city: "",
+      decsription: "",
+    };
+    userChangedData.login = userName;
+    userChangedData.email = userEmail;
+    userChangedData.city = userCity;
+    userChangedData.decsription = userDescription;
+
+    axios
+      .post("/api/changeProfile", userChangedData)
+      .then((response) => {
+        if (response.status === 201) {
+          setIsChanged(false);
+          setNotificationMessage("Changes have been saved!");
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -175,6 +210,7 @@ export const Profile = () => {
       if (response.status === 200) {
         setUserName(user.login);
         setCity(user.city);
+        setEmail(user.email);
         setAvatar(user.avatar || defaultAvatar);
         let date = new Date(user.birthDate);
         setBOD(date.toLocaleDateString("ru-RU", { dateStyle: "short" }));
@@ -192,44 +228,52 @@ export const Profile = () => {
           background: `url(/assets/images/bg_2.jpg) no-repeat center center/cover`,
         }}
       >
+        {notification ? <div className={style.notify}>{notification}</div> : null}
         <Section title={`${userName} profile page`}>
           {isLoading ? (
             <Spinner />
           ) : (
             <>
-              <UserPhoto userName={userName} avatar={avatar} />
+              <UserPhoto userName={userName} avatar={userAvatar} />
               <UserInfo>
                 <DataRow
                   isEditable={!isEditing}
                   title={"User Name"}
                   content={userName}
-                  onEditing={fielIsEditingSet}
+                  onEditing={setIsEditing}
                   onChange={changeUserName}
                 />
                 <DataRow
                   isEditable={!isEditing}
-                  title={"City"}
-                  content={city}
-                  onEditing={fielIsEditingSet}
-                  onChange={changeUserCity}
+                  title={"Email"}
+                  content={userEmail}
+                  onEditing={setIsEditing}
+                  onChange={changeUserEmail}
                 />
                 <DataRow
                   isEditable={!isEditing}
+                  title={"City"}
+                  content={userCity}
+                  onEditing={setIsEditing}
+                  onChange={changeUserCity}
+                />
+                <DataRow
+                  isEditable={false}
                   title={"Birth Date"}
-                  content={BOD}
-                  onEditing={fielIsEditingSet}
+                  content={userBOD}
+                  onEditing={setIsEditing}
                   onChange={changeUserBOD}
                 />
                 <DataRow
                   isEditable={!isEditing}
                   title={"Description"}
-                  content={description}
-                  onEditing={fielIsEditingSet}
+                  content={userDescription}
+                  onEditing={setIsEditing}
                   onChange={changeDescription}
                 />
               </UserInfo>
               <UpdateProfile>
-                <CustomButton title={"Save profile"} onClick={saveProfile} />
+                <CustomButton title={"Save profile"} onClick={saveProfile} disabled={!isChanged} />
                 <CustomButton title={"Change password"} onClick={openModal} />
               </UpdateProfile>
             </>

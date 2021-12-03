@@ -18,6 +18,11 @@
   background-color: var(--active-color-second);
 }
 
+.btn:disabled {
+  color: var(--disable-color);
+  cursor: inherit;
+}
+
 .btn:disabled:hover {
   background-color: var(--active-color-second);
 }

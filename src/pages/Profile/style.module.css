@@ -1,6 +1,23 @@
 .profilePage {
+  position: relative;
   background: var(--dark-color-second);
   min-height: 95vh;
   width: calc(100vw - (100vw - 100%));
   padding: 0.8rem;
+}
+
+.notify {
+  position: absolute;
+  top: 10px;
+  left: 40%;
+  width: 300px;
+  height: 50px;
+  border-radius: 15px;
+  border: var(--primary-color) solid 2px;
+  background-color: var(--dark-color-second);
+  z-index: 5;
+  padding: 10px;
+  text-align: center;
+  color: var(--success-color);
+  overflow: hidden;
 }

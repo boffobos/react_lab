@@ -17,11 +17,20 @@ interface IUserAction {
   payload: string | undefined | ICartGameItem;
 }
 
+// const initialState = {
+//   userName: "",
+//   userId: null,
+//   avatar: "",
+//   loggedInTime: null,
+//   cartItems: [],
+// };
+
+//for test reason
 const initialState = {
   userName: "Denis",
   userId: 1,
   avatar: "/assets/images/avatars/Morty.jpg",
-  loggedInTime: 1638207170477,
+  loggedInTime: Date(),
   cartItems: [],
 };
 

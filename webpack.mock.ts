@@ -168,23 +168,22 @@ export default webpackMockServer.add((app, helper) => {
       });
       return id + 1;
     }
-    if (data.password === data.rePassword) {
-      userData.login = data.login[0].toUpperCase() + req.body.login.slice(1).toLowerCase();
-      res.status(200).json(userData);
-    }
+    userData.login = data.login[0].toUpperCase() + req.body.login.slice(1).toLowerCase();
+    res.status(200).json(userData);
   });
 
   app.get("/api/getProfile/:id", (req, res) => {
-    function getUserDataById(id: number) {
+    function getUserDataById(id: number | string) {
       //also we should check some token we have sent to user during user authentification due to sequrity reason
+      id = +id;
       const userData = {
-        id: 0,
-        login: "",
-        avatar: "",
-        city: "",
-        email: "",
-        birthDate: "",
-        description: "",
+        id: id,
+        login: "new User",
+        avatar: "/assets/images/avatars/Av_1.jpg",
+        city: "Default City",
+        email: "ex@examle.com",
+        birthDate: "05.11.2001",
+        description: "New user enter description here",
       };
 
       const isUserExist = userDb.some((user) => {
@@ -201,9 +200,9 @@ export default webpackMockServer.add((app, helper) => {
       });
       return { userData, isUserExist };
     }
-    const response = getUserDataById(+req.params.id);
+    const response = getUserDataById(req.params.id);
     if (response.isUserExist) res.json(response.userData);
-    else res.status(204).send("User not found");
+    else res.json(getUserDataById(req.params.id).userData);
   });
   // api for changing user password
   app.post("/api/changePassword", (req, res) => {

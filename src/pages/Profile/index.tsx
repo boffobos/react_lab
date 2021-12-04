@@ -22,8 +22,10 @@ interface IProfilePage {
   data?: [];
 }
 
-interface IFormState {
+export interface IFormState {
   formNotification: Function;
+  login?: string | null;
+  loginErrorSetter?: string | null;
   password: string | null;
   passwordErrorSetter: Function;
   newPassword: string | null;
@@ -105,7 +107,7 @@ export const Profile = () => {
       .required("Enter new password")
       .trim()
       .min(PASSWORD_LENGTH, `Password require at least ${PASSWORD_LENGTH} characters`);
-    const rePassCheck = yup().trim().oneOf([newPassword, null], "Password must match");
+    const rePassCheck = yup().trim().oneOf([newPassword, null], "Passwords must match");
     passwordCheck
       .validate(password)
       .then((result) => {
@@ -114,7 +116,8 @@ export const Profile = () => {
         //when checked password successfuly check new password
         newPassCheck
           .validate(newPassword)
-          .then(() => {
+          .then((result) => {
+            setFormState((state) => ({ ...state, newPassword: result }));
             newPasswordErrorSetter("");
             //then check new password and repeat
             rePassCheck
@@ -148,26 +151,41 @@ export const Profile = () => {
   const changeUserName = (name: string) => {
     setUserName(name);
     if (userName !== name) setIsChanged(true);
+    return true;
   };
 
   const changeUserEmail = (email: string) => {
-    setEmail(email);
-    if (userEmail !== email) setIsChanged(true);
+    const checkEmail = yup().required("Enter email").trim().email("Enter valid email!");
+    return checkEmail
+      .validate(email)
+      .then((result) => {
+        if (userEmail !== email) {
+          setIsChanged(true);
+          setEmail(result);
+        }
+        return true;
+      })
+      .catch((e) => {
+        return setNotificationMessage(e.message);
+      });
   };
 
   const changeUserCity = (city: string) => {
     setCity(city);
     if (userCity !== city) setIsChanged(true);
+    return true;
   };
 
   const changeUserBOD = (date: string) => {
     setBOD(date);
     if (userBOD !== date) setIsChanged(true);
+    return true;
   };
 
   const changeDescription = (descr: string) => {
     setDescription(descr);
     if (userDescription !== descr) setIsChanged(true);
+    return true;
   };
 
   //functions for pressed buttons

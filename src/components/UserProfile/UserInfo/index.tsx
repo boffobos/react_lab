@@ -21,10 +21,14 @@ export const DataRow = ({ isEditable, title, content, onEditing, onChange }) => 
     onEditing(true); //set state in parent component
   };
 
-  const finishEdit = () => {
-    setIsEditing(false);
-    onEditing(false);
-    onChange(contentField);
+  const finishEdit = async () => {
+    const result = await onChange(contentField);
+    if (result === true) {
+      setIsEditing(false);
+      onEditing(false);
+    } else {
+      result;
+    }
   };
 
   const handleKeys = (e) => {

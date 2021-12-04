@@ -11,6 +11,7 @@
   min-width: 180px;
   width: calc(100vw / 4);
   height: calc(width / 3 * 2);
+  max-width: 310px;
   background-color: var(--dark-color);
   margin: 0.8rem;
   padding: 25px 50px;

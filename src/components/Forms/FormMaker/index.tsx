@@ -21,7 +21,7 @@ interface IState {
 }
 
 export const FormMaker = ({ formFieldOptions, onSubmit }: IFormMaker) => {
-  const [formState, setFormState] = useState<IState | {}>({});
+  const [formState, setFormState] = useState<IState>({} as IState);
   const [notification, setNotification] = useState("");
 
   const inputs = formFieldOptions;
@@ -40,7 +40,6 @@ export const FormMaker = ({ formFieldOptions, onSubmit }: IFormMaker) => {
   };
   //send function for notification on render
   useEffect(() => {
-    console.log("from useeffect of formmaker");
     setFormState((state) => ({ ...state, formNotification: setNotification }));
     onSubmit(formState);
   }, []);

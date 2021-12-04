@@ -32,7 +32,7 @@ export const InputField = ({ options, value, onChange }: Props): ReactElement =>
   };
 
   useEffect(() => {
-     onChange(fakeEvent, errorSetterForParents);
+    onChange(fakeEvent, errorSetterForParents);
   }, []);
 
   //onChange(fakeEvent, errorSetterForParents);

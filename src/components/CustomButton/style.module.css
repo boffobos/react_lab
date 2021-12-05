@@ -1,0 +1,28 @@
+.btn {
+  width: 90%;
+  border: none;
+  padding: 10px 5px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: var(--active-color-second);
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.btn:hover {
+  background-color: var(--active-color);
+  cursor: pointer;
+}
+
+.btn:active {
+  background-color: var(--active-color-second);
+}
+
+.btn:disabled {
+  color: var(--disable-color);
+  cursor: inherit;
+}
+
+.btn:disabled:hover {
+  background-color: var(--active-color-second);
+}

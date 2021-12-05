@@ -1,10 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import ReactDOM from "react-dom";
-import { FormMaker, Modal } from "../components";
+import { FormMaker, Modal } from "../../components";
 import { faLock, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { NavigateFunction } from "react-router-dom";
-import { UserContext } from "@/MainApp";
 import { useDispatch } from "react-redux";
 
 interface ISignInModal {
@@ -26,11 +25,10 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: IS
   const [login, setLogin] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   //using redux store for login
+
   const dispatch = useDispatch();
-  //const { userName, setUserName } = useContext(UserContext);
-  //
-  const setUserName = (userName: string | null) => {
-    dispatch({ type: "users/login", payload: userName });
+  const setUserName = (user: { login: string; id: number; avatar: string }) => {
+    dispatch({ type: "users/login", payload: user });
   };
 
   useEffect(() => {
@@ -48,8 +46,7 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: IS
         )
         .then((response) => {
           if (response.status === 201) {
-            //setLogin(login[0].toUpperCase() + login.slice(1).toLowerCase());
-            setUserName(login[0].toUpperCase() + login.slice(1).toLowerCase()); //context using
+            setUserName(response.data.body); //set user to redux store
             setLogin(null);
             setPassword(null);
             //redirect to requested page???
@@ -76,7 +73,7 @@ export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: IS
     return () => controller.abort();
   });
 
-  const onSubmit = (login: string | null, password: string | null) => {
+  const onSubmit = ({ login = "" || null, password = "" || null }) => {
     setLogin(login);
     setPassword(password);
   };

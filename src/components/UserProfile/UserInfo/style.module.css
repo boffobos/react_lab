@@ -1,0 +1,66 @@
+.container {
+  width: calc(100vw / 2);
+  max-width: 610px;
+  color: var(--primary-color);
+  align-self: flex-start;
+  padding: 0px 10px;
+}
+
+.row {
+  padding: 2px 5px;
+  display: grid;
+  grid-template-columns: 2fr 4fr 0.2fr;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.content {
+  padding: 0 5px;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+.editContainer {
+  position: relative;
+  padding: 0 0 0 5px;
+}
+
+.editLabel {
+  font-weight: bold;
+  display: block;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.editLabel::after {
+  content: "";
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  border-radius: 1px;
+  width: 50%;
+  height: 2px;
+  background-color: var(--active-color);
+}
+
+.editInput {
+  padding: 3px 15px 3px 5px;
+  width: 100%;
+}
+
+.editIcon {
+  position: absolute;
+  right: 6px;
+  bottom: 5px;
+  color: green;
+}
+
+.editIcon:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}

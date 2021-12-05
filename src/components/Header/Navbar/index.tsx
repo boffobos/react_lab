@@ -1,10 +1,10 @@
-import { exitButtonIcon, userButtonIcon, cartButtonIcon } from "../../config/config";
-import { SignInModal, SignUpModal, NavlinkButton, DropdownMenu } from "../components";
+import { exitButtonIcon, userButtonIcon, cartButtonIcon } from "../../../config/config";
+import { SignInModal, SignUpModal, NavlinkButton, DropdownMenu } from "../../components";
 import { ReactElement, useState } from "react";
 import style from "./style.module.css";
 import { Option } from "react-dropdown";
 import { useNavigate } from "react-router-dom";
-import * as constants from "../../constants";
+import * as constants from "../../../constants";
 
 import { useSelector, useDispatch } from "react-redux";
 interface Options {

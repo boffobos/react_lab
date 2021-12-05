@@ -28,7 +28,7 @@ class MainApp extends Component<IProps, IState> {
       <>
         <Header siteName={constants.SITE_NAME} link={constants.HOME_URL} />
         <Routes>
-          <Route path={constants.HOME_URL} element={<Home cartHandler={this.handlerAddToCart} />} />
+          <Route path={constants.HOME_URL} element={<Home />} />
           <Route
             path={constants.ABOUT_URL}
             element={

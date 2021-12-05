@@ -1,5 +1,7 @@
 interface IUserState {
   userName: string | null;
+  userId: number | null;
+  avatar: string;
   loggedInTime: number | null;
   cartItems?: ICartGameItem[];
 }
@@ -16,17 +18,30 @@ interface IUserAction {
 }
 
 const initialState = {
-  userName: null,
+  userName: "",
+  userId: null,
+  avatar: "",
   loggedInTime: null,
   cartItems: [],
 };
+
+//user data for test reasons
+// const initialState = {
+//   userName: "Denis",
+//   userId: 1,
+//   avatar: "/assets/images/avatars/Morty.jpg",
+//   loggedInTime: Date(),
+//   cartItems: [],
+// };
 
 export const userReducer = (state: IUserState = initialState, action: IUserAction) => {
   switch (action.type) {
     case "users/login": {
       return {
         ...state,
-        userName: action.payload,
+        userName: action.payload.login,
+        userId: action.payload.id,
+        avatar: action.payload.avatar,
         loggedInTime: Date.now(),
       };
     }
@@ -34,22 +49,26 @@ export const userReducer = (state: IUserState = initialState, action: IUserActio
       return {
         ...state,
         userName: null,
+        userId: null,
+        avatar: null,
         loggedInTime: null,
         cartItems: [],
       };
     }
     case "users/addedToCart": {
-      return {
-        ...state,
-        cartItems: [
-          ...state.cartItems,
-          {
-            gameId: action.payload.gameId,
-            gameName: action.payload.gameName,
-            gamePrice: action.payload.gamePrice,
-          },
-        ],
-      };
+      if (action.payload) {
+        return {
+          ...state,
+          cartItems: [
+            ...state.cartItems,
+            {
+              gameId: action.payload.gameId,
+              gameName: action.payload.gameName,
+              gamePrice: action.payload.gamePrice,
+            },
+          ],
+        };
+      }
     }
     default:
       return state;

@@ -15,8 +15,8 @@ export const SignIn = ({}: /* loggedUserName, setUserName */ Props) => {
 
   /* using reduct store */
   const dispatch = useDispatch();
-  const setUserName = (userName) => {
-    dispatch({ type: "users/login", payload: userName });
+  const setUserName = (user) => {
+    dispatch({ type: "users/login", payload: user });
   };
   const loggedUserName = useSelector((state) => state.users.userName);
 

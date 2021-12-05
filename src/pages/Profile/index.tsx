@@ -35,7 +35,7 @@ export interface IFormState {
 }
 
 export const Profile = () => {
-  const [isLoading, setIsLoading] = useState(true); //change to true after server request set up
+  const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notification, setNotification] = useState("");

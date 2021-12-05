@@ -5,14 +5,14 @@ export const PASSWORD_LENGTH = 6;
 export const SITE_NAME: string = "Game Store";
 export const HOME_URL: string = "/";
 export const PRODUCTS_URL: string = "/products";
-export const PRODUCT_CATEGORIE_URL: string[] = ["/products/pc", "/products/xbox", "products/playstation5"];
+export const PRODUCT_CATEGORIE_URL: string[] = ["/products/pc", "/products/xboxOne", "products/playstation5"];
 export const ABOUT_URL: string = "/about";
 export const SIGNIN_URL: string = "/sign-in";
 export const SIGNUP_URL: string = "/sign-up";
 export const PROFILE_URL: string = "/profile";
 export const DROPDOWN_OPTIONS: Option[] = [
   { value: "/products/pc", label: "PC" },
-  { value: "/products/xbox", label: "XBox One" },
+  { value: "/products/xboxOne", label: "XBox One" },
   { value: "/products/playstation5", label: "Playstation 5" },
   // { value: '/products/mobile', label: 'Mobile' },
 ];
@@ -25,7 +25,7 @@ export const NAVBAR_OPTIONS = [
 ];
 export const GAME_PLATFORMS = [
   { id: 1, title: "PC", icon: "/assets/images/pc.png", alt: "PC icon", url: "/products/pc" },
-  { id: 2, title: "XBox One", icon: "/assets/images/xbox.png", alt: "XBox One icon", url: "/products/xbox" },
+  { id: 2, title: "XBox One", icon: "/assets/images/xbox.png", alt: "XBox One icon", url: "/products/xboxOne" },
   {
     id: 3,
     title: "Playstation 5",

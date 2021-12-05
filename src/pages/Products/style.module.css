@@ -1,0 +1,8 @@
+/* stylelint-disable plugin/no-unsupported-browser-features */
+.container {
+  display: grid;
+  grid-template-columns: 0.7fr 4fr;
+  column-gap: 50px;
+  height: 96vh;
+  padding: var(--page-padding);
+}

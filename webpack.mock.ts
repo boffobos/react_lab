@@ -10,7 +10,8 @@ const gameDb = [
     currency: "$",
     image: "/assets/images/wow_card.jpg",
     rating: 5,
-    platforms: ["/assets/images/pc.png", "/assets/images/xbox.png", "/assets/images/playstation.png"],
+    platforms: ["/assets/images/pc.png"],
+    platformsSelector: ["pc"],
     description: "The World of Warcraft Trading Card Game draws from the rich lore of the Warcraft universe.",
     ageRating: 14,
   },
@@ -22,6 +23,7 @@ const gameDb = [
     image: "/assets/images/Starcraft_card.jpg",
     rating: 4,
     platforms: ["/assets/images/pc.png"],
+    platformsSelector: ["pc"],
     description:
       "The story of StarCraft is concluded by following the Protoss Race in their quest to reclaim their homeworld and for Kerrigan to ultimately slay the greatest.",
     ageRating: 12,
@@ -34,6 +36,7 @@ const gameDb = [
     image: "/assets/images/MK_11.jpg",
     rating: 4.5,
     platforms: ["/assets/images/xbox.png", "/assets/images/playstation.png"],
+    platformsSelector: ["xboxOne", "playstation5", "pc"],
     description: "Mortal Kombat is back and better than ever in the next evolution of the iconic franchise.",
     ageRating: 18,
   },
@@ -45,6 +48,7 @@ const gameDb = [
     image: "/assets/images/BattleCity.png",
     rating: 5,
     platforms: ["/assets/images/xbox.png", "/assets/images/playstation.png"],
+    platformsSelector: ["xboxOne", "playstation5"],
     description:
       "Battle City is a multi-directional shooter video game for the Family Computer produced and published in 1985 by Namco.",
     ageRating: 3,
@@ -57,6 +61,7 @@ const gameDb = [
     image: "/assets/images/Dune.png",
     rating: 4,
     platforms: ["/assets/images/pc.png"],
+    platformsSelector: ["pc"],
     description: "A number of games have been published based on the Dune universe created by Frank Herbert.",
     ageRating: 10,
   },
@@ -68,6 +73,7 @@ const gameDb = [
     image: "/assets/images/fallout_2.jpg",
     rating: 5,
     platforms: ["/assets/images/pc.png"],
+    platformsSelector: ["pc"],
     description:
       "The game's story takes place in 2241, 80 years after the events of Fallout (the first and original installment of the Fallout series) and 164 years after the atomic war which reduced the vast majority of the world to a nuclear wasteland.",
     ageRating: 16,
@@ -230,5 +236,28 @@ export default webpackMockServer.add((app, helper) => {
   app.post("/api/changeProfile", (req, res) => {
     const userData = req.body;
     res.status(201).json(userData).send();
+  });
+  //handling produt page requests
+  app.get("/api/products/:sortDir/:sortType/:genre/:age/:searchName", (req, res) => {
+    const params = req.params;
+
+    const filterGamesByParams = (paramsObj) => {
+      let filtGames = gameDb;
+
+      if (paramsObj.sortDir) {
+        console.log(paramsObj.sortDir);
+        filtGames = filtGames.filter((game) => game.platformsSelector.includes(paramsObj.sortDir));
+        console.log(filtGames);
+      }
+      if (paramsObj.age) {
+        console.log(paramsObj.age);
+        filtGames = filtGames.filter((game) => game.ageRating <= +paramsObj.age);
+        console.log(filtGames);
+      }
+      return filtGames;
+    };
+    console.log(filterGamesByParams(params));
+
+    res.json(filterGamesByParams(params)).send;
   });
 });

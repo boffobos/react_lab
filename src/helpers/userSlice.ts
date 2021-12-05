@@ -1,6 +1,6 @@
 interface IUserState {
   userName: string | null;
-  userId: number;
+  userId: number | null;
   avatar: string;
   loggedInTime: number | null;
   cartItems?: ICartGameItem[];
@@ -17,22 +17,22 @@ interface IUserAction {
   payload: string | undefined | ICartGameItem;
 }
 
-// const initialState = {
-//   userName: "",
-//   userId: null,
-//   avatar: "",
-//   loggedInTime: null,
-//   cartItems: [],
-// };
-
-//for test reason
 const initialState = {
-  userName: "Denis",
-  userId: 1,
-  avatar: "/assets/images/avatars/Morty.jpg",
-  loggedInTime: Date(),
+  userName: "",
+  userId: null,
+  avatar: "",
+  loggedInTime: null,
   cartItems: [],
 };
+
+//user data for test reasons
+// const initialState = {
+//   userName: "Denis",
+//   userId: 1,
+//   avatar: "/assets/images/avatars/Morty.jpg",
+//   loggedInTime: Date(),
+//   cartItems: [],
+// };
 
 export const userReducer = (state: IUserState = initialState, action: IUserAction) => {
   switch (action.type) {

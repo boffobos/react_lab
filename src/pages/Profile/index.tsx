@@ -51,15 +51,41 @@ export const Profile = () => {
   //creating some state for saving passwords and errors from change password modal
   const [formState, setFormState] = useState<IFormState>({} as IFormState);
 
-  /* Password change handlers */
-
-  //set initial userId when
   const notificationTimeout = 2500;
   const setNotificationMessage = (message: string) => {
     setNotification(message);
     setTimeout(() => setNotification(""), notificationTimeout);
   };
+
+  /* Password change handlers */
+
+  //set initial userId when
   const userId = useSelector((state) => state.users.userId);
+
+  const sendDataToServer = (data: {}) => {
+    const { passwordErrorSetter } = formState;
+    axios
+      .post("/api/changePassword", data)
+      .then((result) => {
+        switch (result.status) {
+          case 201: {
+            closeModal();
+            //formNotification("New password set up!");
+            setNotificationMessage("New password set up!");
+            break;
+          }
+          case 204: {
+            passwordErrorSetter("Password incorrect");
+            break;
+          }
+          default:
+            return;
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const passwordVerifying = () => {
     const userData = {
@@ -78,29 +104,6 @@ export const Profile = () => {
       rePasswordErrorSetter,
     } = formState;
     //post request for change password
-    const sendDataToServer = (data: {}) => {
-      axios
-        .post("/api/changePassword", data)
-        .then((result) => {
-          switch (result.status) {
-            case 201: {
-              closeModal();
-              //formNotification("New password set up!");
-              setNotificationMessage("New password set up!");
-              break;
-            }
-            case 204: {
-              passwordErrorSetter("Password incorrect");
-              break;
-            }
-            default:
-              return null;
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    };
 
     const passwordCheck = yup().required("Enter your current password").trim();
     const newPassCheck = yup()
@@ -114,38 +117,42 @@ export const Profile = () => {
         passwordErrorSetter("");
         userData.password = result;
         //when checked password successfuly check new password
-        newPassCheck
-          .validate(newPassword)
-          .then((result) => {
-            setFormState((state) => ({ ...state, newPassword: result }));
-            newPasswordErrorSetter("");
-            //then check new password and repeat
-            rePassCheck
-              .validate(rePassword)
-              .then((result) => {
-                rePasswordErrorSetter("");
-                if (result) {
-                  userData.newPassword = result;
-                  sendDataToServer(userData);
-                }
-              })
-              .catch((e) => {
-                rePasswordErrorSetter(e.message);
-              });
-          })
-          .catch((e) => {
-            newPasswordErrorSetter(e.message);
-          });
       })
       .catch((e) => {
         passwordErrorSetter(e.message);
       });
+    newPassCheck
+      .validate(newPassword)
+      .then((result) => {
+        if (formState.newPassword === result) {
+          setFormState((state) => ({ ...state, newPassword: result }));
+        }
+        newPasswordErrorSetter("");
+        //then check new password and repeat
+      })
+      .catch((e) => {
+        newPasswordErrorSetter(e.message);
+      });
+    rePassCheck
+      .validate(rePassword)
+      .then((result) => {
+        console.log(result);
+        rePasswordErrorSetter("");
+        if (result) {
+          userData.newPassword = result;
+          sendDataToServer(userData);
+        }
+      })
+      .catch((e) => {
+        rePasswordErrorSetter(e.message);
+      });
   };
-
+  //check passwords and sent data to server
   useEffect(() => {
-    if (!(formState && Object.keys(formState).length === 0 && Object.getPrototypeOf(formState) === Object.prototype))
+    if (!(formState && Object.keys(formState).length === 0 && Object.getPrototypeOf(formState) === Object.prototype)) {
       passwordVerifying();
-  }, [formState]);
+    }
+  }, [formState.password, formState.password, formState.newPassword]);
 
   //functions for changing user info fields
   const changeUserName = (name: string) => {

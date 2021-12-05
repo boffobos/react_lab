@@ -22,7 +22,6 @@ interface IState {
 
 export const FormMaker = ({ formFieldOptions, onSubmit }: IFormMaker) => {
   const [formState, setFormState] = useState<IState>({} as IState);
-  const [notification, setNotification] = useState("");
 
   const inputs = formFieldOptions;
 
@@ -40,14 +39,12 @@ export const FormMaker = ({ formFieldOptions, onSubmit }: IFormMaker) => {
   };
   //send function for notification on render
   useEffect(() => {
-    setFormState((state) => ({ ...state, formNotification: setNotification }));
     onSubmit(formState);
   }, []);
 
   return (
     <>
       <form /*!!!*/ autoComplete="off" action="" className={style.form} onSubmit={handleFormOnSubmit}>
-        {notification ? <div className={style.notify}>{notification}</div> : null}
         {inputs.children.map((item) => {
           return (
             <InputField key={item.name} options={item} onChange={hanleInputChange} value={formState[item.name] || ""} />

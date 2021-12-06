@@ -22,3 +22,6 @@ export * from "./UserProfile/UserPhoto/";
 export * from "./UserProfile/UserInfo/";
 export * from "./UserProfile/UpdateProfile/";
 export * from "./SideBar";
+export * from "./SideBar/SideBarSection/";
+export * from "./SideBar/CustomSelect/";
+export * from "./SideBar/CustomRadioButtons/";

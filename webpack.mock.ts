@@ -238,21 +238,17 @@ export default webpackMockServer.add((app, helper) => {
     res.status(201).json(userData).send();
   });
   //handling produt page requests
-  app.get("/api/products/:sortDir/:sortType/:genre/:age/:searchName", (req, res) => {
+  app.get("/api/products/:platform/:genre/:age/:searchName", (req, res) => {
     const params = req.params;
 
     const filterGamesByParams = (paramsObj) => {
       let filtGames = gameDb;
 
-      if (paramsObj.sortDir) {
-        console.log(paramsObj.sortDir);
-        filtGames = filtGames.filter((game) => game.platformsSelector.includes(paramsObj.sortDir));
-        console.log(filtGames);
+      if (paramsObj.platform) {
+        filtGames = filtGames.filter((game) => game.platformsSelector.includes(paramsObj.platform));
       }
       if (paramsObj.age) {
-        console.log(paramsObj.age);
         filtGames = filtGames.filter((game) => game.ageRating <= +paramsObj.age);
-        console.log(filtGames);
       }
       return filtGames;
     };

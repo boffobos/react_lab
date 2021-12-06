@@ -6,3 +6,17 @@
   height: 96vh;
   padding: var(--page-padding);
 }
+
+.selection {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px;
+}
+
+.selection select {
+  width: 50%;
+  background: transparent;
+  color: var(--primary-color);
+  border: solid 1px var(--primary-color);
+  padding: 5px 10px;
+}

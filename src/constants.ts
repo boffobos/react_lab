@@ -42,7 +42,9 @@ export const IGameDataExaple = {
   currency: "$",
   image: "/assets/images/wow_card.jpg",
   rating: 5,
-  platforms: ["/assets/images/pc.png", "/assets/images/xbox.png", "/assets/images/playstation.png"],
-  description: "The World of Warcraft Trading Card Game draws from the rich lore of the Warcraft universe. T",
+  platforms: ["/assets/images/pc.png"],
+  platformsSelector: ["pc"],
+  description: "The World of Warcraft Trading Card Game draws from the rich lore of the Warcraft universe.",
   ageRating: 14,
+  genre: "mmorpg",
 };

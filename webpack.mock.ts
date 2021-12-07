@@ -14,6 +14,7 @@ const gameDb = [
     platformsSelector: ["pc"],
     description: "The World of Warcraft Trading Card Game draws from the rich lore of the Warcraft universe.",
     ageRating: 14,
+    genre: "mmorpg",
   },
   {
     id: 2,
@@ -27,6 +28,7 @@ const gameDb = [
     description:
       "The story of StarCraft is concluded by following the Protoss Race in their quest to reclaim their homeworld and for Kerrigan to ultimately slay the greatest.",
     ageRating: 12,
+    genre: "rts",
   },
   {
     id: 3,
@@ -39,6 +41,7 @@ const gameDb = [
     platformsSelector: ["xboxOne", "playstation5", "pc"],
     description: "Mortal Kombat is back and better than ever in the next evolution of the iconic franchise.",
     ageRating: 18,
+    genre: "action",
   },
   {
     id: 4,
@@ -52,6 +55,7 @@ const gameDb = [
     description:
       "Battle City is a multi-directional shooter video game for the Family Computer produced and published in 1985 by Namco.",
     ageRating: 3,
+    genre: "arcade",
   },
   {
     id: 5,
@@ -64,6 +68,7 @@ const gameDb = [
     platformsSelector: ["pc"],
     description: "A number of games have been published based on the Dune universe created by Frank Herbert.",
     ageRating: 10,
+    genre: "rts",
   },
   {
     id: 6,
@@ -77,6 +82,7 @@ const gameDb = [
     description:
       "The game's story takes place in 2241, 80 years after the events of Fallout (the first and original installment of the Fallout series) and 164 years after the atomic war which reduced the vast majority of the world to a nuclear wasteland.",
     ageRating: 16,
+    genre: "rpg",
   },
 ];
 
@@ -238,21 +244,27 @@ export default webpackMockServer.add((app, helper) => {
     res.status(201).json(userData).send();
   });
   //handling produt page requests
-  app.get("/api/products/:platform/:genre/:age/:searchName", (req, res) => {
+  app.get("/api/products/:platform/:genre/:age/:searchName/", (req, res) => {
     const params = req.params;
 
     const filterGamesByParams = (paramsObj) => {
       let filtGames = gameDb;
-
+      if (paramsObj.searchName === "$all") {
+      } else if (paramsObj.searchName) {
+        filtGames = filtGames.filter((game) => game.title.toLowerCase().includes(paramsObj.searchName.toLowerCase()));
+      }
       if (paramsObj.platform) {
         filtGames = filtGames.filter((game) => game.platformsSelector.includes(paramsObj.platform));
       }
-      if (paramsObj.age) {
+      if (paramsObj.genre === "all") {
+      } else if (paramsObj.genre) {
+        filtGames = filtGames.filter((game) => game.genre.includes(paramsObj.genre));
+      }
+      if (+paramsObj.age) {
         filtGames = filtGames.filter((game) => game.ageRating <= +paramsObj.age);
       }
       return filtGames;
     };
-    console.log(filterGamesByParams(params));
 
     res.json(filterGamesByParams(params)).send;
   });

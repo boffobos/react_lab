@@ -167,48 +167,55 @@ export const Products = () => {
             break;
           }
         }
+        break;
       }
-      case "desc": {
-        switch (sortCriteria) {
-          case "name": {
-            array.sort((first, second) => {
-              if (first.title > second.title) return -1;
-              if (first.title < second.title) return 1;
-              if (first.title == second.title) return 0;
-            });
-            break;
-          }
-          case "age": {
-            array.sort((first, second) => {
-              if (first.ageRating > second.ageRating) return -1;
-              if (first.ageRating < second.ageRating) return 1;
-              if (first.ageRating == second.ageRating) return 0;
-            });
-            break;
-          }
-          case "price": {
-            array.sort((first, second) => {
-              if (first.price > second.price) return -1;
-              if (first.price < second.price) return 1;
-              if (first.price == second.price) return 0;
-            });
-            break;
-          }
-          case "rating": {
-            array.sort((first, second) => {
-              if (first.rating > second.rating) return -1;
-              if (first.rating < second.rating) return 1;
-              if (first.rating == second.rating) return 0;
-            });
-            break;
+      case "desc":
+        {
+          switch (sortCriteria) {
+            case "name": {
+              array.sort((first, second) => {
+                if (first.title > second.title) return -1;
+                if (first.title < second.title) return 1;
+                if (first.title == second.title) return 0;
+              });
+              break;
+            }
+            case "age": {
+              array.sort((first, second) => {
+                if (first.ageRating > second.ageRating) return -1;
+                if (first.ageRating < second.ageRating) return 1;
+                if (first.ageRating == second.ageRating) return 0;
+              });
+              break;
+            }
+            case "price": {
+              array.sort((first, second) => {
+                if (first.price > second.price) return -1;
+                if (first.price < second.price) return 1;
+                if (first.price == second.price) return 0;
+              });
+              break;
+            }
+            case "rating": {
+              array.sort((first, second) => {
+                if (first.rating > second.rating) return -1;
+                if (first.rating < second.rating) return 1;
+                if (first.rating == second.rating) return 0;
+              });
+              break;
+            }
           }
         }
-      }
+        break;
     }
   };
 
   useEffect(() => {
-    if (loadedGames) sortOrder(loadedGames);
+    if (loadedGames) {
+      const arr = [...loadedGames];
+      sortOrder(arr);
+      setLoadedGames(arr);
+    }
   }, [sortCriteria, sortType]);
 
   const platformTitle = params.platform;

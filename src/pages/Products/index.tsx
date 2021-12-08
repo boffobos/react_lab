@@ -11,9 +11,10 @@ import {
   IGameData,
 } from "../../components/components";
 import { useParams } from "react-router-dom";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, Suspense, lazy } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import axios from "axios";
+import { Option } from "react-dropdown";
 
 export const Products = () => {
   const params = useParams();
@@ -45,7 +46,8 @@ export const Products = () => {
       value: "price",
     },
   ];
-  const hanleSortCriteria = (e) => {
+
+  const hanleSortCriteria = (e: Option) => {
     if (e) setSortCriteria(e.value);
   };
 
@@ -59,7 +61,7 @@ export const Products = () => {
       value: "desc",
     },
   ];
-  const handleCriteriaType = (e) => {
+  const handleCriteriaType = (e: Option) => {
     if (e) setSortType(e.value);
   };
 
@@ -85,6 +87,10 @@ export const Products = () => {
     {
       label: "Arcade",
       value: "arcade",
+    },
+    {
+      label: "Survival",
+      value: "survival",
     },
   ];
   const handleGenreChanges = (e: ChangeEvent<HTMLInputElement>) => {

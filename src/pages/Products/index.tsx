@@ -15,11 +15,12 @@ import { useState, useEffect, ChangeEvent, Suspense, lazy } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import axios from "axios";
 import { Option } from "react-dropdown";
+import { useGameCard } from "@/hooks/useGameCard";
 
 export const Products = () => {
   const params = useParams();
   const [isLoading, setIsLoading] = useState(true); //change initial state when finish
-  const [loadedGames, setLoadedGames] = useState<IGameData>();
+  const [loadedGames, setLoadedGames] = useState<IGameData | null>();
   const [sortCriteria, setSortCriteria] = useState("name");
   const [sortType, setSortType] = useState("asc");
   const [genreType, setGenreType] = useState("all");
@@ -242,6 +243,7 @@ export const Products = () => {
   };
 
   useEffect(() => {
+    setLoadedGames(null);
     axios.get(`/api/products/${platformTitle}/${genreType}/${ageRating}/${searchName || "$all"}`).then((result) => {
       let games = result.data;
       sortOrder(games);
@@ -298,9 +300,7 @@ export const Products = () => {
       </SideBar>
       <main>
         <SearchBar searchPlaceholder="Search" onChange={handleSearchInput} value={input} />
-        <Section title={setTitle()}>
-          {isLoading ? <Spinner /> : loadedGames.map((game) => <GameCard key={game.id} data={game} />)}
-        </Section>
+        <Section title={setTitle()}>{useGameCard(loadedGames)}</Section>
       </main>
     </div>
   );

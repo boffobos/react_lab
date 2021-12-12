@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import webpackMockServer from "webpack-mock-server";
-import { date, number, string } from "yup/lib/locale";
 
 const gameDb = [
   {
@@ -231,13 +230,8 @@ const userDb = [
   },
 ];
 
-export default webpackMockServer.add((app, helper) => {
+export default webpackMockServer.add((app /* helper */) => {
   app.get("/api/getTopProducts", (_req, res) => {
-    // const response = {
-    //   id: helper.getUniqueIdInt(),
-    //   randomInt: helper.getRandomInt(),
-    //   lastDate: new Date(),
-    // };
     function getRandomGames(number: number) {
       const set = new Set();
       const ranNum = () => {
@@ -378,6 +372,6 @@ export default webpackMockServer.add((app, helper) => {
       return filtGames;
     };
 
-    res.json(filterGamesByParams(params)).send;
+    setTimeout(() => res.json(filterGamesByParams(params)).send, 3000);
   });
 });

@@ -51,6 +51,9 @@
 .editInput {
   padding: 3px 15px 3px 5px;
   width: 100%;
+  background-color: var(--dark-color-second);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 
 .editIcon {

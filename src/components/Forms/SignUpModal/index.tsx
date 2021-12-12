@@ -8,6 +8,7 @@ import { NavigateFunction } from "react-router";
 import { useDispatch } from "react-redux";
 import { PASSWORD_LENGTH } from "../../../constants";
 import { IFormState } from "@/pages/pages";
+import { IFormContent } from "../FormMaker";
 
 interface ISignUpModal {
   isOpen: boolean;
@@ -26,7 +27,7 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
       { name: "password", label: "Password", faIcon: faLock, type: "password" },
       { name: "rePassword", label: "Repeat Password", faIcon: faLock, type: "password" },
     ],
-  };
+  } as IFormContent;
   /* using redux store dispatch*/
   const dispatch = useDispatch();
   const setUserName = (user = null) => {
@@ -76,7 +77,6 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
       .then((result) => {
         userData.login = result;
         loginErrorSetter("");
-        console.log(result);
       })
       .catch((e) => {
         loginErrorSetter(e.message);
@@ -95,8 +95,6 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
     rePasswordCheck
       .validate(rePassword)
       .then((result) => {
-        console.log(userData.password);
-        console.log(result);
         rePasswordErrorSetter("");
         //if valid data send to server data.
         if (result) {
@@ -114,11 +112,11 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
     if (!(formState && Object.keys(formState).length === 0 && Object.getPrototypeOf(formState) === Object.prototype)) {
       verifyUserData();
     }
-  }, [formState]);
+  }, [formState.login, formState.password, form.rePassword]);
 
   return ReactDOM.createPortal(
     <Modal modalName="Sign Up" isOpen={isOpen} onClose={onClose}>
-      <FormMaker formFieldOptions={form} closeModal={onClose} onSubmit={setFormState} />
+      <FormMaker formFieldOptions={form} onSubmit={setFormState} />
     </Modal>,
     document.body
   );

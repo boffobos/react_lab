@@ -1,14 +1,12 @@
-import { FormEvent, FormEventHandler, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, FormEventHandler, useEffect, useState } from "react";
 import style from "./style.module.css";
 import { InputField, IInputField } from "../../components";
 
-export interface IFormContent {
-  button: { type: "submit" | "button" | "reset" | undefined; text: string };
-  children: IInputField[];
-}
-
-export interface IFormMaker extends IFormContent {
-  formFieldOptions: IFormContent;
+export interface IFormMaker {
+  formFieldOptions: {
+    button: { type: "submit" | "button" | "reset" | undefined; text: string };
+    children: IInputField[];
+  };
   onSubmit: Function;
 }
 
@@ -26,18 +24,18 @@ export const FormMaker = ({ formFieldOptions, onSubmit }: IFormMaker) => {
   const inputs = formFieldOptions;
 
   /* Making input fields in form controlled by form container */
-  const hanleInputChange = (e, errorSetter) => {
+  const hanleInputChange = (e: ChangeEvent<HTMLInputElement>, errorSetter: Function) => {
     const value = e.target.value;
     const name = e.target.name;
     setFormState((prevState) => ({ ...prevState, [name]: value || "", [name + "ErrorSetter"]: errorSetter }));
-    // console.log(formState);
   };
 
   const handleFormOnSubmit: FormEventHandler = (e: FormEvent) => {
     e.preventDefault();
     onSubmit(formState);
   };
-  //send function for notification on render
+
+  /*send function for notification on render */
   useEffect(() => {
     onSubmit(formState);
   }, []);

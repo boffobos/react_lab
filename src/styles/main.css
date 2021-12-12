@@ -9,9 +9,11 @@
   --active-color-second: #9933cc86;
   --dark-color: #121212;
   --dark-color-second: #1212129f;
+  --light-color: #fff;
   --disable-color: #acacac;
   --error-color: #cc2e2e;
   --success-color: #98f7a5;
+  --page-padding: 0.8rem;
 }
 
 * {

@@ -25,7 +25,7 @@ interface IProfilePage {
 export interface IFormState {
   formNotification: Function;
   login?: string | null;
-  loginErrorSetter?: string | null;
+  loginErrorSetter?: Function;
   password: string | null;
   passwordErrorSetter: Function;
   newPassword: string | null;
@@ -35,7 +35,7 @@ export interface IFormState {
 }
 
 export const Profile = () => {
-  const [isLoading, setIsLoading] = useState(true); //change to true after server request set up
+  const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notification, setNotification] = useState("");
@@ -116,7 +116,6 @@ export const Profile = () => {
       .then((result) => {
         passwordErrorSetter("");
         userData.password = result;
-        //when checked password successfuly check new password
       })
       .catch((e) => {
         passwordErrorSetter(e.message);
@@ -125,26 +124,27 @@ export const Profile = () => {
       .validate(newPassword)
       .then((result) => {
         if (formState.newPassword === result) {
+          //then check new password and repeat
           setFormState((state) => ({ ...state, newPassword: result }));
+          rePassCheck
+            .validate(rePassword)
+            .then((result) => {
+              if (result) {
+                console.log("rePassword checked");
+                rePasswordErrorSetter("");
+                userData.newPassword = result;
+                setFormState((state) => ({ ...state, rePassword: result }));
+                sendDataToServer(userData);
+              }
+            })
+            .catch((e) => {
+              rePasswordErrorSetter(e.message);
+            });
         }
         newPasswordErrorSetter("");
-        //then check new password and repeat
       })
       .catch((e) => {
         newPasswordErrorSetter(e.message);
-      });
-    rePassCheck
-      .validate(rePassword)
-      .then((result) => {
-        console.log(result);
-        rePasswordErrorSetter("");
-        if (result) {
-          userData.newPassword = result;
-          sendDataToServer(userData);
-        }
-      })
-      .catch((e) => {
-        rePasswordErrorSetter(e.message);
       });
   };
   //check passwords and sent data to server
@@ -152,7 +152,7 @@ export const Profile = () => {
     if (!(formState && Object.keys(formState).length === 0 && Object.getPrototypeOf(formState) === Object.prototype)) {
       passwordVerifying();
     }
-  }, [formState.password, formState.password, formState.newPassword]);
+  }, [formState.password, formState.rePassword, formState.newPassword]);
 
   //functions for changing user info fields
   const changeUserName = (name: string) => {

@@ -11,11 +11,12 @@ import {
   IGameData,
 } from "../../components/components";
 import { useParams } from "react-router-dom";
-import { useState, useEffect, ChangeEvent, Suspense, lazy } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import axios from "axios";
 import { Option } from "react-dropdown";
 import { useGameCard } from "@/hooks/useGameCard";
+import { getPlatformFromSelector } from "../../helpers/functions";
 
 export const Products = () => {
   const params = useParams();
@@ -226,21 +227,7 @@ export const Products = () => {
   }, [sortCriteria, sortType]);
 
   const platformTitle = params.platform;
-  const setTitle = () => {
-    switch (platformTitle) {
-      case "pc": {
-        return "PC";
-      }
-      case "xboxOne": {
-        return "XBox One";
-      }
-      case "playstation5": {
-        return "Playstation 5";
-      }
-      default:
-        return "Products";
-    }
-  };
+  const setTitle = () => getPlatformFromSelector(platformTitle);
 
   useEffect(() => {
     setLoadedGames(null);
@@ -300,7 +287,7 @@ export const Products = () => {
       </SideBar>
       <main>
         <SearchBar searchPlaceholder="Search" onChange={handleSearchInput} value={input} />
-        <Section title={setTitle()}>{useGameCard(loadedGames)}</Section>
+        <Section title={setTitle()}>{useGameCard(loadedGames, platformTitle)}</Section>
       </main>
     </div>
   );

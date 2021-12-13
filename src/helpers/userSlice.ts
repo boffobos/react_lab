@@ -22,6 +22,7 @@ interface IUserAction {
 //   userId: null,
 //   avatar: "",
 //   loggedInTime: null,
+//   ballance: 0,
 //   cartItems: [],
 // };
 
@@ -31,7 +32,45 @@ const initialState = {
   userId: 1,
   avatar: "/assets/images/avatars/Morty.jpg",
   loggedInTime: Date(),
-  cartItems: [],
+  ballance: 25.96,
+  cartItems: [
+    {
+      gameId: 1,
+      gameName: "World of warcraft",
+      gamePrice: 23.99,
+      gameCurrency: "$",
+      gamePlatforms: ["pc"],
+      selectedPlatform: "pc",
+      quantity: 1,
+    },
+    {
+      gameId: 6,
+      gameName: "Fallout 2",
+      gamePrice: 10.99,
+      gameCurrency: "$",
+      gamePlatforms: ["pc"],
+      selectedPlatform: "pc",
+      quantity: 1,
+    },
+    {
+      gameId: 7,
+      gameName: "Minecraft",
+      gamePrice: 0.99,
+      gameCurrency: "$",
+      gamePlatforms: ["xboxOne", "playstation5"],
+      selectedPlatform: "xboxOne",
+      quantity: 1,
+    },
+    {
+      gameId: 10,
+      gameName: "Overwatch",
+      gamePrice: 18.99,
+      gameCurrency: "$",
+      gamePlatforms: ["pc", "xboxOne", "playstation5"],
+      selectedPlatform: "playstation5",
+      quantity: 1,
+    },
+  ],
 };
 
 export const userReducer = (state: IUserState = initialState, action: IUserAction) => {
@@ -55,20 +94,73 @@ export const userReducer = (state: IUserState = initialState, action: IUserActio
         cartItems: [],
       };
     }
-    case "users/addedToCart": {
+    case "item/addedToCart": {
       if (action.payload) {
-        return {
-          ...state,
-          cartItems: [
-            ...state.cartItems,
-            {
-              gameId: action.payload.gameId,
-              gameName: action.payload.gameName,
-              gamePrice: action.payload.gamePrice,
-            },
-          ],
-        };
+        const existedItem = state.cartItems?.find((item) => item.gameId === action.payload.gameId);
+        if (existedItem) {
+          return {
+            ...state,
+            cartItems: [
+              { ...existedItem, quantity: existedItem.quantity + 1 },
+              ...state.cartItems?.filter((item) => item.gameId !== existedItem.gameId),
+            ],
+          };
+        } else {
+          return {
+            ...state,
+            cartItems: [
+              ...state.cartItems,
+              {
+                gameId: action.payload.gameId,
+                gameName: action.payload.gameName,
+                gamePrice: action.payload.gamePrice,
+                gameCurrency: action.payload.gameCurrency,
+                gamePlatforms: action.payload.gamePlatforms,
+                selectedPlatform: action.payload.selectedPlatform,
+                quantity: 1,
+              },
+            ],
+          };
+        }
       }
+    }
+    case "item/changeQuantity": {
+      const id = action.payload.gameId;
+      const quantity = action.payload.quantity;
+      const newCart = state.cartItems?.map((item) => {
+        if (+item.gameId === +id) {
+          return {
+            ...item,
+            quantity: +quantity,
+          };
+        }
+        return item;
+      });
+      return {
+        ...state,
+        cartItems: [...newCart],
+      };
+    }
+    case "item/changePlatform": {
+      const newCart = state.cartItems?.map((item) => {
+        if (+item.gameId === +action.payload.gameId) {
+          return { ...item, selectedPlatform: action.payload.selectedPlatform };
+        }
+        return item;
+      });
+      const item = state.cartItems?.find((item) => +item.gameId === +action.payload.gameId);
+      return {
+        ...state,
+        cartItems: [...newCart],
+      };
+    }
+    case "item/remove": {
+      const itemsToRemove = action.payload;
+      const newCart = state.cartItems?.filter((item) => !itemsToRemove.includes(item.gameId));
+      return {
+        ...state,
+        cartItems: [...newCart],
+      };
     }
     default:
       return state;

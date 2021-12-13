@@ -10,12 +10,14 @@ export interface IGameData {
   image: string;
   rating: number;
   platforms: string[];
+  platformsSelector: string[];
   description: string;
   ageRating: number;
 }
 
 interface Props {
   data: IGameData;
+  selectedPlatform?: string;
 }
 
 export const GameCard = (props: Props) => {
@@ -27,9 +29,12 @@ export const GameCard = (props: Props) => {
     gameId: game.id,
     gameName: game.title,
     gamePrice: game.price,
+    gameCurrency: game.currency,
+    gamePlatforms: game.platformsSelector,
+    selectedPlatform: props.selectedPlatform || "",
   });
   const addToCart = () => {
-    if (userName) dispatch({ type: "users/addedToCart", payload: gameCardInfo });
+    if (userName) dispatch({ type: "item/addedToCart", payload: gameCardInfo });
     else alert("Please, login");
   };
   const rating = (rate: number) => {

@@ -14,7 +14,7 @@ export const CustomButton = ({ title, onClick, className, disabled }: IButtonPor
   };
 
   return (
-    <button disabled={disabled || false} className={className || style.btn} onClick={handleClick}>
+    <button disabled={disabled || false} className={`${className} ${style.btn}`} onClick={handleClick}>
       {title}
     </button>
   );

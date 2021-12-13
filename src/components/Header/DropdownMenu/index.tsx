@@ -21,25 +21,25 @@ const DropdownMenu = ({ /* history, */ dropdownOptions /*placeholder*/ }: Props)
   useEffect(() => {
     if (location.pathname.includes("products")) {
       /* Make switching dropdown selected if redirected from some external links to product page */
-      // switch (history.location.pathname) {
-      //   case "/products/pc":
-      //     setSelected({ label: "PC", value: "/products/pc" });
-      //     break;
-      //   case "products/xbox":
-      //     setSelected({ label: "XBox One", value: "/products/xbox" });
-      //     break;
-      //   case "products/playstation5":
-      //     setSelected({ label: "Playstation 5", value: "/products/playstation5" });
-      //     break;
-      //   default:
-      //     setSelected({ label: "Products", value: "/products/" });
-      // }
+      switch (location.pathname) {
+        case "/products/pc":
+          setSelected({ label: "PC", value: "/products/pc" });
+          break;
+        case "/products/xboxOne":
+          setSelected({ label: "XBox One", value: "/products/xbox" });
+          break;
+        case "/products/playstation5":
+          setSelected({ label: "Playstation 5", value: "/products/playstation5" });
+          break;
+        default:
+          setSelected({ label: "Products", value: "/products/" });
+      }
       setActive(" active");
     } else if (active.includes("active")) {
       setActive("");
       setSelected({ label: "Products", value: "/products/" });
     }
-  });
+  }, [location.pathname]);
 
   return (
     <Dropdown

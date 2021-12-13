@@ -1,0 +1,32 @@
+.root {
+  border: 1px solid var(--primary-color);
+  width: 70%;
+  padding: 5px 10px;
+  position: relative;
+  margin: auto;
+}
+
+.control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu {
+  /* position: absolute; */
+  top: 100%;
+  left: -5%;
+  width: 110%;
+  z-index: 2;
+  font-style: italic;
+  /* background-color: var(--dark-color); */
+}
+
+.menu > * {
+  padding: 0px 10px;
+}
+
+.menu > *:hover {
+  color: var(--light-color);
+  width: 100%;
+}

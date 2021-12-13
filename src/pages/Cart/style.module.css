@@ -1,0 +1,105 @@
+.container {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 88vh;
+}
+
+.section {
+  background-color: var(--dark-color-second);
+  padding: 0.8rem;
+  border-radius: 15px;
+  max-width: 1100px;
+  color: var(--primary-color);
+  min-width: 200px;
+}
+
+.title {
+  color: var(--primary-color);
+  position: relative;
+  text-align: left;
+  padding: 0.8rem 0.8rem 0;
+}
+
+.title::after {
+  content: "";
+  background-color: var(--primary-color);
+  width: 100%;
+  height: 2px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.section ul > li {
+  display: grid;
+  grid-template-columns: 3fr 3fr 1fr 1fr 1fr 1fr;
+  column-gap: 10px;
+  align-items: center;
+}
+
+.tableHeader {
+  padding: 10px 5px;
+  border-bottom: 2px solid var(--primary-color);
+  margin-top: 15px;
+  text-align: center;
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--secondary-color);
+  padding: 15px 0;
+}
+
+.tableRow span {
+  text-align: center;
+}
+
+.section ul > li.btnContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.removeBtn {
+  width: 100px;
+  margin: 0;
+}
+
+.buyBtn {
+  width: 100px;
+}
+
+.quantity {
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 5px 10px;
+  width: 70%;
+  line-height: 1.5;
+}
+
+.section ul > li.totalRow {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 5px;
+}
+
+.quantity::-webkit-inner-spin-button,
+.quantity::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.modalText {
+  min-width: 300px;
+  padding: 15px 10px;
+  align-self: center;
+  text-align: center;
+}
+
+.modalBtn {
+  display: block;
+  margin: auto;
+  text-align: center;
+  width: 200px;
+}

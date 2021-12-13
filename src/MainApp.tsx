@@ -2,7 +2,7 @@ import { Component } from "react";
 import * as constants from "./constants";
 import { Header, Footer, RequireAuth } from "./components/components";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { Home, Products, About, Profile } from "./pages/pages";
+import { Home, Products, About, Profile, Cart } from "./pages/pages";
 import { SignIn } from "./pages/SignIn";
 
 interface IProps {}
@@ -59,6 +59,14 @@ class MainApp extends Component<IProps, IState> {
             element={
               <RequireAuth>
                 <Profile />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={constants.CART_URL}
+            element={
+              <RequireAuth>
+                <Cart />
               </RequireAuth>
             }
           />

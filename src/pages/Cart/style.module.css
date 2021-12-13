@@ -89,3 +89,17 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
+.modalText {
+  min-width: 300px;
+  padding: 15px 10px;
+  align-self: center;
+  text-align: center;
+}
+
+.modalBtn {
+  display: block;
+  margin: auto;
+  text-align: center;
+  width: 200px;
+}

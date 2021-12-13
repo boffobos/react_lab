@@ -77,14 +77,7 @@ export const Navbar = ({ options }: Props): ReactElement => {
                 <NavlinkButton title={loggedUserName} icon={userButtonIcon} link={constants.PROFILE_URL} />
               </li>
               <li>
-                <NavlinkButton
-                  title={cartItemsNumber.toString()}
-                  handler={() => {
-                    alert("Number of orders!");
-                  }}
-                  icon={cartButtonIcon}
-                  link="/cart"
-                />
+                <NavlinkButton title={cartItemsNumber.toString()} icon={cartButtonIcon} link="/cart" />
               </li>
               <li>
                 <NavlinkButton

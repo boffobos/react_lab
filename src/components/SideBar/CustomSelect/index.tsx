@@ -6,7 +6,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface Props {
   options: Option[];
-  label: string;
+  label?: string;
   selected: Function;
   placeholder: string;
   value: string;
@@ -18,7 +18,7 @@ export const CustomSelect = ({ options, label, selected, placeholder, value }: P
   };
   return (
     <>
-      <div>{label}</div>
+      {label ? <div>{label}</div> : null}
 
       <Dropdown
         options={options}

@@ -372,6 +372,6 @@ export default webpackMockServer.add((app /* helper */) => {
       return filtGames;
     };
 
-    setTimeout(() => res.json(filterGamesByParams(params)).send, 3000);
+    setTimeout(() => res.json(filterGamesByParams(params)).send, 500);
   });
 });

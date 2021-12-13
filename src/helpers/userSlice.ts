@@ -22,6 +22,7 @@ interface IUserAction {
 //   userId: null,
 //   avatar: "",
 //   loggedInTime: null,
+//   ballance: 0,
 //   cartItems: [],
 // };
 
@@ -31,6 +32,7 @@ const initialState = {
   userId: 1,
   avatar: "/assets/images/avatars/Morty.jpg",
   loggedInTime: Date(),
+  ballance: 25.96,
   cartItems: [
     {
       gameId: 1,
@@ -92,13 +94,10 @@ export const userReducer = (state: IUserState = initialState, action: IUserActio
         cartItems: [],
       };
     }
-    case "users/addedToCart": {
+    case "item/addedToCart": {
       if (action.payload) {
         const existedItem = state.cartItems?.find((item) => item.gameId === action.payload.gameId);
-        console.log(state.cartItems);
-        console.log(existedItem);
         if (existedItem) {
-          console.log("if statement");
           return {
             ...state,
             cartItems: [
@@ -118,12 +117,50 @@ export const userReducer = (state: IUserState = initialState, action: IUserActio
                 gameCurrency: action.payload.gameCurrency,
                 gamePlatforms: action.payload.gamePlatforms,
                 selectedPlatform: action.payload.selectedPlatform,
-                orderDate: 1,
+                quantity: 1,
               },
             ],
           };
         }
       }
+    }
+    case "item/changeQuantity": {
+      const id = action.payload.gameId;
+      const quantity = action.payload.quantity;
+      const newCart = state.cartItems?.map((item) => {
+        if (+item.gameId === +id) {
+          return {
+            ...item,
+            quantity: +quantity,
+          };
+        }
+        return item;
+      });
+      return {
+        ...state,
+        cartItems: [...newCart],
+      };
+    }
+    case "item/changePlatform": {
+      const newCart = state.cartItems?.map((item) => {
+        if (+item.gameId === +action.payload.gameId) {
+          return { ...item, selectedPlatform: action.payload.selectedPlatform };
+        }
+        return item;
+      });
+      const item = state.cartItems?.find((item) => +item.gameId === +action.payload.gameId);
+      return {
+        ...state,
+        cartItems: [...newCart],
+      };
+    }
+    case "item/remove": {
+      const itemsToRemove = action.payload;
+      const newCart = state.cartItems?.filter((item) => !itemsToRemove.includes(item.gameId));
+      return {
+        ...state,
+        cartItems: [...newCart],
+      };
     }
     default:
       return state;

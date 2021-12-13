@@ -34,7 +34,7 @@ export const GameCard = (props: Props) => {
     selectedPlatform: props.selectedPlatform || "",
   });
   const addToCart = () => {
-    if (userName) dispatch({ type: "users/addedToCart", payload: gameCardInfo });
+    if (userName) dispatch({ type: "item/addedToCart", payload: gameCardInfo });
     else alert("Please, login");
   };
   const rating = (rate: number) => {

@@ -7,19 +7,25 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 interface Props {
   options: Option[];
   placeholder?: string;
+  onChange: Function;
 }
 
-export const CustomSingleSelect = ({ options, placeholder }: Props) => {
+export const CustomSingleSelect = ({ options, placeholder, onChange }: Props) => {
+  const handleChange = (e: Option) => {
+    onChange(e);
+  };
   return (
     <Dropdown
       options={options}
-      placeholder={placeholder}
+      // placeholder={placeholder}
       className={style.root}
       menuClassName={style.menu}
       controlClassName={style.control}
       arrowClassName={style.arrow}
       arrowOpen={<FontAwesomeIcon icon={faChevronUp as IconProp} />}
       arrowClosed={<FontAwesomeIcon icon={faChevronDown as IconProp} />}
+      onChange={handleChange}
+      value={placeholder}
     />
   );
 };

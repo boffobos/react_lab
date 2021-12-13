@@ -39,6 +39,7 @@ const initialState = {
       gameCurrency: "$",
       gamePlatforms: ["pc"],
       selectedPlatform: "pc",
+      quantity: 1,
     },
     {
       gameId: 6,
@@ -47,6 +48,7 @@ const initialState = {
       gameCurrency: "$",
       gamePlatforms: ["pc"],
       selectedPlatform: "pc",
+      quantity: 1,
     },
     {
       gameId: 7,
@@ -55,6 +57,7 @@ const initialState = {
       gameCurrency: "$",
       gamePlatforms: ["xboxOne", "playstation5"],
       selectedPlatform: "xboxOne",
+      quantity: 1,
     },
     {
       gameId: 10,
@@ -63,6 +66,7 @@ const initialState = {
       gameCurrency: "$",
       gamePlatforms: ["pc", "xboxOne", "playstation5"],
       selectedPlatform: "playstation5",
+      quantity: 1,
     },
   ],
 };
@@ -90,21 +94,35 @@ export const userReducer = (state: IUserState = initialState, action: IUserActio
     }
     case "users/addedToCart": {
       if (action.payload) {
-        return {
-          ...state,
-          cartItems: [
-            ...state.cartItems,
-            {
-              gameId: action.payload.gameId,
-              gameName: action.payload.gameName,
-              gamePrice: action.payload.gamePrice,
-              gameCurrency: action.payload.gameCurrency,
-              gamePlatforms: action.payload.gamePlatforms,
-              selectedPlatform: action.payload.selectedPlatform,
-              orderDate: 1,
-            },
-          ],
-        };
+        const existedItem = state.cartItems?.find((item) => item.gameId === action.payload.gameId);
+        console.log(state.cartItems);
+        console.log(existedItem);
+        if (existedItem) {
+          console.log("if statement");
+          return {
+            ...state,
+            cartItems: [
+              { ...existedItem, quantity: existedItem.quantity + 1 },
+              ...state.cartItems?.filter((item) => item.gameId !== existedItem.gameId),
+            ],
+          };
+        } else {
+          return {
+            ...state,
+            cartItems: [
+              ...state.cartItems,
+              {
+                gameId: action.payload.gameId,
+                gameName: action.payload.gameName,
+                gamePrice: action.payload.gamePrice,
+                gameCurrency: action.payload.gameCurrency,
+                gamePlatforms: action.payload.gamePlatforms,
+                selectedPlatform: action.payload.selectedPlatform,
+                orderDate: 1,
+              },
+            ],
+          };
+        }
       }
     }
     default:

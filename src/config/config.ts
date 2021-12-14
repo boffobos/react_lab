@@ -1,5 +1,4 @@
 /* Modal forms config */
-import { IFormContent } from "@/components/components";
 import {
   faRightFromBracket,
   faIdCard,
@@ -37,7 +36,7 @@ export const changePasswordFormConfig = {
     { name: "newPassword", label: "New Password", faIcon: faLock, type: "password", autofocus: false },
     { name: "rePassword", label: "Repeat Password", faIcon: faLock, type: "password", autofocus: false },
   ],
-} as IFormContent;
+};
 
 export const userButtonIcon = faUserAstronaut;
 export const cartButtonIcon = faShoppingCart;
@@ -46,6 +45,91 @@ export const formErrorIcon = faExclamation;
 
 export const defaultAvatar = "/assets/images/avatars/AV_1.jpg";
 
+/* Settings for product page */
+//Dropdown options
+export const sortCriteriaOptions = [
+  {
+    label: "Name",
+    value: "name",
+  },
+  {
+    label: "Age",
+    value: "age",
+  },
+  {
+    label: "Rating",
+    value: "rating",
+  },
+  {
+    label: "Price",
+    value: "price",
+  },
+];
+
+export const sortTypeOptions = [
+  {
+    label: "Ascending",
+    value: "asc",
+  },
+  {
+    label: "Descending",
+    value: "desc",
+  },
+];
+
+//Radio buttons options
+export const genresOptions = [
+  {
+    label: "All genres",
+    value: "all",
+    selected: true,
+  },
+  {
+    label: "Actions",
+    value: "action",
+  },
+  {
+    label: "RPG",
+    value: "rpg",
+  },
+  {
+    label: "RTS",
+    value: "rts",
+  },
+  {
+    label: "Arcade",
+    value: "arcade",
+  },
+  {
+    label: "Survival",
+    value: "survival",
+  },
+];
+
+export const ageOptions = [
+  {
+    label: "All ages",
+    value: 0,
+  },
+  {
+    label: "3+",
+    value: 3,
+  },
+  {
+    label: "6+",
+    value: 6,
+  },
+  {
+    label: "12+",
+    value: 12,
+  },
+  {
+    label: "18+",
+    value: 18,
+  },
+];
+
+/* Data for mock server  */
 export const userDb = [
   {
     id: 1,
@@ -56,6 +140,7 @@ export const userDb = [
     email: "denis@example.com",
     birthDate: new Date("1995-01-09"),
     description: "Lorem ipsum dolor sit amet.",
+    role: "user",
   },
   {
     id: 2,
@@ -66,6 +151,7 @@ export const userDb = [
     email: "admin@example.com",
     birthDate: new Date("1994-04-09"),
     description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+    role: "admin",
   },
   {
     id: 3,
@@ -76,6 +162,7 @@ export const userDb = [
     email: "fun@example.com",
     birthDate: new Date("1991-08-01"),
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, maxime?",
+    role: "user",
   },
 ];
 

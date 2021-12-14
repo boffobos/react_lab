@@ -1,15 +1,15 @@
 import style from "./style.module.css";
 import {
   Section,
-  Spinner,
   SearchBar,
-  GameCard,
   SideBar,
   SideBarSection,
   CustomSelect,
   CustomRadioButtons,
   IGameData,
+  CustomButton,
 } from "../../components/components";
+import { ageOptions, genresOptions, sortTypeOptions, sortCriteriaOptions } from "../../config/config";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -17,10 +17,11 @@ import axios from "axios";
 import { Option } from "react-dropdown";
 import { useGameCard } from "@/hooks/useGameCard";
 import { getPlatformFromSelector } from "../../helpers/functions";
+import { useSelector } from "react-redux";
 
 export const Products = () => {
   const params = useParams();
-  const [isLoading, setIsLoading] = useState(true); //change initial state when finish
+  //const [isLoading, setIsLoading] = useState(true); //change initial state when finish
   const [loadedGames, setLoadedGames] = useState<IGameData | null>();
   const [sortCriteria, setSortCriteria] = useState("name");
   const [sortType, setSortType] = useState("asc");
@@ -28,106 +29,28 @@ export const Products = () => {
   const [ageRating, setAgeRating] = useState(0);
   const [input, setInput] = useState("");
   const [searchName, setSearchName] = useState("");
+  const userRole = useSelector((state) => state.users.role);
+  console.log(userRole);
 
-  //Dropdown options
-  const sortCriteriaOptions = [
-    {
-      label: "Name",
-      value: "name",
-    },
-    {
-      label: "Age",
-      value: "age",
-    },
-    {
-      label: "Rating",
-      value: "rating",
-    },
-    {
-      label: "Price",
-      value: "price",
-    },
-  ];
-
+  // Sidebar handling functions
   const hanleSortCriteria = (e: Option) => {
     if (e) setSortCriteria(e.value);
   };
 
-  const sortTypeOptions = [
-    {
-      label: "Ascending",
-      value: "asc",
-    },
-    {
-      label: "Descending",
-      value: "desc",
-    },
-  ];
   const handleCriteriaType = (e: Option) => {
     if (e) setSortType(e.value);
   };
 
-  //Radio buttons options
-  const genresOptions = [
-    {
-      label: "All genres",
-      value: "all",
-      selected: true,
-    },
-    {
-      label: "Actions",
-      value: "action",
-    },
-    {
-      label: "RPG",
-      value: "rpg",
-    },
-    {
-      label: "RTS",
-      value: "rts",
-    },
-    {
-      label: "Arcade",
-      value: "arcade",
-    },
-    {
-      label: "Survival",
-      value: "survival",
-    },
-  ];
   const handleGenreChanges = (e: ChangeEvent<HTMLInputElement>) => {
     setGenreType(e.target.value);
   };
 
-  const ageOptions = [
-    {
-      label: "All ages",
-      value: 0,
-    },
-    {
-      label: "3+",
-      value: 3,
-    },
-    {
-      label: "6+",
-      value: 6,
-    },
-    {
-      label: "12+",
-      value: 12,
-    },
-    {
-      label: "18+",
-      value: 18,
-    },
-  ];
   const handleAgeChanges = (e: ChangeEvent<HTMLInputElement>) => {
     setAgeRating(+e.target.value);
   };
 
   //Search handling
   const handleSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
-    // console.log(e.target);
     setInput(e.target.value);
   };
   //debounced search
@@ -138,7 +61,7 @@ export const Products = () => {
   setSearch(input);
 
   //function for sorting games on page
-  const sortOrder = (array) => {
+  const sortOrder = (array: Array<IGameData>) => {
     switch (sortType) {
       case "asc": {
         switch (sortCriteria) {
@@ -235,7 +158,7 @@ export const Products = () => {
       let games = result.data;
       sortOrder(games);
       setLoadedGames(games);
-      setIsLoading(false);
+      //setIsLoading(false);
     });
   }, [platformTitle, ageRating, genreType, searchName]);
 
@@ -286,7 +209,10 @@ export const Products = () => {
         </SideBarSection>
       </SideBar>
       <main>
-        <SearchBar searchPlaceholder="Search" onChange={handleSearchInput} value={input} />
+        <SearchBar className={style.searchBar} searchPlaceholder="Search" onChange={handleSearchInput} value={input} />
+        {userRole === "admin" ? (
+          <CustomButton className={style.createBtn} title="Create card" onClick={() => alert("Creating game card..")} />
+        ) : null}
         <Section title={setTitle()}>{useGameCard(loadedGames, platformTitle)}</Section>
       </main>
     </div>

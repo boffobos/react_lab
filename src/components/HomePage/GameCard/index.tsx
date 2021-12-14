@@ -21,6 +21,7 @@ interface Props {
 }
 
 export const GameCard = (props: Props) => {
+  const userRole = useSelector((state) => state.users.role);
   const userName = useSelector((state) => state.users.userName);
   const game = props.data;
   const dispatch = useDispatch();
@@ -86,9 +87,20 @@ export const GameCard = (props: Props) => {
             {game.ageRating}
             <span>+</span>
           </div>
-          <button type="button" className={style.button} onClick={addToCart}>
-            Add to cart
-          </button>
+          {userRole === "admin" ? (
+            <div className={style.btnContainer}>
+              <button type="button" className={style.button} onClick={() => alert("Are you sure?")}>
+                Remove
+              </button>
+              <button type="button" className={style.button} onClick={() => alert("Editing")}>
+                Edit
+              </button>
+            </div>
+          ) : (
+            <button type="button" className={style.button} onClick={addToCart}>
+              Add to cart
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -133,9 +133,17 @@
 }
 
 .button:hover {
-  transform: scale(1.05);
+  color: var(--dark-color);
+  /* transform: scale(1.05); */
 }
 
 .button:active {
-  transform: scale(1);
+  color: var(--primary-color);
+  /* transform: scale(1); */
+}
+
+.btnContainer {
+  display: flex;
+  /* justify-content: space-between; */
+  width: 80%;
 }

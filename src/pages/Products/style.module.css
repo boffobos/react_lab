@@ -20,3 +20,14 @@
   border: solid 1px var(--primary-color);
   padding: 5px 10px;
 }
+
+.createBtn {
+  display: block;
+  margin: auto;
+  margin-top: 15px;
+  width: 200px;
+}
+
+.searchBar {
+  display: inline-block;
+}

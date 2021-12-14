@@ -32,6 +32,7 @@ const initialState = {
   userId: 1,
   avatar: "/assets/images/avatars/Morty.jpg",
   loggedInTime: Date(),
+  role: "admin",
   ballance: 25.96,
   cartItems: [
     {
@@ -82,6 +83,7 @@ export const userReducer = (state: IUserState = initialState, action: IUserActio
         userId: action.payload.id,
         avatar: action.payload.avatar,
         loggedInTime: Date.now(),
+        role: action.payload.role,
       };
     }
     case "users/logOut": {
@@ -91,6 +93,7 @@ export const userReducer = (state: IUserState = initialState, action: IUserActio
         userId: null,
         avatar: null,
         loggedInTime: null,
+        role: null,
         cartItems: [],
       };
     }

@@ -38,7 +38,9 @@ export default webpackMockServer.add((app /* helper */) => {
 
     userDb.forEach((user) => {
       if (pass === user.password && login.toLowerCase() === user.login.toLowerCase()) {
-        res.status(201).json({ body: { id: user.id, login: user.login, avatar: user.avatar }, success: true });
+        res
+          .status(201)
+          .json({ body: { id: user.id, login: user.login, avatar: user.avatar, role: user.role }, success: true });
       }
     });
     res.status(204).send("Auth failed");

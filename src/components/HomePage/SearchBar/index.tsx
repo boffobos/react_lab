@@ -9,6 +9,7 @@ interface Props {
   searchPlaceholder: string;
   value?: string;
   onChange?: ChangeEventHandler;
+  className?: string;
 }
 
 export const SearchBar = (props: Props): ReactElement => {
@@ -52,7 +53,7 @@ export const SearchBar = (props: Props): ReactElement => {
     <div className={style.container}>
       <input
         type="text"
-        className={style.searchBar}
+        className={`${style.searchBar} ${props.className} `}
         placeholder={props.searchPlaceholder}
         onChange={handleInput}
         value={props.value || input}

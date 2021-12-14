@@ -130,13 +130,17 @@ export default webpackMockServer.add((app /* helper */) => {
     const filterGamesByParams = (paramsObj) => {
       let filtGames = gameDb;
       if (paramsObj.searchName === "$all") {
+        //skip filtering
       } else if (paramsObj.searchName) {
         filtGames = filtGames.filter((game) => game.title.toLowerCase().includes(paramsObj.searchName.toLowerCase()));
       }
-      if (paramsObj.platform) {
+      if (paramsObj.platform === "$all") {
+        //skip filtering
+      } else {
         filtGames = filtGames.filter((game) => game.platformsSelector.includes(paramsObj.platform));
       }
       if (paramsObj.genre === "all") {
+        //skip filtering
       } else if (paramsObj.genre) {
         filtGames = filtGames.filter((game) => game.genre.includes(paramsObj.genre));
       }

@@ -17,10 +17,11 @@ import axios from "axios";
 import { Option } from "react-dropdown";
 import { useGameCard } from "@/hooks/useGameCard";
 import { getPlatformFromSelector } from "../../helpers/functions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Products = () => {
   const params = useParams();
+  const dispatch = useDispatch();
   //const [isLoading, setIsLoading] = useState(true); //change initial state when finish
   const [loadedGames, setLoadedGames] = useState<IGameData | null>();
   const [sortCriteria, setSortCriteria] = useState("name");
@@ -30,7 +31,7 @@ export const Products = () => {
   const [input, setInput] = useState("");
   const [searchName, setSearchName] = useState("");
   const userRole = useSelector((state) => state.users.role);
-  console.log(userRole);
+  const gamesInStore = useSelector((state) => state.games);
 
   // Sidebar handling functions
   const hanleSortCriteria = (e: Option) => {
@@ -152,15 +153,21 @@ export const Products = () => {
   const platformTitle = params.platform;
   const setTitle = () => getPlatformFromSelector(platformTitle);
 
+  //get all games from server and place them into redux on first load
+  useEffect(() => {
+    axios.get(`/api/products/$all/all/0/$all`).then((result) => {
+      let games = result.data;
+      dispatch({ type: "games/added", payload: games });
+    });
+  }, []);
+
+  //changes order of cards when set sort parameters
   useEffect(() => {
     setLoadedGames(null);
-    axios.get(`/api/products/${platformTitle}/${genreType}/${ageRating}/${searchName || "$all"}`).then((result) => {
-      let games = result.data;
-      sortOrder(games);
-      setLoadedGames(games);
-      //setIsLoading(false);
-    });
-  }, [platformTitle, ageRating, genreType, searchName]);
+    let games = gamesInStore;
+    sortOrder(games);
+    setLoadedGames(games);
+  }, [platformTitle, ageRating, genreType, searchName, gamesInStore]);
 
   return (
     <div

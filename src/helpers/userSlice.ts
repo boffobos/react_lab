@@ -10,6 +10,10 @@ interface ICartGameItem {
   gameId: number;
   gameName: string;
   gamePrice: number;
+  gameCurrency: string;
+  gamePlatforms: string[];
+  selectedPlatform: "pc" | "xboxOne" | "playstation5";
+  quantity: number;
 }
 
 interface IUserAction {

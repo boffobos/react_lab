@@ -6,14 +6,6 @@
   position: relative;
 }
 
-.container:hover .containerFront {
-  transform: rotateY(180deg);
-}
-
-.container:hover .containerBack {
-  transform: rotateY(0deg);
-}
-
 .containerFront,
 .containerBack {
   width: 100%;
@@ -31,6 +23,37 @@
   overflow: hidden;
   background: var(--dark-color);
   box-shadow: 0 0 10px var(--active-color);
+}
+
+.containerBack {
+  transform: rotateY(-180deg);
+  border: var(--active-color) 1px solid;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background: var(--dark-color);
+  box-shadow: 0 0 10px var(--active-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  padding: 1rem;
+}
+
+.containerBack > div {
+  overflow: hidden;
+  padding: 10px 0;
+  margin-bottom: 2px;
+  line-height: 0.8rem;
+}
+
+.container:hover .containerFront {
+  transform: rotateY(180deg);
+}
+
+.container:hover .containerBack {
+  transform: rotateY(0deg);
 }
 
 .gameImage {
@@ -93,31 +116,8 @@
   line-height: 1.2rem;
 }
 
-.containerBack {
-  transform: rotateY(-180deg);
-  border: var(--active-color) 1px solid;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  background: var(--dark-color);
-  box-shadow: 0 0 10px var(--active-color);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8rem;
-  color: var(--primary-color);
-  padding: 1rem;
-}
-
-.containerBack > div {
-  overflow: hidden;
-  padding: 10px 0;
-  margin-bottom: 2px;
-  line-height: 0.8rem;
-}
-
 .button {
-  display: block;
+  display: inline-block;
   padding: 5px;
   border-radius: 3px;
   border: none;
@@ -137,4 +137,45 @@
   display: flex;
   justify-content: space-around;
   width: 80%;
+}
+
+/* Styles for modal */
+
+.modal {
+  text-align: center;
+  max-width: 800px;
+}
+
+.modal button {
+  margin: 15px 20px;
+}
+
+.modalContainer {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  padding: 30px;
+}
+
+.modalImage p,
+.modalGameInfo p {
+  padding: 10px 5px;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.modalImage {
+  width: 200px;
+  height: 300px;
+  padding: 10px 15px;
+}
+
+.modalImage img {
+  width: 100%;
+  height: auto;
+}
+
+.modalGameInfo {
+  max-width: 400px;
+  padding: 10px 15px;
 }

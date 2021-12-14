@@ -48,60 +48,58 @@ export const GameCard = (props: Props) => {
 
   return (
     <div className={style.container}>
-      <div className={style.innerContainer}>
-        <div className={style.containerFront}>
-          <div className={style.gameImage}>
-            <div className={style.platforms}>
-              {game.platforms.map((platform, index) => {
-                return (
-                  <span className={style.gamePlatform} key={index}>
-                    <img src={platform} alt="platform icon" className={style.platformIcon} />
-                  </span>
-                );
-              })}
-            </div>
-            <img src={game.image} alt="game image" />
+      <div className={style.containerFront}>
+        <div className={style.gameImage}>
+          <div className={style.platforms}>
+            {game.platforms.map((platform, index) => {
+              return (
+                <span className={style.gamePlatform} key={index}>
+                  <img src={platform} alt="platform icon" className={style.platformIcon} />
+                </span>
+              );
+            })}
           </div>
-          <div className={style.cardBasement}>
-            <div className={style.title}>
-              <div className={style.name}>{game.title}</div>
-              <div className={style.price}>
-                {game.price}
-                <span className={style.currency}>{game.currency}</span>
-              </div>
-            </div>
-            <div>
-              {rating(game.rating).map((item, index) => {
-                return (
-                  <div className={style.stars} key={index}>
-                    {item}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <img src={game.image} alt="game image" />
         </div>
-        <div className={style.containerBack}>
-          <div>{game.description}</div>
+        <div className={style.cardBasement}>
+          <div className={style.title}>
+            <div className={style.name}>{game.title}</div>
+            <div className={style.price}>
+              {game.price}
+              <span className={style.currency}>{game.currency}</span>
+            </div>
+          </div>
           <div>
-            {game.ageRating}
-            <span>+</span>
+            {rating(game.rating).map((item, index) => {
+              return (
+                <div className={style.stars} key={index}>
+                  {item}
+                </div>
+              );
+            })}
           </div>
-          {userRole === "admin" ? (
-            <div className={style.btnContainer}>
-              <button type="button" className={style.button} onClick={() => alert("Are you sure?")}>
-                Remove
-              </button>
-              <button type="button" className={style.button} onClick={() => alert("Editing")}>
-                Edit
-              </button>
-            </div>
-          ) : (
-            <button type="button" className={style.button} onClick={addToCart}>
-              Add to cart
-            </button>
-          )}
         </div>
+      </div>
+      <div className={style.containerBack}>
+        <div>{game.description}</div>
+        <div>
+          {game.ageRating}
+          <span>+</span>
+        </div>
+        {userRole === "admin" ? (
+          <div className={style.btnContainer}>
+            <button type="button" className={style.button} onClick={() => alert("Are you sure?")}>
+              Remove
+            </button>
+            <button type="button" className={style.button} onClick={() => alert("Editing")}>
+              Edit
+            </button>
+          </div>
+        ) : (
+          <button type="button" className={style.button} onClick={addToCart}>
+            Add to cart
+          </button>
+        )}
       </div>
     </div>
   );

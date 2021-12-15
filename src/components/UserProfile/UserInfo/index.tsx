@@ -11,7 +11,7 @@ interface IDataRow {
   onChange: Function;
   isTextArea?: boolean;
 }
-
+//first use in profile page, so logic should get there
 export const DataRow = ({ isEditable, title, content, onEditing, onChange, isTextArea }: IDataRow) => {
   const [contentField, setContentField] = useState(content);
   const [contentFieldBackup, setContentFieldBackup] = useState(contentField);
@@ -19,16 +19,19 @@ export const DataRow = ({ isEditable, title, content, onEditing, onChange, isTex
 
   const edit = () => {
     setContentFieldBackup(contentField);
-    setIsEditing(true);
-    onEditing(true); //set state in parent component
+    setIsEditing(true); //switch datafield to editable state
+    onEditing(true); //set state in parent component to hide edit buttons in other datafields
   };
 
   const finishEdit = async () => {
     const result = await onChange(contentField);
+    console.log(result);
     if (result === true) {
+      setIsEditing(false); //switch datafield to data overview state
+      onEditing(false); //unhide edit buttons in all datafields
+    } else {
       setIsEditing(false);
       onEditing(false);
-    } else {
       result;
     }
   };
@@ -85,7 +88,6 @@ export const DataRow = ({ isEditable, title, content, onEditing, onChange, isTex
           autoFocus
           onKeyDown={handleKeys}
           onChange={handeInput}
-          name=""
           id="edited"
           cols={30}
           rows={10}

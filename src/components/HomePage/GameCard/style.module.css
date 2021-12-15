@@ -127,6 +127,7 @@
 
 .button:hover {
   color: var(--dark-color);
+  cursor: pointer;
 }
 
 .button:active {
@@ -150,6 +151,12 @@
   margin: 15px 20px;
 }
 
+.modal button:disabled {
+  cursor: inherit;
+  color: var(--disable-color);
+  background-color: var(--active-color-second);
+}
+
 .modalContainer {
   display: flex;
   justify-content: space-between;
@@ -160,7 +167,7 @@
 .modalImage p,
 .modalGameInfo p {
   padding: 10px 5px;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 400;
 }
 
@@ -178,4 +185,33 @@
 .modalGameInfo {
   max-width: 400px;
   padding: 10px 15px;
+}
+
+.modalCheckbox {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.modalAgeInputContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modalAgeInput {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 0 10px;
+  width: 30%;
+  text-align: center;
+  position: relative;
+}
+
+.modalAgeInput::-webkit-inner-spin-button,
+.modalAgeInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

@@ -1,24 +1,24 @@
 interface IUserState {
-  userName: string | null;
-  userId: number | null;
+  userName: string;
+  userId: number;
   avatar: string;
-  loggedInTime: number | null;
-  cartItems?: ICartGameItem[];
-}
-
-interface ICartGameItem {
-  gameId: number;
-  gameName: string;
-  gamePrice: number;
-  gameCurrency: string;
-  gamePlatforms: string[];
-  selectedPlatform: "pc" | "xboxOne" | "playstation5";
-  quantity: number;
+  loggedInTime: Date;
+  role: string;
+  ballance: number;
+  cartItems: {
+    gameId: number;
+    gameName: string;
+    gamePrice: number;
+    gameCurrency: string;
+    gamePlatforms: string[];
+    selectedPlatform: "pc" | "xboxOne" | "playstation5";
+    quantity: number;
+  }[];
 }
 
 interface IUserAction {
   type: string;
-  payload: string | undefined | ICartGameItem;
+  payload: string;
 }
 
 // const initialState = {
@@ -26,6 +26,7 @@ interface IUserAction {
 //   userId: null,
 //   avatar: "",
 //   loggedInTime: null,
+//   role: 'user',
 //   ballance: 0,
 //   cartItems: [],
 // };

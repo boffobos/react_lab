@@ -49,7 +49,7 @@
 }
 
 .editInput {
-  padding: 3px 15px 3px 5px;
+  padding: 3px 20px 3px 5px;
   width: 100%;
   background-color: var(--dark-color-second);
   color: var(--primary-color);
@@ -57,10 +57,11 @@
 }
 
 .textArea {
-  padding: 3px 15px 3px 5px;
+  padding: 3px 20px 3px 5px;
   background-color: var(--dark-color-second);
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
+  width: 100%;
 }
 
 .editIcon {

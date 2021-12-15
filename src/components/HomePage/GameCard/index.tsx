@@ -2,6 +2,7 @@ import style from "./style.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { ChangeEvent, useState } from "react";
 import { Modal, DataRow } from "../../components";
+import { GAME_PLATFORMS } from "@/constants";
 
 export interface IGameData {
   id: number;
@@ -14,6 +15,7 @@ export interface IGameData {
   platformsSelector: string[];
   description: string;
   ageRating: number;
+  genre: string;
 }
 
 interface Props {
@@ -23,33 +25,94 @@ interface Props {
 
 export const GameCard = (props: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const userRole = useSelector((state) => state.users.role);
   const userName = useSelector((state) => state.users.userName);
   const game = props.data;
   const dispatch = useDispatch();
   //game card state from editing
+  const [isEditing, setIsEditing] = useState(false);
   const [gameCard, setGameCard] = useState<IGameData>(props.data);
+  const [isCardEdited, setIsCardEdited] = useState(false);
+
   const changeTitle = (title: string) => {
-    setGameCard((game) => ({ ...game, title: title }));
-    setGameCardInfo((state) => ({ ...state, gameName: title }));
-    return true;
+    if (gameCard.title.toLocaleLowerCase() !== title.toLocaleLowerCase()) {
+      setGameCard((game) => ({ ...game, title: title }));
+      setGameCardInfo((state) => ({ ...state, gameName: title }));
+      setIsCardEdited(true);
+      return true;
+    }
+    return false;
+  };
+
+  const changeGenre = (genre: string) => {
+    if (gameCard.genre.toLowerCase() !== genre.toLowerCase()) {
+      setGameCard((game) => ({ ...game, genre: genre }));
+      setIsCardEdited(true);
+      return true;
+    }
+    return false;
   };
 
   const changePrice = (value: number) => {
-    setGameCard((game) => ({ ...game, price: +value }));
-    setGameCardInfo((state) => ({ ...state, gamePrice: +value }));
-    return true;
+    if (gameCard.price !== +value) {
+      setGameCard((game) => ({ ...game, price: +value }));
+      setGameCardInfo((state) => ({ ...state, gamePrice: +value }));
+      setIsCardEdited(true);
+      return true;
+    }
+    return false;
   };
 
   const changeImage = (url: string) => {
-    setGameCard((game) => ({ ...game, image: url }));
-    return true;
+    if (gameCard.image.toLowerCase() !== url.toLowerCase()) {
+      setGameCard((game) => ({ ...game, image: url }));
+      setIsCardEdited(true);
+      return true;
+    }
+    return false;
   };
 
   const changeDescription = (description: string) => {
-    setGameCard((game) => ({ ...game, description: description }));
-    return true;
+    if (gameCard.description.toLowerCase() !== description.toLowerCase()) {
+      setGameCard((game) => ({ ...game, description: description }));
+      setIsCardEdited(true);
+      return true;
+    }
+    return false;
+  };
+
+  const changePlatforms = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const { checked } = e.target;
+    if (checked) {
+      setGameCard((game) => ({
+        ...game,
+        platformsSelector: [...game.platformsSelector, value],
+        platforms: [...game.platforms, GAME_PLATFORMS.find((platform) => platform.selector === value)?.icon || ""],
+      }));
+    } else {
+      setGameCard((game) => ({
+        ...game,
+        platformsSelector: [...game.platformsSelector.filter((item) => item !== value)],
+        platforms: [
+          ...game.platforms.filter(
+            (item) => item !== GAME_PLATFORMS.find((plaform) => plaform.selector === value)?.icon
+          ),
+        ],
+      }));
+    }
+    setIsCardEdited(true);
+  };
+
+  const changeAge = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    if (gameCard.ageRating !== +value) {
+      setGameCard((game) => ({
+        ...game,
+        ageRating: +((+value < 0 && "0") || (+value > 18 && 18) || +value),
+      }));
+      setIsCardEdited(true);
+    }
   };
   //seting up data of particulad card for using it in redux store as cart item
   const [gameCardInfo, setGameCardInfo] = useState({
@@ -146,6 +209,13 @@ export const GameCard = (props: Props) => {
             />
             <DataRow
               isEditable={!isEditing}
+              title={"Genre"}
+              content={gameCard.genre}
+              onEditing={setIsEditing}
+              onChange={changeGenre}
+            />
+            <DataRow
+              isEditable={!isEditing}
               title={"Price"}
               content={gameCard.price}
               onEditing={setIsEditing}
@@ -166,9 +236,30 @@ export const GameCard = (props: Props) => {
               onEditing={setIsEditing}
               onChange={changeDescription}
             />
+            <div className={style.modalAgeInputContainer}>
+              <label htmlFor="">Age rating</label>
+              <input type="number" className={style.modalAgeInput} value={gameCard.ageRating} onChange={changeAge} />
+            </div>
+            <p>Platforms</p>
+            {GAME_PLATFORMS.map((platform) => {
+              return (
+                <div className={style.modalCheckbox} key={platform.selector}>
+                  <label htmlFor={platform.selector}>{platform.title}</label>
+                  <input
+                    checked={gameCard.platformsSelector.includes(platform.selector)}
+                    type="checkbox"
+                    onChange={changePlatforms}
+                    id={platform.selector}
+                    value={platform.selector}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
-        <button className={style.button}>Submit</button>
+        <button className={style.button} disabled={!isCardEdited}>
+          Submit
+        </button>
         <button className={style.button}>Delete card</button>
       </Modal>
     </>

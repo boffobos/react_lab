@@ -156,9 +156,12 @@ export const Profile = () => {
 
   //functions for changing user info fields
   const changeUserName = (name: string) => {
-    setUserName(name);
-    if (userName !== name) setIsChanged(true);
-    return true;
+    if (userName !== name) {
+      setUserName(name);
+      setIsChanged(true);
+      return true;
+    }
+    return false;
   };
 
   const changeUserEmail = (email: string) => {
@@ -169,8 +172,10 @@ export const Profile = () => {
         if (userEmail !== email) {
           setIsChanged(true);
           setEmail(result);
+          return true;
+        } else {
+          return false;
         }
-        return true;
       })
       .catch((e) => {
         return setNotificationMessage(e.message);
@@ -178,21 +183,29 @@ export const Profile = () => {
   };
 
   const changeUserCity = (city: string) => {
-    setCity(city);
-    if (userCity !== city) setIsChanged(true);
-    return true;
+    if (userCity !== city) {
+      setCity(city);
+      setIsChanged(true);
+      return true;
+    }
+    return false;
   };
 
   const changeUserBOD = (date: string) => {
-    setBOD(date);
-    if (userBOD !== date) setIsChanged(true);
-    return true;
+    if (userBOD !== date) {
+      setBOD(date);
+      setIsChanged(true);
+      return true;
+    }
+    return false;
   };
 
   const changeDescription = (descr: string) => {
-    setDescription(descr);
-    if (userDescription !== descr) setIsChanged(true);
-    return true;
+    if (userDescription !== descr) {
+      setDescription(descr);
+      setIsChanged(true);
+      return true;
+    }
   };
 
   //functions for pressed buttons

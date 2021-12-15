@@ -152,4 +152,28 @@ export default webpackMockServer.add((app /* helper */) => {
 
     setTimeout(() => res.json(filterGamesByParams(params)).send, 500);
   });
+
+  app.put("/api/product", (req, res) => {
+    const card = req.body;
+    const game = gameDb.find((item) => item.id === +card.id);
+    if (game) {
+      const index = gameDb.indexOf(game);
+      gameDb[index] = card;
+      res.status(200).json(gameDb[index]).send();
+    } else {
+      res.status(201).send();
+    }
+  });
+
+  app.delete("api/product/:id", (req, res) => {
+    const id = +req.params.id;
+    if (gameDb.find((item) => item.id === id)) {
+      res
+        .status(200)
+        .json(gameDb.filter((item) => item.id !== id))
+        .send();
+    } else {
+      res.status(204).send();
+    }
+  });
 });

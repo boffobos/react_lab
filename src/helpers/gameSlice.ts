@@ -27,8 +27,9 @@ export const gameReducer = (
     }
     case "games/changed": {
       const game = action.payload;
-      if (state.includes((item) => item.id === game.id)) {
+      if (state.find((item) => item.id === game.id)) {
         const arr = state.filter((item) => item.id !== game.id);
+        console.log(game);
         return [...arr, game];
       }
       return state;

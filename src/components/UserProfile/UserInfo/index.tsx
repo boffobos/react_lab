@@ -25,7 +25,6 @@ export const DataRow = ({ isEditable, title, content, onEditing, onChange, isTex
 
   const finishEdit = async () => {
     const result = await onChange(contentField);
-    console.log(result);
     if (result === true) {
       setIsEditing(false); //switch datafield to data overview state
       onEditing(false); //unhide edit buttons in all datafields

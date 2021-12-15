@@ -1,6 +1,7 @@
 import { Option } from "react-dropdown";
 
 /* Application variables*/
+export const NOTIFICATION_TIMEOUT = 2500;
 export const PASSWORD_LENGTH = 6;
 export const SITE_NAME: string = "Game Store";
 export const HOME_URL: string = "/";

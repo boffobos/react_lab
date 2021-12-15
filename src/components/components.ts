@@ -26,3 +26,4 @@ export * from "./SideBar/SideBarSection/";
 export * from "./SideBar/CustomSelect/";
 export * from "./SideBar/CustomRadioButtons/";
 export * from "./Forms/CustomSingleSelect";
+export * from "./Notification";

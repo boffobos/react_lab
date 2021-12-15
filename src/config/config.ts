@@ -43,6 +43,7 @@ export const cartButtonIcon = faShoppingCart;
 export const exitButtonIcon = faRightFromBracket;
 export const formErrorIcon = faExclamation;
 
+
 export const defaultAvatar = "/assets/images/avatars/AV_1.jpg";
 
 /* Settings for product page */

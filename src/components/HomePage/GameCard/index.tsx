@@ -1,8 +1,9 @@
 import style from "./style.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { ChangeEvent, useState } from "react";
-import { Modal, DataRow } from "../../components";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Modal, DataRow, Notification, INotification } from "../../components";
 import { GAME_PLATFORMS } from "@/constants";
+import axios from "axios";
 
 export interface IGameData {
   id: number;
@@ -29,10 +30,12 @@ export const GameCard = (props: Props) => {
   const userName = useSelector((state) => state.users.userName);
   const game = props.data;
   const dispatch = useDispatch();
-  //game card state from editing
+  //game card state from edit modal
+  const [notify, setNotify] = useState<INotification>({ text: "", status: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [gameCard, setGameCard] = useState<IGameData>(props.data);
   const [isCardEdited, setIsCardEdited] = useState(false);
+  const [sendData, setSendData] = useState(false);
 
   const changeTitle = (title: string) => {
     if (gameCard.title.toLocaleLowerCase() !== title.toLocaleLowerCase()) {
@@ -114,6 +117,29 @@ export const GameCard = (props: Props) => {
       setIsCardEdited(true);
     }
   };
+  //sending edited data to server
+  useEffect(() => {
+    if (isCardEdited) {
+      axios.put("api/product", gameCard).then((response) => {
+        if (response.status === 200) {
+          dispatch({ type: "games/changed", payload: response.data });
+          closeModal();
+          setNotify({ text: "Game card has been changed!", status: "success" });
+        } else {
+          closeModal();
+          setNotify({ text: "Something goes wrong", status: "error" });
+        }
+      });
+      setIsCardEdited(false);
+    }
+  }, [sendData]);
+
+  useEffect(() => {});
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   //seting up data of particulad card for using it in redux store as cart item
   const [gameCardInfo, setGameCardInfo] = useState({
     gameId: game.id,
@@ -192,7 +218,7 @@ export const GameCard = (props: Props) => {
           )}
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} modalName="Edit Card" className={style.modal}>
+      <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Edit Card" className={style.modal}>
         <div className={style.modalContainer}>
           <div className={style.modalImage}>
             <p>Card image</p>
@@ -257,11 +283,12 @@ export const GameCard = (props: Props) => {
             })}
           </div>
         </div>
-        <button className={style.button} disabled={!isCardEdited}>
+        <button className={style.button} disabled={!isCardEdited} onClick={() => setSendData((state) => !state)}>
           Submit
         </button>
         <button className={style.button}>Delete card</button>
       </Modal>
+      <Notification message={notify} />
     </>
   );
 };

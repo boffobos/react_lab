@@ -8,6 +8,7 @@ import {
   CustomRadioButtons,
   IGameData,
   CustomButton,
+  GameCardForm,
 } from "../../components/components";
 import { ageOptions, genresOptions, sortTypeOptions, sortCriteriaOptions } from "../../config/config";
 import { useParams } from "react-router-dom";
@@ -262,78 +263,9 @@ export const Products = () => {
         </main>
       </div>
       {/* Create new card modal */}
-      {/* <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Edit Card" className={style.modal}>
-        <div className={style.modalContainer}>
-          <div className={style.modalImage}>
-            <p>Card image</p>
-            <img src={game.image} alt={game.title} />
-          </div>
-          <div className={style.modalGameInfo}>
-            <p>Information</p>
-            <DataRow
-              isEditable={!isEditing}
-              title={"Name"}
-              content={gameCard.title}
-              onEditing={setIsEditing}
-              onChange={changeTitle}
-            />
-            <DataRow
-              isEditable={!isEditing}
-              title={"Genre"}
-              content={gameCard.genre}
-              onEditing={setIsEditing}
-              onChange={changeGenre}
-            />
-            <DataRow
-              isEditable={!isEditing}
-              title={"Price"}
-              content={gameCard.price}
-              onEditing={setIsEditing}
-              onChange={changePrice}
-            />
-            <DataRow
-              isEditable={!isEditing}
-              title={"Image"}
-              content={gameCard.image}
-              onEditing={setIsEditing}
-              onChange={changeImage}
-            />
-            <DataRow
-              isEditable={!isEditing}
-              title={"Description"}
-              isTextArea={true}
-              content={gameCard.description}
-              onEditing={setIsEditing}
-              onChange={changeDescription}
-            />
-            <div className={style.modalAgeInputContainer}>
-              <label htmlFor="">Age rating</label>
-              <input type="number" className={style.modalAgeInput} value={gameCard.ageRating} onChange={changeAge} />
-            </div>
-            <p>Platforms</p>
-            {GAME_PLATFORMS.map((platform) => {
-              return (
-                <div className={style.modalCheckbox} key={platform.selector}>
-                  <label htmlFor={platform.selector}>{platform.title}</label>
-                  <input
-                    checked={gameCard.platformsSelector.includes(platform.selector)}
-                    type="checkbox"
-                    onChange={changePlatforms}
-                    id={platform.selector}
-                    value={platform.selector}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <button className={style.button} disabled={!isCardEdited} onClick={() => setSendData((state) => !state)}>
-          Submit
-        </button>
-        <button className={style.button} onClick={confirmations}>
-          Delete card
-        </button>
-      </Modal> */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Edit Card" className={style.modal}>
+        <GameCardForm onSubmit={createNewCard}/>
+      </Modal>
     </>
   );
 };

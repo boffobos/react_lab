@@ -165,7 +165,7 @@ export default webpackMockServer.add((app /* helper */) => {
     }
   });
 
-  app.delete("api/product/:id", (req, res) => {
+  app.delete("/api/product/:id", (req, res) => {
     const id = +req.params.id;
     if (gameDb.find((item) => item.id === id)) {
       res
@@ -174,6 +174,24 @@ export default webpackMockServer.add((app /* helper */) => {
         .send();
     } else {
       res.status(204).send();
+    }
+  });
+
+  app.post("/api/product", (req, res) => {
+    const game = req.body;
+    const getNewId = () => {
+      let id = -1;
+      gameDb.forEach((game) => {
+        if (+game.id > id) id = +game.id;
+      });
+      return id + 1;
+    };
+    if (game) {
+      const newGame = { ...game, id: getNewId() };
+      res.status(200).json(newGame).send();
+      gameDb.push(newGame);
+    } else {
+      res.status(400).send();
     }
   });
 });

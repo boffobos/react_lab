@@ -9,6 +9,9 @@ import {
   IGameData,
   CustomButton,
   GameCardForm,
+  Modal,
+  Notification,
+  INotification,
 } from "../../components/components";
 import { ageOptions, genresOptions, sortTypeOptions, sortCriteriaOptions } from "../../config/config";
 import { useParams } from "react-router-dom";
@@ -24,6 +27,7 @@ export const Products = () => {
   const params = useParams();
   const dispatch = useDispatch();
   //const [isLoading, setIsLoading] = useState(true); //change initial state when finish
+  const [notify, setNotify] = useState<INotification>({ text: "", status: "" });
   const [loadedGames, setLoadedGames] = useState<IGameData[] | null>(null);
   const [sortCriteria, setSortCriteria] = useState("name");
   const [sortType, setSortType] = useState("asc");
@@ -31,13 +35,35 @@ export const Products = () => {
   const [ageRating, setAgeRating] = useState(0);
   const [input, setInput] = useState("");
   const [searchName, setSearchName] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const userRole = useSelector((state) => state.users.role);
   const gamesInStore = useSelector((state) => state.games);
 
   const platformTitle = params.platform;
 
+  //Hanle new card creating
+  const [newGameCard, setNewGameCard] = useState<IGameData>();
+  const createNewCard = (game: IGameData) => {
+    setNewGameCard(game);
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    if (newGameCard) {
+      axios.post("/api/product", newGameCard).then((response) => {
+        if (response.status === 200) {
+          setNotify({ text: "Created successfully!", status: "success" });
+          dispatch({ type: "games/added", payload: [response.data] });
+        } else {
+          setNotify({ text: "Etnry was not created!", status: "error" });
+        }
+      });
+    }
+  }, [newGameCard]);
+
   //const platformTitle = params.platform;
   const setTitle = () => getPlatformFromSelector(platformTitle);
+  const closeModal = () => setIsModalOpen(false);
 
   // Sidebar handling functions
   const hanleSortCriteria = (e: Option) => {
@@ -253,19 +279,16 @@ export const Products = () => {
             value={input}
           />
           {userRole === "admin" ? (
-            <CustomButton
-              className={style.createBtn}
-              title="Create card"
-              onClick={() => alert("Creating game card..")}
-            />
+            <CustomButton className={style.createBtn} title="Create card" onClick={() => setIsModalOpen(true)} />
           ) : null}
           <Section title={setTitle()}>{useGameCard(loadedGames, platformTitle)}</Section>
         </main>
       </div>
       {/* Create new card modal */}
-      <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Edit Card" className={style.modal}>
-        <GameCardForm onSubmit={createNewCard}/>
+      <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Create new Card" className={style.modal}>
+        <GameCardForm onSubmit={createNewCard} />
       </Modal>
+      <Notification message={notify} />
     </>
   );
 };

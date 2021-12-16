@@ -1,5 +1,5 @@
 import style from "./style.module.css";
-import { IGameData, DataRow } from "@/components/components";
+import { IGameData, DataRow, CustomButton } from "@/components/components";
 import { GAME_PLATFORMS } from "@/constants";
 import { ChangeEvent, useEffect, useState } from "react";
 
@@ -15,7 +15,7 @@ const initialGame: IGameData = {
   currency: "$",
   image: "/assets/images/pc.png",
   rating: 5,
-  platforms: ["/assets/aegims/pc.png"],
+  platforms: ["/assets/images/pc.png"],
   platformsSelector: ["pc"],
   description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, expedita.",
   ageRating: 18,
@@ -102,7 +102,7 @@ export const GameCardForm = ({ data = initialGame, onSubmit }: Props) => {
   }, []);
 
   const submitData = () => {
-    onSubmit();
+    onSubmit(gameCard);
   };
   return (
     <>
@@ -170,9 +170,7 @@ export const GameCardForm = ({ data = initialGame, onSubmit }: Props) => {
           })}
         </div>
       </div>
-      <button className={style.button} onClick={submitData}>
-        Create
-      </button>
+      <CustomButton className={style.button} onClick={submitData} title={"Create"}/>
     </>
   );
 };

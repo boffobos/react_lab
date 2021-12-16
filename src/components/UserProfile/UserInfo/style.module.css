@@ -19,6 +19,8 @@
 
 .content {
   padding: 0 5px;
+  height: 24px;
+  overflow-y: hidden;
 }
 
 .icon:hover {

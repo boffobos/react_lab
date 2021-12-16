@@ -1,32 +1,36 @@
 import style from "./style.module.css";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-interface IUserInfo {
-  userName: string;
-  description: string;
-  city: string;
-  birthdate: Date;
+interface IDataRow {
+  isEditable: boolean;
+  content: string | number;
+  title: string;
+  onEditing: Function;
+  onChange: Function;
+  isTextArea?: boolean;
 }
-
-export const DataRow = ({ isEditable, title, content, onEditing, onChange }) => {
+//first use in profile page, so logic should get there
+export const DataRow = ({ isEditable, title, content, onEditing, onChange, isTextArea }: IDataRow) => {
   const [contentField, setContentField] = useState(content);
   const [contentFieldBackup, setContentFieldBackup] = useState(contentField);
   const [isEditing, setIsEditing] = useState(false);
 
   const edit = () => {
     setContentFieldBackup(contentField);
-    setIsEditing(true);
-    onEditing(true); //set state in parent component
+    setIsEditing(true); //switch datafield to editable state
+    onEditing(true); //set state in parent component to hide edit buttons in other datafields
   };
 
   const finishEdit = async () => {
     const result = await onChange(contentField);
     if (result === true) {
+      setIsEditing(false); //switch datafield to data overview state
+      onEditing(false); //unhide edit buttons in all datafields
+    } else {
       setIsEditing(false);
       onEditing(false);
-    } else {
       result;
     }
   };
@@ -67,15 +71,28 @@ export const DataRow = ({ isEditable, title, content, onEditing, onChange }) => 
       <label htmlFor="edited" className={style.editLabel}>
         {title}
       </label>
-      <input
-        autoFocus
-        type="text"
-        id="edited"
-        className={style.editInput}
-        value={contentField}
-        onKeyDown={handleKeys}
-        onChange={handeInput}
-      />
+      {!isTextArea ? (
+        <input
+          className={style.editInput}
+          autoFocus
+          type={"text"}
+          id="edited"
+          value={contentField}
+          onKeyDown={handleKeys}
+          onChange={handeInput}
+        />
+      ) : (
+        <textarea
+          className={style.textArea}
+          autoFocus
+          onKeyDown={handleKeys}
+          onChange={handeInput}
+          id="edited"
+          cols={30}
+          rows={10}
+          value={contentField}
+        ></textarea>
+      )}
       <FontAwesomeIcon icon={faCheck} className={style.editIcon} onClick={finishEdit} />
     </div>
   );

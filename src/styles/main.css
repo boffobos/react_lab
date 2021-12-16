@@ -14,6 +14,8 @@
   --error-color: #cc2e2e;
   --success-color: #98f7a5;
   --page-padding: 0.8rem;
+
+  --border-radius: 10px;
 }
 
 * {

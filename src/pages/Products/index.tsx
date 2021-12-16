@@ -1,15 +1,19 @@
 import style from "./style.module.css";
 import {
   Section,
-  Spinner,
   SearchBar,
-  GameCard,
   SideBar,
   SideBarSection,
   CustomSelect,
   CustomRadioButtons,
   IGameData,
+  CustomButton,
+  GameCardForm,
+  Modal,
+  Notification,
+  INotification,
 } from "../../components/components";
+import { ageOptions, genresOptions, sortTypeOptions, sortCriteriaOptions } from "../../config/config";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -17,117 +21,69 @@ import axios from "axios";
 import { Option } from "react-dropdown";
 import { useGameCard } from "@/hooks/useGameCard";
 import { getPlatformFromSelector } from "../../helpers/functions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Products = () => {
   const params = useParams();
-  const [isLoading, setIsLoading] = useState(true); //change initial state when finish
-  const [loadedGames, setLoadedGames] = useState<IGameData | null>();
+  const dispatch = useDispatch();
+  //const [isLoading, setIsLoading] = useState(true); //change initial state when finish
+  const [notify, setNotify] = useState<INotification>({ text: "", status: "" });
+  const [loadedGames, setLoadedGames] = useState<IGameData[] | null>(null);
   const [sortCriteria, setSortCriteria] = useState("name");
   const [sortType, setSortType] = useState("asc");
   const [genreType, setGenreType] = useState("all");
   const [ageRating, setAgeRating] = useState(0);
   const [input, setInput] = useState("");
   const [searchName, setSearchName] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const userRole = useSelector((state) => state.users.role);
+  const gamesInStore = useSelector((state) => state.games);
 
-  //Dropdown options
-  const sortCriteriaOptions = [
-    {
-      label: "Name",
-      value: "name",
-    },
-    {
-      label: "Age",
-      value: "age",
-    },
-    {
-      label: "Rating",
-      value: "rating",
-    },
-    {
-      label: "Price",
-      value: "price",
-    },
-  ];
+  const platformTitle = params.platform;
 
+  //Hanle new card creating
+  const [newGameCard, setNewGameCard] = useState<IGameData>();
+  const createNewCard = (game: IGameData) => {
+    setNewGameCard(game);
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    if (newGameCard) {
+      axios.post("/api/product", newGameCard).then((response) => {
+        if (response.status === 200) {
+          setNotify({ text: "Created successfully!", status: "success" });
+          dispatch({ type: "games/added", payload: [response.data] });
+        } else {
+          setNotify({ text: "Etnry was not created!", status: "error" });
+        }
+      });
+    }
+  }, [newGameCard]);
+
+  //const platformTitle = params.platform;
+  const setTitle = () => getPlatformFromSelector(platformTitle);
+  const closeModal = () => setIsModalOpen(false);
+
+  // Sidebar handling functions
   const hanleSortCriteria = (e: Option) => {
     if (e) setSortCriteria(e.value);
   };
 
-  const sortTypeOptions = [
-    {
-      label: "Ascending",
-      value: "asc",
-    },
-    {
-      label: "Descending",
-      value: "desc",
-    },
-  ];
   const handleCriteriaType = (e: Option) => {
     if (e) setSortType(e.value);
   };
 
-  //Radio buttons options
-  const genresOptions = [
-    {
-      label: "All genres",
-      value: "all",
-      selected: true,
-    },
-    {
-      label: "Actions",
-      value: "action",
-    },
-    {
-      label: "RPG",
-      value: "rpg",
-    },
-    {
-      label: "RTS",
-      value: "rts",
-    },
-    {
-      label: "Arcade",
-      value: "arcade",
-    },
-    {
-      label: "Survival",
-      value: "survival",
-    },
-  ];
   const handleGenreChanges = (e: ChangeEvent<HTMLInputElement>) => {
     setGenreType(e.target.value);
   };
 
-  const ageOptions = [
-    {
-      label: "All ages",
-      value: 0,
-    },
-    {
-      label: "3+",
-      value: 3,
-    },
-    {
-      label: "6+",
-      value: 6,
-    },
-    {
-      label: "12+",
-      value: 12,
-    },
-    {
-      label: "18+",
-      value: 18,
-    },
-  ];
   const handleAgeChanges = (e: ChangeEvent<HTMLInputElement>) => {
     setAgeRating(+e.target.value);
   };
 
   //Search handling
   const handleSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
-    // console.log(e.target);
     setInput(e.target.value);
   };
   //debounced search
@@ -138,7 +94,7 @@ export const Products = () => {
   setSearch(input);
 
   //function for sorting games on page
-  const sortOrder = (array) => {
+  const sortOrder = (array: Array<IGameData>) => {
     switch (sortType) {
       case "asc": {
         switch (sortCriteria) {
@@ -218,77 +174,121 @@ export const Products = () => {
     }
   };
 
+  const filterGames = (array: Array<IGameData> | undefined) => {
+    let filtered = [...(array || gamesInStore)];
+    if (searchName === "") {
+      //skip filtering
+    } else if (searchName) {
+      filtered = filtered.filter((game) => game.title.toLowerCase().includes(searchName.toLowerCase()));
+    }
+    if (platformTitle === "" || undefined) {
+      //skip filtering
+    } else {
+      filtered = filtered.filter((game) => game.platformsSelector.includes(platformTitle));
+    }
+    if (genreType === "all") {
+      //skip filtering
+    } else if (genreType) {
+      filtered = filtered.filter((game) => game.genre.includes(genreType));
+    }
+    if (+ageRating) {
+      filtered = filtered.filter((game) => game.ageRating <= +ageRating);
+    }
+    return filtered;
+  };
+
   useEffect(() => {
     if (loadedGames) {
       const arr = [...loadedGames];
       sortOrder(arr);
-      setLoadedGames(arr);
+      setLoadedGames(filterGames(arr));
     }
   }, [sortCriteria, sortType]);
 
-  const platformTitle = params.platform;
-  const setTitle = () => getPlatformFromSelector(platformTitle);
-
+  //get all games from server and place them into redux on first load
   useEffect(() => {
-    setLoadedGames(null);
-    axios.get(`/api/products/${platformTitle}/${genreType}/${ageRating}/${searchName || "$all"}`).then((result) => {
+    axios.get(`/api/products/$all/all/0/$all`).then((result) => {
       let games = result.data;
+      dispatch({ type: "games/added", payload: games });
       sortOrder(games);
-      setLoadedGames(games);
-      setIsLoading(false);
+      setLoadedGames(filterGames(games));
     });
-  }, [platformTitle, ageRating, genreType, searchName]);
+  }, []);
+
+  //changes order of cards when set sort parameters
+  useEffect(() => {
+    if (loadedGames) {
+      let games = [...gamesInStore];
+      sortOrder(games);
+      setLoadedGames(filterGames(games));
+    }
+  }, [platformTitle, ageRating, genreType, searchName, gamesInStore]);
 
   return (
-    <div
-      className={style.container}
-      style={{
-        background: `url(/assets/images/bg_3.jpg) no-repeat center center/cover`,
-      }}
-    >
-      <SideBar title={setTitle()}>
-        <SideBarSection title="Sort">
-          <div className={style.selection}>
-            <CustomSelect
-              label="Criteria"
-              options={sortCriteriaOptions}
-              selected={hanleSortCriteria}
-              placeholder="Name"
-              value={sortCriteria}
+    <>
+      <div
+        className={style.container}
+        style={{
+          background: `url(/assets/images/bg_3.jpg) no-repeat center center/cover`,
+        }}
+      >
+        <SideBar title={setTitle()}>
+          <SideBarSection title="Sort">
+            <div className={style.selection}>
+              <CustomSelect
+                label="Criteria"
+                options={sortCriteriaOptions}
+                selected={hanleSortCriteria}
+                placeholder="Name"
+                value={sortCriteria}
+              />
+            </div>
+            <div className={style.selection}>
+              <CustomSelect
+                label="Type"
+                options={sortTypeOptions}
+                selected={handleCriteriaType}
+                placeholder="Ascending"
+                value={sortType}
+              />
+            </div>
+          </SideBarSection>
+          <SideBarSection title="Genres">
+            <CustomRadioButtons
+              groupName="genres"
+              options={genresOptions}
+              value={genreType}
+              onChange={handleGenreChanges}
             />
-          </div>
-          <div className={style.selection}>
-            <CustomSelect
-              label="Type"
-              options={sortTypeOptions}
-              selected={handleCriteriaType}
-              placeholder="Ascending"
-              value={sortType}
+          </SideBarSection>
+          <SideBarSection title="Age rating">
+            <CustomRadioButtons
+              groupName="age"
+              /*   */
+              options={ageOptions}
+              value={ageRating}
+              onChange={handleAgeChanges}
             />
-          </div>
-        </SideBarSection>
-        <SideBarSection title="Genres">
-          <CustomRadioButtons
-            groupName="genres"
-            options={genresOptions}
-            value={genreType}
-            onChange={handleGenreChanges}
+          </SideBarSection>
+        </SideBar>
+        <main>
+          <SearchBar
+            className={style.searchBar}
+            searchPlaceholder="Search"
+            onChange={handleSearchInput}
+            value={input}
           />
-        </SideBarSection>
-        <SideBarSection title="Age rating">
-          <CustomRadioButtons
-            groupName="age"
-            /*   */
-            options={ageOptions}
-            value={ageRating}
-            onChange={handleAgeChanges}
-          />
-        </SideBarSection>
-      </SideBar>
-      <main>
-        <SearchBar searchPlaceholder="Search" onChange={handleSearchInput} value={input} />
-        <Section title={setTitle()}>{useGameCard(loadedGames, platformTitle)}</Section>
-      </main>
-    </div>
+          {userRole === "admin" ? (
+            <CustomButton className={style.createBtn} title="Create card" onClick={() => setIsModalOpen(true)} />
+          ) : null}
+          <Section title={setTitle()}>{useGameCard(loadedGames, platformTitle)}</Section>
+        </main>
+      </div>
+      {/* Create new card modal */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Create new Card" className={style.modal}>
+        <GameCardForm onSubmit={createNewCard} />
+      </Modal>
+      <Notification message={notify} />
+    </>
   );
 };

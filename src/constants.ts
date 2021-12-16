@@ -1,6 +1,7 @@
 import { Option } from "react-dropdown";
 
 /* Application variables*/
+export const NOTIFICATION_TIMEOUT = 2500;
 export const PASSWORD_LENGTH = 6;
 export const SITE_NAME: string = "Game Store";
 export const HOME_URL: string = "/";
@@ -25,14 +26,22 @@ export const NAVBAR_OPTIONS = [
   // { id: 5, title: "Sign up" },
 ];
 export const GAME_PLATFORMS = [
-  { id: 1, title: "PC", icon: "/assets/images/pc.png", alt: "PC icon", url: "/products/pc" },
-  { id: 2, title: "XBox One", icon: "/assets/images/xbox.png", alt: "XBox One icon", url: "/products/xboxOne" },
+  { id: 1, title: "PC", icon: "/assets/images/pc.png", alt: "PC icon", url: "/products/pc", selector: "pc" },
+  {
+    id: 2,
+    title: "XBox One",
+    icon: "/assets/images/xbox.png",
+    alt: "XBox One icon",
+    url: "/products/xboxOne",
+    selector: "xboxOne",
+  },
   {
     id: 3,
     title: "Playstation 5",
     icon: "/assets/images/playstation.png",
     alt: "Playstation icon",
     url: "products/playstation5",
+    selector: "playstation5",
   },
 ];
 

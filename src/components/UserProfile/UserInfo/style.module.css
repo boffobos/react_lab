@@ -19,6 +19,8 @@
 
 .content {
   padding: 0 5px;
+  height: 24px;
+  overflow-y: hidden;
 }
 
 .icon:hover {
@@ -49,17 +51,25 @@
 }
 
 .editInput {
-  padding: 3px 15px 3px 5px;
+  padding: 3px 20px 3px 5px;
   width: 100%;
   background-color: var(--dark-color-second);
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
 }
 
+.textArea {
+  padding: 3px 20px 3px 5px;
+  background-color: var(--dark-color-second);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  width: 100%;
+}
+
 .editIcon {
   position: absolute;
   right: 6px;
-  bottom: 5px;
+  top: 33px;
   color: green;
 }
 

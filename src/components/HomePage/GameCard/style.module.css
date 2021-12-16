@@ -1,34 +1,59 @@
-:root {
-  --border-radius: 10px;
-}
-
 .container {
   width: 200px;
   height: 300px;
   background-color: transparent;
   perspective: 1000px;
+  position: relative;
 }
 
-.innerContainer {
-  position: relative;
+.containerFront,
+.containerBack {
   width: 100%;
   height: 100%;
   transition: transform 0.7s;
   transform-style: preserve-3d;
-}
-
-.container:hover .innerContainer {
-  transform: rotateY(180deg);
+  position: absolute;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .containerFront {
-  width: 100%;
-  height: 100%;
   border: var(--active-color) 1px solid;
   border-radius: var(--border-radius);
   overflow: hidden;
   background: var(--dark-color);
   box-shadow: 0 0 10px var(--active-color);
+}
+
+.containerBack {
+  transform: rotateY(-180deg);
+  border: var(--active-color) 1px solid;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background: var(--dark-color);
+  box-shadow: 0 0 10px var(--active-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  padding: 1rem;
+}
+
+.containerBack > div {
+  overflow: hidden;
+  padding: 10px 0;
+  margin-bottom: 2px;
+  line-height: 0.8rem;
+}
+
+.container:hover .containerFront {
+  transform: rotateY(180deg);
+}
+
+.container:hover .containerBack {
+  transform: rotateY(0deg);
 }
 
 .gameImage {
@@ -91,40 +116,8 @@
   line-height: 1.2rem;
 }
 
-.containerFront,
-.containerBack {
-  position: absolute;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.containerBack {
-  width: 100%;
-  height: 100%;
-  border: var(--active-color) 1px solid;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  background: var(--dark-color);
-  box-shadow: 0 0 10px var(--active-color);
-  transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8rem;
-  color: var(--primary-color);
-  padding: 1rem;
-}
-
-.containerBack > div {
-  overflow: hidden;
-  padding: 10px 0;
-  margin-bottom: 2px;
-  line-height: 0.8rem;
-}
-
 .button {
-  display: block;
+  display: inline-block;
   padding: 5px;
   border-radius: 3px;
   border: none;
@@ -133,9 +126,120 @@
 }
 
 .button:hover {
-  transform: scale(1.05);
+  color: var(--dark-color);
+  cursor: pointer;
 }
 
 .button:active {
-  transform: scale(1);
+  color: var(--primary-color);
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+}
+
+/* Styles for modal */
+
+.modal {
+  text-align: center;
+  max-width: 800px;
+}
+
+.modal button {
+  margin: 15px 20px;
+}
+
+.modal button:disabled {
+  cursor: inherit;
+  color: var(--disable-color);
+  background-color: var(--active-color-second);
+}
+
+.modalContainer {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  padding: 30px;
+}
+
+.modalImage p,
+.modalGameInfo p {
+  padding: 10px 5px;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.modalImage {
+  width: 200px;
+  height: 300px;
+  padding: 10px 15px;
+}
+
+.modalImage img {
+  width: 100%;
+  height: auto;
+}
+
+.modalGameInfo {
+  max-width: 400px;
+  padding: 10px 15px;
+}
+
+.modalCheckbox {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.modalAgeInputContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modalAgeInput {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 0 10px;
+  width: 30%;
+  text-align: center;
+  position: relative;
+}
+
+.modalAgeInput::-webkit-inner-spin-button,
+.modalAgeInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Confirmation modal */
+
+.modalButtonsContainer {
+  padding: 20px 10px;
+  margin-top: -24px;
+  text-align: center;
+}
+
+.modalButtonsContainer p {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.modalButtonsContainer .confirmBtn {
+  background-color: var(--error-color);
+  color: var(--dark-color);
+  display: inline-block;
+  width: 30%;
+}
+
+.modalButtonsContainer .closeBtn {
+  background-color: var(--success-color);
+  color: var(--dark-color);
+  display: inline-block;
+  width: 30%;
+  margin-left: 25%;
 }

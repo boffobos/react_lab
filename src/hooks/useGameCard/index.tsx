@@ -1,6 +1,6 @@
-import { GameCard, Spinner } from "@/components/components";
+import { GameCard, IGameData, Spinner } from "@/components/components";
 
-export const useGameCard = (gameCardData, selectedPlatform = "") => {
+export const useGameCard = (gameCardData: IGameData[], selectedPlatform = "") => {
   if (gameCardData) {
     return gameCardData.map((game) => <GameCard key={game.id} data={game} selectedPlatform={selectedPlatform} />);
   }

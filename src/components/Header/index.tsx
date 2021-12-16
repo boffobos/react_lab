@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import * as constants from "../../constants";
 import style from "./style.module.css";
 import { ReactElement } from "react";
+import { Notification } from "../Notification";
+import { useSelector } from "react-redux";
 
 interface Props {
   link?: string;
@@ -10,16 +12,20 @@ interface Props {
 }
 
 export const Header = (props: Props): ReactElement => {
+  const notify = useSelector((state) => state.notifications);
   return (
-    <header className={style.header}>
-      <div>
-        <Link to={props.link || "#"} className={style.logo}>
-          {constants.SITE_NAME}
-        </Link>
-      </div>
-      <div>
-        <Navbar options={constants.NAVBAR_OPTIONS} />
-      </div>
-    </header>
+    <>
+      <header className={style.header}>
+        <div>
+          <Link to={props.link || "#"} className={style.logo}>
+            {constants.SITE_NAME}
+          </Link>
+        </div>
+        <div>
+          <Navbar options={constants.NAVBAR_OPTIONS} />
+        </div>
+      </header>
+      <Notification message={notify} />
+    </>
   );
 };

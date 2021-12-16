@@ -7,9 +7,10 @@ interface Props {
   children: ReactNode;
   isOpen: boolean;
   onClose: Function;
+  className?: string;
 }
 
-export const Modal = ({ modalName, children, isOpen, onClose }: Props) => {
+export const Modal = ({ modalName, children, isOpen, onClose, className }: Props) => {
   const closeModal: ReactEventHandler = () => {
     onClose();
   };
@@ -17,7 +18,7 @@ export const Modal = ({ modalName, children, isOpen, onClose }: Props) => {
     ? null
     : ReactDOM.createPortal(
         <div className={style.modal}>
-          <div className={style.child}>
+          <div className={`${style.child} ${className}`}>
             <div className={style.header}>
               <h3>{modalName}</h3>
               <div className={style.closeBtn} onClick={closeModal}></div>

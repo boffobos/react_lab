@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Modal, DataRow, Notification, INotification } from "../../components";
 import { GAME_PLATFORMS } from "@/constants";
 import axios from "axios";
+import { CustomButton } from "@/components/CustomButton";
 
 export interface IGameData {
   id: number;
@@ -26,6 +27,7 @@ interface Props {
 
 export const GameCard = (props: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const userRole = useSelector((state) => state.users.role);
   const userName = useSelector((state) => state.users.userName);
   const game = props.data;
@@ -131,10 +133,9 @@ export const GameCard = (props: Props) => {
         }
       });
       setIsCardEdited(false);
+
     }
   }, [sendData]);
-
-  useEffect(() => {});
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -159,6 +160,16 @@ export const GameCard = (props: Props) => {
       arr.push("★");
     }
     return arr;
+  };
+
+  const confirmations = () => {
+    setIsConfirmOpen(true);
+  };
+
+  const selfDestroy = () => {
+    setTimeout(() => dispatch({ type: "games/removed", payload: gameCard }), 500);
+    setIsConfirmOpen(false);
+    setNotify({ text: "Game card has been removed!", status: "success" });
   };
 
   return (
@@ -204,8 +215,8 @@ export const GameCard = (props: Props) => {
           </div>
           {userRole === "admin" ? (
             <div className={style.btnContainer}>
-              <button type="button" className={style.button} onClick={() => alert("Are you sure?")}>
-                Remove
+              <button type="button" className={style.button} onClick={addToCart}>
+                Add to cart
               </button>
               <button type="button" className={style.button} onClick={() => setIsModalOpen(true)}>
                 Edit
@@ -218,6 +229,7 @@ export const GameCard = (props: Props) => {
           )}
         </div>
       </div>
+      {/* modal card editor*/}
       <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Edit Card" className={style.modal}>
         <div className={style.modalContainer}>
           <div className={style.modalImage}>
@@ -286,9 +298,18 @@ export const GameCard = (props: Props) => {
         <button className={style.button} disabled={!isCardEdited} onClick={() => setSendData((state) => !state)}>
           Submit
         </button>
-        <button className={style.button}>Delete card</button>
+        <button className={style.button} onClick={confirmations}>
+          Delete card
+        </button>
       </Modal>
       <Notification message={notify} />
+      <Modal modalName={"Are you sure"} onClose={() => setIsConfirmOpen(false)} isOpen={isConfirmOpen}>
+        <div className={style.modalButtonsContainer}>
+          <p>You are about to delete game card "{gameCard.title}"</p>
+          <CustomButton className={style.confirmBtn} title={"Confirm"} onClick={selfDestroy} />
+          <CustomButton className={style.closeBtn} title={"Close"} onClick={() => setIsConfirmOpen(false)} />
+        </div>
+      </Modal>
     </>
   );
 };

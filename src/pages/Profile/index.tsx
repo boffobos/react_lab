@@ -1,7 +1,7 @@
 import style from "./style.module.css";
 import { useSelector } from "react-redux";
 import { changePasswordFormConfig, defaultAvatar } from "../../config/config";
-import { PASSWORD_LENGTH } from "@/constants";
+import { PASSWORD_LENGTH, NOTIFICATION_TIMEOUT } from "@/constants";
 import {
   Section,
   UserPhoto,
@@ -12,6 +12,8 @@ import {
   CustomButton,
   Modal,
   FormMaker,
+  Notification,
+  INotification,
 } from "../../components/components";
 import { useState, useEffect } from "react";
 import { string as yup } from "yup";
@@ -38,7 +40,7 @@ export const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [notification, setNotification] = useState("");
+  const [notification, setNotification] = useState<INotification>({ text: "", status: "" });
   //set of states for user information fields
   const [userName, setUserName] = useState("");
   const [userEmail, setEmail] = useState("");
@@ -51,14 +53,6 @@ export const Profile = () => {
   //creating some state for saving passwords and errors from change password modal
   const [formState, setFormState] = useState<IFormState>({} as IFormState);
 
-  const notificationTimeout = 2500;
-  const setNotificationMessage = (message: string) => {
-    setNotification(message);
-    setTimeout(() => setNotification(""), notificationTimeout);
-  };
-
-  /* Password change handlers */
-
   //set initial userId when
   const userId = useSelector((state) => state.users.userId);
 
@@ -70,8 +64,7 @@ export const Profile = () => {
         switch (result.status) {
           case 201: {
             closeModal();
-            //formNotification("New password set up!");
-            setNotificationMessage("New password set up!");
+            setNotification({ text: "New password set up!", status: "success" });
             break;
           }
           case 204: {
@@ -87,6 +80,7 @@ export const Profile = () => {
       });
   };
 
+  /* Password change handlers */
   const passwordVerifying = () => {
     const userData = {
       id: userId,
@@ -130,7 +124,6 @@ export const Profile = () => {
             .validate(rePassword)
             .then((result) => {
               if (result) {
-                console.log("rePassword checked");
                 rePasswordErrorSetter("");
                 userData.newPassword = result;
                 setFormState((state) => ({ ...state, rePassword: result }));
@@ -178,7 +171,7 @@ export const Profile = () => {
         }
       })
       .catch((e) => {
-        return setNotificationMessage(e.message);
+        return setNotification({ text: e.message, status: "error" });
       });
   };
 
@@ -226,7 +219,7 @@ export const Profile = () => {
       .then((response) => {
         if (response.status === 201) {
           setIsChanged(false);
-          setNotificationMessage("Changes have been saved!");
+          setNotification({ text: "Changes have been saved!", status: "success" });
         }
       })
       .catch((e) => {
@@ -266,7 +259,6 @@ export const Profile = () => {
           background: `url(/assets/images/bg_2.jpg) no-repeat center center/cover`,
         }}
       >
-        {notification ? <div className={style.notify}>{notification}</div> : null}
         <Section title={`${userName} profile page`}>
           {isLoading ? (
             <Spinner />
@@ -321,6 +313,7 @@ export const Profile = () => {
       <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Change Password">
         <FormMaker formFieldOptions={changePasswordFormConfig} onSubmit={setFormState} />
       </Modal>
+      <Notification message={notification} />
     </>
   );
 };

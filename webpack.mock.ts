@@ -128,7 +128,7 @@ export default webpackMockServer.add((app /* helper */) => {
     const params = req.params;
 
     const filterGamesByParams = (paramsObj) => {
-      let filtGames = gameDb;
+      let filtGames = [...gameDb];
       if (paramsObj.searchName === "$all") {
         //skip filtering
       } else if (paramsObj.searchName) {

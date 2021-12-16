@@ -2,6 +2,7 @@ import style from "./style.module.css";
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { NOTIFICATION_TIMEOUT } from "@/constants";
+import { useDispatch } from "react-redux";
 
 export interface INotification {
   text: string | "";
@@ -11,6 +12,11 @@ export interface INotification {
 interface Props {
   message: INotification;
 }
+
+// export const sendNotification = (message: INotification) => {
+//   const dispatch = useDispatch();
+//   dispatch({ type: "notify/setMessage", payload: message });
+// };
 
 export const Notification = ({ message }: Props) => {
   const [isOpen, setIsOpen] = useState(false);

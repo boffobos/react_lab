@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import { userReducer } from "../helpers/userSlice";
 import { gameReducer } from "./gameSlice";
+import { notificationReducer } from "./notificationSlice";
 import { IGameData } from "../components/components";
 import { DefaultRootState } from "react-redux";
 declare module "react-redux" {
@@ -23,10 +24,14 @@ declare module "react-redux" {
       }[];
     };
     games: IGameData[];
+    notifications: {
+      text: string | "";
+      status: "success" | "error" | "warn" | "";
+    };
   }
 }
-
 export const rootReducer = combineReducers<DefaultRootState>({
   users: userReducer,
   games: gameReducer,
+  notifications: notificationReducer,
 });

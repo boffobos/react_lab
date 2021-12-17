@@ -4,3 +4,11 @@
   width: calc(100vw - (100vw - 100%));
   padding: var(--page-padding);
 }
+
+.gameCards {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}

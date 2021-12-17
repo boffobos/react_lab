@@ -43,6 +43,7 @@ export const Home = () => {
         })}
       </Section>
       <Section title="New games">
+        <div className={style.gameCards}>
         {isLoading ? (
           <Spinner />
         ) : (
@@ -50,6 +51,7 @@ export const Home = () => {
             return <GameCard key={item.id} data={item} />;
           })
         )}
+        </div>
       </Section>
     </main>
   );

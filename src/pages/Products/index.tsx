@@ -281,7 +281,9 @@ export const Products = () => {
           {userRole === "admin" ? (
             <CustomButton className={style.createBtn} title="Create card" onClick={() => setIsModalOpen(true)} />
           ) : null}
-          <Section title={setTitle()}>{useGameCard(loadedGames, platformTitle)}</Section>
+          <Section title={setTitle()}>
+            <div className={style.gameCards}>{useGameCard(loadedGames, platformTitle)}</div>
+          </Section>
         </main>
       </div>
       {/* Create new card modal */}

@@ -1,3 +1,4 @@
+export * from "../pages/pages";
 export * from "./Header";
 export * from "./Footer";
 export * from "./Header/DropdownMenu/";

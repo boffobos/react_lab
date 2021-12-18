@@ -1,6 +1,6 @@
 import { SearchBar, Section, PlatformSelector, GameCard, Spinner, IGameData } from "../../components/components";
 import style from "./style.module.css";
-import * as constants from "../../constants";
+import { GAME_PLATFORMS } from "../../constants";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -30,7 +30,7 @@ export const Home = () => {
     >
       <SearchBar searchPlaceholder="Search..." />
       <Section title="Categories">
-        {constants.GAME_PLATFORMS.map((item) => {
+        {GAME_PLATFORMS.map((item) => {
           return (
             <PlatformSelector
               key={item.id}
@@ -44,13 +44,13 @@ export const Home = () => {
       </Section>
       <Section title="New games">
         <div className={style.gameCards}>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          items.map((item) => {
-            return <GameCard key={item.id} data={item} />;
-          })
-        )}
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            items.map((item) => {
+              return <GameCard key={item.id} data={item} />;
+            })
+          )}
         </div>
       </Section>
     </main>

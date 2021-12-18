@@ -1,7 +1,7 @@
 import style from "./style.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { CustomSingleSelect, CustomButton, Modal } from "../../components/components";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { getPlatformFromSelector } from "../../helpers/functions";
 import { Option } from "react-dropdown";
 
@@ -57,6 +57,40 @@ export const Cart = () => {
     dispatch({ type: "item/remove", payload: itemsToRemove });
   };
 
+  const cartContent = useMemo(
+    () =>
+      cart.map((item) => {
+        return (
+          <li key={item.gameId} className={style.tableRow}>
+            <span>{item.gameName}</span>
+            <span>
+              {
+                <CustomSingleSelect
+                  onChange={setPlatform(item.gameId)}
+                  options={getPlatformsForDropdown(item.gamePlatforms)}
+                  placeholder={getPlatformFromSelector(item.selectedPlatform)}
+                />
+              }
+            </span>
+            <span>{new Date().toLocaleString("en-GB", { dateStyle: "short" })}</span>
+            <span>
+              <input
+                className={style.quantity}
+                value={item.quantity}
+                onChange={setQuantity(item.gameId)}
+                type="number"
+              />
+            </span>
+            <span>{item.gamePrice}</span>
+            <span>
+              <input type="checkbox" value={item.gameId} onChange={addItemsToRemoveList} />
+            </span>
+          </li>
+        );
+      }),
+    [cart]
+  );
+
   return (
     <>
       <div
@@ -73,37 +107,7 @@ export const Cart = () => {
               <span>Amount</span>
               <span>Price($)</span>
             </li>
-            {cart
-              ? cart.map((item) => {
-                  return (
-                    <li key={item.gameId} className={style.tableRow}>
-                      <span>{item.gameName}</span>
-                      <span>
-                        {
-                          <CustomSingleSelect
-                            onChange={setPlatform(item.gameId)}
-                            options={getPlatformsForDropdown(item.gamePlatforms)}
-                            placeholder={getPlatformFromSelector(item.selectedPlatform)}
-                          />
-                        }
-                      </span>
-                      <span>{new Date().toLocaleString("en-GB", { dateStyle: "short" })}</span>
-                      <span>
-                        <input
-                          className={style.quantity}
-                          value={item.quantity}
-                          onChange={setQuantity(item.gameId)}
-                          type="number"
-                        />
-                      </span>
-                      <span>{item.gamePrice}</span>
-                      <span>
-                        <input type="checkbox" value={item.gameId} onChange={addItemsToRemoveList} />
-                      </span>
-                    </li>
-                  );
-                })
-              : null}
+            {cart ? cartContent : null}
             <li className={`${style.btnContainer} ${style.tableRow}`}>
               <CustomButton className={style.removeBtn} onClick={removeItems} title="Remove" />
             </li>

@@ -15,7 +15,7 @@ import {
 } from "../../components/components";
 import { ageOptions, genresOptions, sortTypeOptions, sortCriteriaOptions } from "../../config/config";
 import { useParams } from "react-router-dom";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useMemo } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import axios from "axios";
 import { Option } from "react-dropdown";
@@ -46,6 +46,8 @@ export const Products = () => {
     setNewGameCard(game);
     setIsModalOpen(false);
   };
+
+  const cards = useMemo(() => useGameCard(loadedGames, platformTitle), [loadedGames, platformTitle]);
 
   useEffect(() => {
     if (newGameCard) {
@@ -281,7 +283,7 @@ export const Products = () => {
             <CustomButton className={style.createBtn} title="Create card" onClick={() => setIsModalOpen(true)} />
           ) : null}
           <Section title={setTitle()}>
-            <div className={style.gameCards}>{useGameCard(loadedGames, platformTitle)}</div>
+            <div className={style.gameCards}>{cards}</div>
           </Section>
         </main>
       </div>

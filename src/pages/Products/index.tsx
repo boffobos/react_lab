@@ -26,7 +26,6 @@ import { useDispatch, useSelector } from "react-redux";
 export const Products = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  //const [isLoading, setIsLoading] = useState(true); //change initial state when finish
   const [notify, setNotify] = useState<INotification>({ text: "", status: "" });
   const [loadedGames, setLoadedGames] = useState<IGameData[] | null>(null);
   const [sortCriteria, setSortCriteria] = useState("name");
@@ -184,7 +183,7 @@ export const Products = () => {
     if (platformTitle === "" || undefined) {
       //skip filtering
     } else {
-      filtered = filtered.filter((game) => game.platformsSelector.includes(platformTitle));
+      filtered = filtered.filter((game) => game.platformsSelector.includes(platformTitle || ""));
     }
     if (genreType === "all") {
       //skip filtering

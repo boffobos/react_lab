@@ -1,0 +1,9 @@
+.container {
+  height: 88vh;
+  padding: 30px;
+}
+
+.sectionContainer {
+  width: 100%;
+  color: var(--primary-color);
+}

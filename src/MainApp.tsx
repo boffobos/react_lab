@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { PureComponent } from "react";
 import * as constants from "./constants";
 import { Header, Footer, RequireAuth } from "./components/components";
 import { Route, Routes, Navigate } from "react-router-dom";
@@ -9,7 +9,7 @@ interface IProps {}
 
 interface IState {}
 
-class MainApp extends Component<IProps, IState> {
+class MainApp extends PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
   }

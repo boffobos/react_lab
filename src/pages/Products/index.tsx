@@ -104,6 +104,7 @@ export const Products = () => {
               if (first.title > second.title) return 1;
               if (first.title < second.title) return -1;
               if (first.title == second.title) return 0;
+              else return 0;
             });
             break;
           }
@@ -111,7 +112,8 @@ export const Products = () => {
             array.sort((first, second) => {
               if (first.ageRating > second.ageRating) return 1;
               if (first.ageRating < second.ageRating) return -1;
-              if (first.ageRating == second.ageRating) return 0;
+              if (first.ageRating === second.ageRating) return 0;
+              else return 0;
             });
             break;
           }
@@ -119,7 +121,8 @@ export const Products = () => {
             array.sort((first, second) => {
               if (first.price > second.price) return 1;
               if (first.price < second.price) return -1;
-              if (first.price == second.price) return 0;
+              if (first.price === second.price) return 0;
+              else return 0;
             });
             break;
           }
@@ -127,7 +130,8 @@ export const Products = () => {
             array.sort((first, second) => {
               if (first.rating > second.rating) return 1;
               if (first.rating < second.rating) return -1;
-              if (first.rating == second.rating) return 0;
+              if (first.rating === second.rating) return 0;
+              else return 0;
             });
             break;
           }
@@ -142,6 +146,7 @@ export const Products = () => {
                 if (first.title > second.title) return -1;
                 if (first.title < second.title) return 1;
                 if (first.title == second.title) return 0;
+                else return 0;
               });
               break;
             }
@@ -149,7 +154,8 @@ export const Products = () => {
               array.sort((first, second) => {
                 if (first.ageRating > second.ageRating) return -1;
                 if (first.ageRating < second.ageRating) return 1;
-                if (first.ageRating == second.ageRating) return 0;
+                if (first.ageRating === second.ageRating) return 0;
+                else return 0;
               });
               break;
             }
@@ -157,7 +163,8 @@ export const Products = () => {
               array.sort((first, second) => {
                 if (first.price > second.price) return -1;
                 if (first.price < second.price) return 1;
-                if (first.price == second.price) return 0;
+                if (first.price === second.price) return 0;
+                else return 0;
               });
               break;
             }
@@ -165,7 +172,8 @@ export const Products = () => {
               array.sort((first, second) => {
                 if (first.rating > second.rating) return -1;
                 if (first.rating < second.rating) return 1;
-                if (first.rating == second.rating) return 0;
+                if (first.rating === second.rating) return 0;
+                else return 0;
               });
               break;
             }

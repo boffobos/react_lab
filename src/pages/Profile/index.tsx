@@ -1,7 +1,7 @@
 import style from "./style.module.css";
 import { useSelector } from "react-redux";
 import { changePasswordFormConfig, defaultAvatar } from "../../config/config";
-import { PASSWORD_LENGTH, NOTIFICATION_TIMEOUT } from "@/constants";
+import { PASSWORD_LENGTH } from "@/constants";
 import {
   Section,
   UserPhoto,
@@ -18,11 +18,6 @@ import {
 import { useState, useEffect } from "react";
 import { string as yup } from "yup";
 import axios from "axios";
-
-interface IProfilePage {
-  username?: string | null;
-  data?: [];
-}
 
 export interface IFormState {
   formNotification: Function;
@@ -89,7 +84,6 @@ export const Profile = () => {
     };
     //destructuring data came from inputs
     const {
-      formNotification,
       password,
       passwordErrorSetter,
       newPassword,

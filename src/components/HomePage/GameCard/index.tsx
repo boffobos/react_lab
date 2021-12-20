@@ -5,6 +5,7 @@ import { Modal, DataRow, Notification, INotification } from "../../components";
 import { GAME_PLATFORMS } from "@/constants";
 import axios from "axios";
 import { CustomButton } from "@/components/CustomButton";
+import { useNotification } from "@/hooks/useNotification";
 
 export interface IGameData {
   id: number;
@@ -33,7 +34,8 @@ export const GameCard = (props: Props) => {
   const game = props.data;
   const dispatch = useDispatch();
   //game card state from edit modal
-  const [notify, setNotify] = useState<INotification>({ text: "", status: "" });
+  const [notify, setNotify] = useState<INotification>({ message: "", status: "" });
+  const sendNotification = useNotification();
   const [isEditing, setIsEditing] = useState(false);
   const [gameCard, setGameCard] = useState<IGameData>(props.data);
   const [isCardEdited, setIsCardEdited] = useState(false);
@@ -126,16 +128,21 @@ export const GameCard = (props: Props) => {
         if (response.status === 200) {
           dispatch({ type: "games/changed", payload: response.data });
           closeModal();
-          setNotify({ text: "Game card has been changed!", status: "success" });
+          setNotify({ message: "Game card has been changed!", status: "success" });
         } else {
           closeModal();
-          setNotify({ text: "Something goes wrong", status: "error" });
+          setNotify({ message: "Something goes wrong", status: "error" });
         }
       });
       setIsCardEdited(false);
-
     }
   }, [sendData]);
+
+  useEffect(() => {
+    if (notify.message) {
+      sendNotification(notify);
+    }
+  }, [notify]);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -169,7 +176,7 @@ export const GameCard = (props: Props) => {
   const selfDestroy = () => {
     setTimeout(() => dispatch({ type: "games/removed", payload: gameCard }), 500);
     setIsConfirmOpen(false);
-    setNotify({ text: "Game card has been removed!", status: "success" });
+    setNotify({ message: "Game card has been removed!", status: "success" });
   };
 
   return (
@@ -302,7 +309,6 @@ export const GameCard = (props: Props) => {
           Delete card
         </button>
       </Modal>
-      <Notification message={notify} />
       <Modal modalName={"Are you sure"} onClose={() => setIsConfirmOpen(false)} isOpen={isConfirmOpen}>
         <div className={style.modalButtonsContainer}>
           <p>You are about to delete game card "{gameCard.title}"</p>

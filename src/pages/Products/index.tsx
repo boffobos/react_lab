@@ -10,8 +10,6 @@ import {
   CustomButton,
   GameCardForm,
   Modal,
-  Notification,
-  INotification,
 } from "../../components/components";
 import { ageOptions, genresOptions, sortTypeOptions, sortCriteriaOptions } from "../../config/config";
 import { useParams } from "react-router-dom";
@@ -20,13 +18,14 @@ import { useDebouncedCallback } from "use-debounce";
 import axios from "axios";
 import { Option } from "react-dropdown";
 import { useGameCard } from "@/hooks/useGameCard";
+import { useNotification } from "@/hooks/useNotification";
 import { getPlatformFromSelector } from "../../helpers/functions";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Products = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const [notify, setNotify] = useState<INotification>({ text: "", status: "" });
+  const sendNotification = useNotification();
   const [loadedGames, setLoadedGames] = useState<IGameData[] | null>(null);
   const [sortCriteria, setSortCriteria] = useState("name");
   const [sortType, setSortType] = useState("asc");
@@ -53,10 +52,10 @@ export const Products = () => {
     if (newGameCard) {
       axios.post("/api/product", newGameCard).then((response) => {
         if (response.status === 200) {
-          setNotify({ text: "Created successfully!", status: "success" });
+          sendNotification({ message: "Created successfully!", status: "success" });
           dispatch({ type: "games/added", payload: [response.data] });
         } else {
-          setNotify({ text: "Etnry was not created!", status: "error" });
+          sendNotification({ message: "Entry was not created!", status: "error" });
         }
       });
     }
@@ -299,7 +298,6 @@ export const Products = () => {
       <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Create new Card" className={style.modal}>
         <GameCardForm onSubmit={createNewCard} />
       </Modal>
-      <Notification message={notify} />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { lazy, PureComponent, Suspense } from "react";
 import * as constants from "./constants";
-import { Header, Footer, RequireAuth, Spinner } from "./components/components";
+import { Header, Footer, RequireAuth, Spinner, Notification } from "./components/components";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Home /* Products , About, Profile, Cart */ } from "./pages/pages";
 const Products = lazy(() => import("./components/components").then((module) => ({ default: module.Products })));
@@ -87,6 +87,7 @@ class MainApp extends PureComponent<IProps, IState> {
           <Route path={constants.SIGNIN_URL} element={<SignIn />} />
         </Routes>
         <Footer siteName={constants.SITE_NAME} />
+        <Notification />
       </>
     );
   }

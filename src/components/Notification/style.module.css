@@ -4,9 +4,9 @@
   background-color: var(--dark-color);
   color: var(--primary-color);
   border-radius: 15px;
-  border: 1px solid var(--primary-color);
-  z-index: 5;
-  position: absolute;
+  border: 2px solid var(--primary-color);
+  z-index: 100;
+  position: fixed;
   top: 50px;
   left: 40%;
   display: flex;
@@ -14,8 +14,20 @@
   align-items: center;
 }
 
+.container::after {
+  content: "";
+  position: absolute;
+  margin: auto;
+  width: 98%;
+  height: 92%;
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  border-radius: 13px;
+}
+
 .success {
   color: var(--success-color);
+  border-color: var(--success-color);
 }
 
 .error {

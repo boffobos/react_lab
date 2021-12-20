@@ -25,7 +25,7 @@ declare module "react-redux" {
     };
     games: IGameData[];
     notifications: {
-      text: string | "";
+      message: string | "";
       status: "success" | "error" | "warn" | "";
     };
   }

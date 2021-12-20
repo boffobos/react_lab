@@ -18,7 +18,7 @@ export const Notification = () => {
   const msg = useSelector((state) => state.notifications);
   const dispatch = useDispatch();
   const clearNotificationTimout = () => {
-    setTimeout(() => dispatch({ type: "notify/clearMessage" }), 20000);
+    setTimeout(() => dispatch({ type: "notify/clearMessage" }), NOTIFICATION_TIMEOUT);
   };
   useEffect(() => {
     if (msg.message) return clearNotificationTimout();

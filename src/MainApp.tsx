@@ -19,7 +19,7 @@ class MainApp extends PureComponent<IProps, IState> {
   }
 
   componentDidCatch(e: Error) {
-    //console.error("Error: " + e);
+    console.error("Error: " + e);
     <Navigate to="/" />;
   }
 

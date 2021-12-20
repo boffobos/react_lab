@@ -1,7 +1,7 @@
 import style from "./style.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Modal, DataRow, Notification, INotification } from "../../components";
+import { Modal, DataRow, INotification } from "../../components";
 import { GAME_PLATFORMS } from "@/constants";
 import axios from "axios";
 import { CustomButton } from "@/components/CustomButton";

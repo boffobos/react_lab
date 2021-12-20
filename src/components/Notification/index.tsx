@@ -1,38 +1,33 @@
 import style from "./style.module.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { NOTIFICATION_TIMEOUT } from "@/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export interface INotification {
-  text: string | "";
+  message: string | "";
   status: "success" | "error" | "warn" | "";
 }
 
-interface Props {
-  message: INotification;
-}
+export const sendNotification = (message: INotification) => {
+  const dispatch = useDispatch();
+  dispatch({ type: "notify/setMessage", payload: message });
+};
 
-// export const sendNotification = (message: INotification) => {
-//   const dispatch = useDispatch();
-//   dispatch({ type: "notify/setMessage", payload: message });
-// };
-
-export const Notification = ({ message }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const showNotification = () => {
-    setIsOpen(true);
-    setTimeout(() => setIsOpen(false), NOTIFICATION_TIMEOUT);
+export const Notification = () => {
+  const msg = useSelector((state) => state.notifications);
+  const dispatch = useDispatch();
+  const clearNotificationTimout = () => {
+    setTimeout(() => dispatch({ type: "notify/clearMessage" }), NOTIFICATION_TIMEOUT);
   };
   useEffect(() => {
-    if (message.text) return showNotification();
-    return;
-  }, [message]);
+    if (msg.message) return clearNotificationTimout();
+  }, [msg]);
 
-  return isOpen
+  return msg.message
     ? ReactDOM.createPortal(
-        <div className={style.container}>
-          <p style={{ color: `var(--${message.status}-color)` }}>{message.text}</p>
+        <div className={`${style.container} ${style[msg.status]}`}>
+          <p className={style[msg.status]}>{msg.message}</p>
         </div>,
         document.body
       )

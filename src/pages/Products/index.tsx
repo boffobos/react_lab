@@ -10,24 +10,22 @@ import {
   CustomButton,
   GameCardForm,
   Modal,
-  Notification,
-  INotification,
 } from "../../components/components";
 import { ageOptions, genresOptions, sortTypeOptions, sortCriteriaOptions } from "../../config/config";
 import { useParams } from "react-router-dom";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useMemo } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import axios from "axios";
 import { Option } from "react-dropdown";
 import { useGameCard } from "@/hooks/useGameCard";
+import { useNotification } from "@/hooks/useNotification";
 import { getPlatformFromSelector } from "../../helpers/functions";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Products = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  //const [isLoading, setIsLoading] = useState(true); //change initial state when finish
-  const [notify, setNotify] = useState<INotification>({ text: "", status: "" });
+  const sendNotification = useNotification();
   const [loadedGames, setLoadedGames] = useState<IGameData[] | null>(null);
   const [sortCriteria, setSortCriteria] = useState("name");
   const [sortType, setSortType] = useState("asc");
@@ -48,14 +46,16 @@ export const Products = () => {
     setIsModalOpen(false);
   };
 
+  const cards = useMemo(() => useGameCard(loadedGames, platformTitle), [loadedGames, platformTitle]);
+
   useEffect(() => {
     if (newGameCard) {
       axios.post("/api/product", newGameCard).then((response) => {
         if (response.status === 200) {
-          setNotify({ text: "Created successfully!", status: "success" });
+          sendNotification({ message: "Created successfully!", status: "success" });
           dispatch({ type: "games/added", payload: [response.data] });
         } else {
-          setNotify({ text: "Etnry was not created!", status: "error" });
+          sendNotification({ message: "Entry was not created!", status: "error" });
         }
       });
     }
@@ -103,6 +103,7 @@ export const Products = () => {
               if (first.title > second.title) return 1;
               if (first.title < second.title) return -1;
               if (first.title == second.title) return 0;
+              else return 0;
             });
             break;
           }
@@ -110,7 +111,8 @@ export const Products = () => {
             array.sort((first, second) => {
               if (first.ageRating > second.ageRating) return 1;
               if (first.ageRating < second.ageRating) return -1;
-              if (first.ageRating == second.ageRating) return 0;
+              if (first.ageRating === second.ageRating) return 0;
+              else return 0;
             });
             break;
           }
@@ -118,7 +120,8 @@ export const Products = () => {
             array.sort((first, second) => {
               if (first.price > second.price) return 1;
               if (first.price < second.price) return -1;
-              if (first.price == second.price) return 0;
+              if (first.price === second.price) return 0;
+              else return 0;
             });
             break;
           }
@@ -126,7 +129,8 @@ export const Products = () => {
             array.sort((first, second) => {
               if (first.rating > second.rating) return 1;
               if (first.rating < second.rating) return -1;
-              if (first.rating == second.rating) return 0;
+              if (first.rating === second.rating) return 0;
+              else return 0;
             });
             break;
           }
@@ -141,6 +145,7 @@ export const Products = () => {
                 if (first.title > second.title) return -1;
                 if (first.title < second.title) return 1;
                 if (first.title == second.title) return 0;
+                else return 0;
               });
               break;
             }
@@ -148,7 +153,8 @@ export const Products = () => {
               array.sort((first, second) => {
                 if (first.ageRating > second.ageRating) return -1;
                 if (first.ageRating < second.ageRating) return 1;
-                if (first.ageRating == second.ageRating) return 0;
+                if (first.ageRating === second.ageRating) return 0;
+                else return 0;
               });
               break;
             }
@@ -156,7 +162,8 @@ export const Products = () => {
               array.sort((first, second) => {
                 if (first.price > second.price) return -1;
                 if (first.price < second.price) return 1;
-                if (first.price == second.price) return 0;
+                if (first.price === second.price) return 0;
+                else return 0;
               });
               break;
             }
@@ -164,7 +171,8 @@ export const Products = () => {
               array.sort((first, second) => {
                 if (first.rating > second.rating) return -1;
                 if (first.rating < second.rating) return 1;
-                if (first.rating == second.rating) return 0;
+                if (first.rating === second.rating) return 0;
+                else return 0;
               });
               break;
             }
@@ -184,7 +192,7 @@ export const Products = () => {
     if (platformTitle === "" || undefined) {
       //skip filtering
     } else {
-      filtered = filtered.filter((game) => game.platformsSelector.includes(platformTitle));
+      filtered = filtered.filter((game) => game.platformsSelector.includes(platformTitle || ""));
     }
     if (genreType === "all") {
       //skip filtering
@@ -281,14 +289,15 @@ export const Products = () => {
           {userRole === "admin" ? (
             <CustomButton className={style.createBtn} title="Create card" onClick={() => setIsModalOpen(true)} />
           ) : null}
-          <Section title={setTitle()}>{useGameCard(loadedGames, platformTitle)}</Section>
+          <Section title={setTitle()}>
+            <div className={style.gameCards}>{cards}</div>
+          </Section>
         </main>
       </div>
       {/* Create new card modal */}
       <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Create new Card" className={style.modal}>
         <GameCardForm onSubmit={createNewCard} />
       </Modal>
-      <Notification message={notify} />
     </>
   );
 };

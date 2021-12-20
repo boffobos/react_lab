@@ -150,7 +150,7 @@ export default webpackMockServer.add((app /* helper */) => {
       return filtGames;
     };
 
-    setTimeout(() => res.json(filterGamesByParams(params)).send, 500);
+    res.json(filterGamesByParams(params)).send();
   });
 
   app.put("/api/product", (req, res) => {

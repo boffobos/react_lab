@@ -1,15 +1,19 @@
-import { Component } from "react";
+import { lazy, PureComponent, Suspense } from "react";
 import * as constants from "./constants";
-import { Header, Footer, RequireAuth } from "./components/components";
+import { Header, Footer, RequireAuth, Spinner, Notification } from "./components/components";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { Home, Products, About, Profile, Cart } from "./pages/pages";
+import { Home /* Products , About, Profile, Cart */ } from "./pages/pages";
+const Products = lazy(() => import("./components/components").then((module) => ({ default: module.Products })));
+const About = lazy(() => import("./components/components").then((module) => ({ default: module.About })));
+const Profile = lazy(() => import("./components/components").then((module) => ({ default: module.Profile })));
+const Cart = lazy(() => import("./components/components").then((module) => ({ default: module.Cart })));
 import { SignIn } from "./pages/SignIn";
 
 interface IProps {}
 
 interface IState {}
 
-class MainApp extends Component<IProps, IState> {
+class MainApp extends PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
   }
@@ -33,7 +37,9 @@ class MainApp extends Component<IProps, IState> {
             path={constants.ABOUT_URL}
             element={
               <RequireAuth>
-                <About />
+                <Suspense fallback={<Spinner />}>
+                  <About />
+                </Suspense>
               </RequireAuth>
             }
           />
@@ -41,7 +47,9 @@ class MainApp extends Component<IProps, IState> {
             path={constants.PRODUCTS_URL}
             element={
               <RequireAuth>
-                <Products />
+                <Suspense fallback={<Spinner />}>
+                  <Products />
+                </Suspense>
               </RequireAuth>
             }
           >
@@ -49,7 +57,9 @@ class MainApp extends Component<IProps, IState> {
               path=":platform"
               element={
                 <RequireAuth>
-                  <Products />
+                  <Suspense fallback={<Spinner />}>
+                    <Products />
+                  </Suspense>
                 </RequireAuth>
               }
             />
@@ -58,7 +68,9 @@ class MainApp extends Component<IProps, IState> {
             path={constants.PROFILE_URL}
             element={
               <RequireAuth>
-                <Profile />
+                <Suspense fallback={<Spinner />}>
+                  <Profile />
+                </Suspense>
               </RequireAuth>
             }
           />
@@ -66,13 +78,16 @@ class MainApp extends Component<IProps, IState> {
             path={constants.CART_URL}
             element={
               <RequireAuth>
-                <Cart />
+                <Suspense fallback={<Spinner />}>
+                  <Cart />
+                </Suspense>
               </RequireAuth>
             }
           />
           <Route path={constants.SIGNIN_URL} element={<SignIn />} />
         </Routes>
         <Footer siteName={constants.SITE_NAME} />
+        <Notification />
       </>
     );
   }

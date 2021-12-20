@@ -1,3 +1,4 @@
+export * from "../pages/pages";
 export * from "./Header";
 export * from "./Footer";
 export * from "./Header/DropdownMenu/";
@@ -8,7 +9,7 @@ export * from "./Section";
 export * from "./HomePage/SearchBar/";
 export * from "./HomePage/PlatformSelector/";
 export * from "./HomePage/GameCard/index";
-export * from "./HomePage/GameCard/GameCardForm/index";
+export * from "./HomePage/GameCard/GameCardForm/";
 export * from "./HomePage/SearchCard/index";
 export * from "./Spinner";
 export * from "./Forms/InputField/index";

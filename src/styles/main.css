@@ -12,10 +12,13 @@
   --light-color: #fff;
   --disable-color: #acacac;
   --error-color: #cc2e2e;
+  --warning-color: #dfc015;
   --success-color: #98f7a5;
   --page-padding: 0.8rem;
 
   --border-radius: 10px;
+  --card-width: 200px;
+  --card-height: calc(var(--card-width) * 3 / 2);
 }
 
 * {

@@ -1,6 +1,6 @@
 .container {
-  width: 200px;
-  height: 300px;
+  width: var(--card-width);
+  height: var(--card-height);
   background-color: transparent;
   perspective: 1000px;
   position: relative;

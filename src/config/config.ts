@@ -1,4 +1,5 @@
 /* Modal forms config */
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import {
   faRightFromBracket,
   faIdCard,
@@ -38,11 +39,10 @@ export const changePasswordFormConfig = {
   ],
 };
 
-export const userButtonIcon = faUserAstronaut;
-export const cartButtonIcon = faShoppingCart;
-export const exitButtonIcon = faRightFromBracket;
-export const formErrorIcon = faExclamation;
-
+export const userButtonIcon = faUserAstronaut as IconProp;
+export const cartButtonIcon = faShoppingCart as IconProp;
+export const exitButtonIcon = faRightFromBracket as IconProp;
+export const formErrorIcon = faExclamation as IconProp;
 
 export const defaultAvatar = "/assets/images/avatars/AV_1.jpg";
 
@@ -213,7 +213,7 @@ export const gameDb = [
     title: "Battle City",
     price: 0.99,
     currency: "$",
-    image: "/assets/images/BattleCity.png",
+    image: "/assets/images/BattleCity.jpg",
     rating: 5,
     platforms: ["/assets/images/xbox.png", "/assets/images/playstation.png"],
     platformsSelector: ["xboxOne", "playstation5"],
@@ -227,7 +227,7 @@ export const gameDb = [
     title: "Dune",
     price: 5.99,
     currency: "$",
-    image: "/assets/images/Dune.png",
+    image: "/assets/images/Dune.jpg",
     rating: 4,
     platforms: ["/assets/images/pc.png"],
     platformsSelector: ["pc"],
@@ -254,7 +254,7 @@ export const gameDb = [
     title: "Minecraft",
     price: 0.99,
     currency: "$",
-    image: "/assets/images/minecraft.png",
+    image: "/assets/images/minecraft.jpg",
     rating: 4.6,
     platforms: ["/assets/images/xbox.png", "/assets/images/playstation.png"],
     platformsSelector: ["xboxOne", "playstation5"],
@@ -310,7 +310,7 @@ export const gameDb = [
     title: "DOOM eternal",
     price: 13.99,
     currency: "$",
-    image: "/assets/images/Doom_Eternal.png",
+    image: "/assets/images/Doom_Eternal.jpg",
     rating: 4.5,
     platforms: ["/assets/images/pc.png", "/assets/images/xbox.png"],
     platformsSelector: ["pc", "xboxOne"],
@@ -324,7 +324,7 @@ export const gameDb = [
     title: "Skyrim",
     price: 21.99,
     currency: "$",
-    image: "/assets/images/Skyrim.png",
+    image: "/assets/images/Skyrim.jpg",
     rating: 4.8,
     platforms: ["/assets/images/pc.png", "/assets/images/xbox.png"],
     platformsSelector: ["pc", "xboxOne"],
@@ -352,7 +352,7 @@ export const gameDb = [
     title: "Grand Theft Auto V",
     price: 24.99,
     currency: "$",
-    image: "/assets/images/Grand_Theft_Auto_V.png",
+    image: "/assets/images/Grand_Theft_Auto_V.jpg",
     rating: 4.4,
     platforms: ["/assets/images/pc.png", "/assets/images/xbox.png", "/assets/images/playstation.png"],
     platformsSelector: ["pc", "xboxOne", "playstation5"],

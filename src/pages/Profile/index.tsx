@@ -1,7 +1,7 @@
 import style from "./style.module.css";
 import { useSelector } from "react-redux";
 import { changePasswordFormConfig, defaultAvatar } from "../../config/config";
-import { PASSWORD_LENGTH, NOTIFICATION_TIMEOUT } from "@/constants";
+import { PASSWORD_LENGTH } from "@/constants";
 import {
   Section,
   UserPhoto,
@@ -12,17 +12,11 @@ import {
   CustomButton,
   Modal,
   FormMaker,
-  Notification,
-  INotification,
 } from "../../components/components";
+import { useNotification } from "@/hooks/useNotification";
 import { useState, useEffect } from "react";
 import { string as yup } from "yup";
 import axios from "axios";
-
-interface IProfilePage {
-  username?: string | null;
-  data?: [];
-}
 
 export interface IFormState {
   formNotification: Function;
@@ -40,7 +34,7 @@ export const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [notification, setNotification] = useState<INotification>({ text: "", status: "" });
+  const sendNotification = useNotification();
   //set of states for user information fields
   const [userName, setUserName] = useState("");
   const [userEmail, setEmail] = useState("");
@@ -64,7 +58,7 @@ export const Profile = () => {
         switch (result.status) {
           case 201: {
             closeModal();
-            setNotification({ text: "New password set up!", status: "success" });
+            sendNotification({ message: "New password set up!", status: "success" });
             break;
           }
           case 204: {
@@ -88,15 +82,8 @@ export const Profile = () => {
       newPassword: "",
     };
     //destructuring data came from inputs
-    const {
-      formNotification,
-      password,
-      passwordErrorSetter,
-      newPassword,
-      newPasswordErrorSetter,
-      rePassword,
-      rePasswordErrorSetter,
-    } = formState;
+    const { password, passwordErrorSetter, newPassword, newPasswordErrorSetter, rePassword, rePasswordErrorSetter } =
+      formState;
     //post request for change password
 
     const passwordCheck = yup().required("Enter your current password").trim();
@@ -142,6 +129,7 @@ export const Profile = () => {
   };
   //check passwords and sent data to server
   useEffect(() => {
+    //cheking if object is empty
     if (!(formState && Object.keys(formState).length === 0 && Object.getPrototypeOf(formState) === Object.prototype)) {
       passwordVerifying();
     }
@@ -171,7 +159,7 @@ export const Profile = () => {
         }
       })
       .catch((e) => {
-        return setNotification({ text: e.message, status: "error" });
+        return sendNotification({ message: e.message, status: "error" });
       });
   };
 
@@ -219,7 +207,7 @@ export const Profile = () => {
       .then((response) => {
         if (response.status === 201) {
           setIsChanged(false);
-          setNotification({ text: "Changes have been saved!", status: "success" });
+          sendNotification({ message: "Changes have been saved!", status: "success" });
         }
       })
       .catch((e) => {
@@ -313,7 +301,6 @@ export const Profile = () => {
       <Modal isOpen={isModalOpen} onClose={closeModal} modalName="Change Password">
         <FormMaker formFieldOptions={changePasswordFormConfig} onSubmit={setFormState} />
       </Modal>
-      <Notification message={notification} />
     </>
   );
 };

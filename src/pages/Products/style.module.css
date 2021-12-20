@@ -31,3 +31,11 @@
 .searchBar {
   display: inline-block;
 }
+
+.gameCards {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 1rem;
+  row-gap: 2rem;
+}

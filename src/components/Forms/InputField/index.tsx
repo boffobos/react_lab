@@ -1,13 +1,13 @@
 import style from "./style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ReactElement, useEffect, useState } from "react";
-import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import { formErrorIcon } from "@/config/config";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export interface IInputField {
   name: string;
   label: string;
-  faIcon?: IconDefinition;
+  faIcon?: IconProp;
   type: string;
   autofocus?: boolean | undefined;
 }
@@ -37,7 +37,7 @@ export const InputField = ({ options, value, onChange }: Props): ReactElement =>
 
   //onChange(fakeEvent, errorSetterForParents);
 
-  const inputHandler = (e) => {
+  const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e, errorSetterForParents);
   };
   //errorMessage = "Password too short ";

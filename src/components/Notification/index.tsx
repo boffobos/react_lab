@@ -32,7 +32,7 @@ export const Notification = ({ message }: Props) => {
   return isOpen
     ? ReactDOM.createPortal(
         <div className={style.container}>
-          <p style={{ color: `var(--${message.status}-color)` }}>{message.text}</p>
+          <p className={style[message.status]}>{message.text}</p>
         </div>,
         document.body
       )

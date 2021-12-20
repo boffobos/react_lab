@@ -15,6 +15,7 @@ const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 const path = require("path");
 const browserslist = require("browserslist");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const srcPath = path.resolve(__dirname, "./src/");
 const destPath = path.resolve(__dirname, "./build/"); // ('../Api/wwwroot')
@@ -205,6 +206,7 @@ module.exports = function (env, argv) {
       ],
     },
     plugins: [
+      new BundleAnalyzerPlugin(),
       new webpack.WatchIgnorePlugin({ paths: [/\.d\.ts$/] }), // ignore d.ts files in --watch mode
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), // it adds force-ignoring unused parts of modules like moment/locale/*.js
       new webpack.DefinePlugin({

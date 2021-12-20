@@ -26,7 +26,6 @@ export const Notification = ({ message }: Props) => {
   };
   useEffect(() => {
     if (message.text) return showNotification();
-    return;
   }, [message]);
 
   return isOpen

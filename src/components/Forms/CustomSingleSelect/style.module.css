@@ -13,13 +13,11 @@
 }
 
 .menu {
-  /* position: absolute; */
   top: 100%;
   left: -5%;
   width: 110%;
   z-index: 2;
   font-style: italic;
-  /* background-color: var(--dark-color); */
 }
 
 .menu > * {

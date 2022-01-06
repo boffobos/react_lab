@@ -1,7 +1,8 @@
 import { SignInModal } from "@/components/components";
 import { useState } from "react";
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { HOME_URL } from "../../constants";
 
 interface Props {
   loggedUserName?: string | null;
@@ -10,6 +11,7 @@ interface Props {
 
 export const SignIn = ({}: /* loggedUserName, setUserName */ Props) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const navigate = useNavigate();
   const location = useLocation();
   const fromPage = location.state?.from?.pathname || "/";
 
@@ -22,6 +24,7 @@ export const SignIn = ({}: /* loggedUserName, setUserName */ Props) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    navigate(HOME_URL);
   };
 
   return !loggedUserName ? (

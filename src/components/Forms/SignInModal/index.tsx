@@ -15,7 +15,7 @@ interface ISignInModal {
   navigate?: NavigateFunction;
 }
 
-export const SignInModal = ({ handlerLogin, isOpen, onClose /* navigate */ }: ISignInModal) => {
+export const SignInModal = ({ isOpen, onClose /* navigate */ }: ISignInModal) => {
   const [formState, setFormState] = useState({} as IFormState);
   const form = {
     button: { type: "submit", text: "Login" },

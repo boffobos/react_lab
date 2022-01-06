@@ -1,14 +1,17 @@
 import ReactDOM from "react-dom";
+import style from "./style.module.css";
 import { useState, useEffect } from "react";
-import { Modal, FormMaker } from "../../components";
-import { faIdCard, faLock } from "@fortawesome/free-solid-svg-icons";
-import { string as yup } from "yup";
+import { Modal, FormMaker, CustomButton } from "../../components";
+import { faIdCard, faLock, faExclamation } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { string as yup } from "yup";
+import * as yup from "yup";
 import axios from "axios";
 import { NavigateFunction } from "react-router";
 import { useDispatch } from "react-redux";
 import { PASSWORD_LENGTH } from "../../../constants";
 import { IFormState } from "@/pages/pages";
-import { IFormContent } from "../FormMaker";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 interface ISignUpModal {
   isOpen: boolean;
@@ -17,7 +20,7 @@ interface ISignUpModal {
   navigate: NavigateFunction;
 }
 
-export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISignUpModal) => {
+export const SignUpModal = ({ isOpen, onClose, navigate }: ISignUpModal) => {
   const [formState, setFormState] = useState({} as IFormState);
   /* props for making appropriate signup form */
   const form = {
@@ -27,96 +30,114 @@ export const SignUpModal = ({ handlerRegister, isOpen, onClose, navigate }: ISig
       { name: "password", label: "Password", faIcon: faLock, type: "password" },
       { name: "rePassword", label: "Repeat Password", faIcon: faLock, type: "password" },
     ],
-  } as IFormContent;
+  };
+
+  const signUpSchema = yup.object().shape({
+    login: yup.string().trim().min(2, "Too short!").max(128, "Too long!").required("Required!"),
+    password: yup.string().trim().min(PASSWORD_LENGTH, `Password require at least ${PASSWORD_LENGTH} characters`),
+    rePassword: yup
+      .string()
+      .trim()
+      .oneOf([yup.ref("password"), null], "Passwords don't match"),
+  });
   /* using redux store dispatch*/
   const dispatch = useDispatch();
   const setUserName = (user = null) => {
     dispatch({ type: "users/login", payload: user });
   };
 
-  const verifyUserData = () => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-    const { login, loginErrorSetter, password, passwordErrorSetter, rePassword, rePasswordErrorSetter } = formState;
-
-    const userData = {
-      login: "",
-      password: "",
-    };
-    const loginCheck = yup()
-      .trim()
-      .required("Enter login")
-      .matches(/[A-Z_\-\.a-z0-9]/);
-    const passworCheck = yup()
-      .trim()
-      .required("Enter password")
-      .min(PASSWORD_LENGTH, `Password require at least ${PASSWORD_LENGTH} characters`);
-    const rePasswordCheck = yup().trim().oneOf([password, null], "Passwords must match");
-
-    const sendDataToServer = (data = userData) => {
-      axios
-        .put("/api/auth/signUp", data, { signal: signal })
-        .then((res) => {
-          // res.data is user info sent from server
-          setUserName(res.data);
-          navigate("/profile");
-          onClose();
-        })
-        .catch((e) => {
-          if (e.name === "AbortError") {
-            console.log("Aborted successfuly!");
-          } else {
-            console.log("error with registration during sending data to server");
-            console.log(e);
-          }
-        });
-    };
-
-    loginCheck
-      .validate(login)
-      .then((result) => {
-        userData.login = result;
-        loginErrorSetter("");
+  const sendDataToServer = (data = { login: "", password: "" }) => {
+    axios
+      .put("/api/auth/signUp", data /*, { signal: signal }*/)
+      .then((res) => {
+        // res.data is user info sent from server
+        setUserName(res.data);
+        navigate("/profile");
+        onClose();
       })
       .catch((e) => {
-        loginErrorSetter(e.message);
-      });
-    passworCheck
-      .validate(password)
-      .then((result) => {
-        if (result !== password) {
-          setFormState((state) => ({ ...state, password: result }));
+        if (e.name === "AbortError") {
+          console.log("Aborted successfuly!");
+        } else {
+          console.log("error with registration during sending data to server");
+          console.log(e);
         }
-        passwordErrorSetter("");
-      })
-      .catch((e) => {
-        passwordErrorSetter(e.message);
       });
-    rePasswordCheck
-      .validate(rePassword)
-      .then((result) => {
-        rePasswordErrorSetter("");
-        //if valid data send to server data.
-        if (result) {
-          userData.password = result;
-          sendDataToServer(userData);
-        }
-      })
-      .catch((e) => {
-        rePasswordErrorSetter(e.message);
-      });
-    return () => controller.abort();
+  };
+
+  const submitData = (data = { login: "", password: "" }) => {
+    setFormState((state) => ({
+      ...state,
+      login: data.login,
+      password: data.password,
+    }));
   };
 
   useEffect(() => {
     if (!(formState && Object.keys(formState).length === 0 && Object.getPrototypeOf(formState) === Object.prototype)) {
-      verifyUserData();
+      sendDataToServer({ login: formState.login, password: formState.password });
     }
-  }, [formState.login, formState.password, form.rePassword]);
+  }, [formState.login, formState.password]);
 
   return ReactDOM.createPortal(
-    <Modal modalName="Sign Up" isOpen={isOpen} onClose={onClose}>
-      <FormMaker formFieldOptions={form} onSubmit={setFormState} />
+    <Modal className={style.container} modalName="Sign Up" isOpen={isOpen} onClose={onClose}>
+      <Formik
+        initialValues={{
+          login: "",
+          password: "",
+          rePassword: "",
+        }}
+        validationSchema={signUpSchema}
+        onSubmit={submitData}
+      >
+        {({ errors }) => (
+          <Form className={style.form}>
+            <div className={style.groupControl}>
+              <label htmlFor="login">Login</label>
+              <Field className={style.input} type="text" id="login" name="login" />
+              {!errors.login ? (
+                <FontAwesomeIcon
+                  style={{ display: `${errors.login ? "none" : "inline-block"}` }}
+                  icon={faIdCard}
+                  className={style.icon}
+                />
+              ) : (
+                <FontAwesomeIcon title={errors.login} icon={faExclamation} className={style.errorIcon} />
+              )}
+            </div>
+            <ErrorMessage className={style.errorMessage} name="login" component="div" />
+            <div className={style.groupControl}>
+              <label htmlFor="password">Password</label>
+              <Field className={style.input} type="password" id="password" name="password" />
+              {!errors.password ? (
+                <FontAwesomeIcon
+                  style={{ display: `${errors.password ? "none" : "inline-block"}` }}
+                  icon={faLock}
+                  className={style.icon}
+                />
+              ) : (
+                <FontAwesomeIcon title={errors.password} icon={faExclamation} className={style.errorIcon} />
+              )}
+            </div>
+            <ErrorMessage className={style.errorMessage} name="password" component="div" />
+            <div className={style.groupControl}>
+              <label htmlFor="password">Repeat password</label>
+              <Field className={style.input} type="password" name="rePassword" />
+              {!errors.rePassword ? (
+                <FontAwesomeIcon
+                  style={{ display: `${errors.rePassword ? "none" : "inline-block"}` }}
+                  icon={faLock}
+                  className={style.icon}
+                />
+              ) : (
+                <FontAwesomeIcon title={errors.rePassword} icon={faExclamation} className={style.errorIcon} />
+              )}
+            </div>
+            <ErrorMessage className={style.errorMessage} name="rePassword" component="div" />
+            <CustomButton className={style.button} title="Register" type="submit" />
+          </Form>
+        )}
+      </Formik>
     </Modal>,
     document.body
   );

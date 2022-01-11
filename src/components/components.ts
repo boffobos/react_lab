@@ -30,3 +30,5 @@ export * from "./SideBar/CustomRadioButtons/";
 export * from "./Forms/CustomSingleSelect";
 export * from "./Forms/CustomInputs/";
 export * from "./Notification";
+export * from "../hooks/useNotification";
+export * from "../hooks/useGameCard";

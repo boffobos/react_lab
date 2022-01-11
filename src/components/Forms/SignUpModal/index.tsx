@@ -95,12 +95,13 @@ export const SignUpModal = ({ isOpen, onClose, navigate }: ISignUpModal) => {
           {form.children.map((input) => {
             return (
               <CustomInput
+                key={input.name}
                 type={input.type}
                 label={input.label}
                 name={input.name}
                 id={input.name}
                 faIcon={input.faIcon}
-                autofocus={input.autofocus}
+                autoFocus={input.autofocus}
               />
             );
           })}

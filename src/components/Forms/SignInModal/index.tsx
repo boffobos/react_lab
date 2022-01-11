@@ -1,12 +1,15 @@
+import style from "./style.module.css";
 import { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { FormMaker, Modal } from "../../components";
+import { Modal, CustomInput, CustomButton, useNotification } from "../../components";
 import { faLock, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { NavigateFunction } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { string as yup } from "yup";
+import * as Yup from "yup";
 import { IFormState } from "@/pages/pages";
+import { Formik, Form } from "formik";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface ISignInModal {
   isOpen: boolean;
@@ -17,6 +20,7 @@ interface ISignInModal {
 
 export const SignInModal = ({ isOpen, onClose /* navigate */ }: ISignInModal) => {
   const [formState, setFormState] = useState({} as IFormState);
+  const sendNotification = useNotification();
   const form = {
     button: { type: "submit", text: "Login" },
     children: [
@@ -24,72 +28,26 @@ export const SignInModal = ({ isOpen, onClose /* navigate */ }: ISignInModal) =>
       { name: "password", label: "Password", faIcon: faLock, type: "password" },
     ],
   };
-  const verifyUserData = () => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-    const { login, loginErrorSetter, password, passwordErrorSetter } = formState;
 
-    const userData = {
-      login: "",
-      password: "",
-    };
-    const loginCheck = yup()
-      .trim()
-      .required("Enter login")
-      .matches(/[A-Z_\-\.a-z0-9]/);
-    const passworCheck = yup().trim().required("Enter password");
-
-    const sendDataToServer = (data = userData) => {
-      axios
-        .post(
-          "/api/auth/signIn/",
-          {
-            login: data.login,
-            password: data.password,
-          },
-          { signal: signal }
-        )
-        .then((res) => {
-          // res.data is user info sent from server
-          setUserName(res.data.body);
-          onClose();
-        })
-        .catch((e) => {
-          if (e.name === "AbortError") {
-            console.log("Aborted successfuly!");
-          } else {
-            console.log("Wrong username or password");
-            loginErrorSetter("Wrong username or password");
-          }
-        });
-    };
-
-    loginCheck
-      .validate(login)
-      .then((result) => {
-        userData.login = result;
-        setFormState((state) => ({ ...state, login: result }));
-        loginErrorSetter("");
+  const sendDataToServer = (data = { login: "", password: "" } as IFormState) => {
+    axios
+      .post("/api/auth/signIn/", {
+        login: data.login,
+        password: data.password,
+      })
+      .then((res) => {
+        // res.data is user info sent from server
+        setUserName(res.data.body);
+        onClose();
       })
       .catch((e) => {
-        loginErrorSetter(e.message);
-      });
-    passworCheck
-      .validate(password)
-      .then((result) => {
-        if (result) {
-          userData.password = result;
-          passwordErrorSetter("");
-          setFormState((state) => ({ ...state, password: result }));
-          if (userData.password && userData.login) {
-            sendDataToServer(userData);
-          }
+        if (e.name === "AbortError") {
+          console.log("Aborted successfuly!");
+        } else {
+          console.log("Wrong username or password");
+          sendNotification({ message: "Wrong username or password", status: "error" });
         }
-      })
-      .catch((e) => {
-        passwordErrorSetter(e.message);
       });
-    return () => controller.abort();
   };
 
   //using redux store for login
@@ -100,13 +58,37 @@ export const SignInModal = ({ isOpen, onClose /* navigate */ }: ISignInModal) =>
 
   useEffect(() => {
     if (!(formState && Object.keys(formState).length === 0 && Object.getPrototypeOf(formState) === Object.prototype)) {
-      verifyUserData();
+      return sendDataToServer(formState);
     }
   }, [formState.password, formState.login]);
 
+  const signInSchema = Yup.object().shape({
+    login: Yup.string().trim().required("Enter your login!"),
+    password: Yup.string().trim().required("Enter your password!"),
+  });
+
   return ReactDOM.createPortal(
     <Modal modalName="Sign In" isOpen={isOpen} onClose={onClose}>
-      <FormMaker formFieldOptions={form} onSubmit={setFormState} />
+      <Formik
+        initialValues={{ login: "", password: "" } as IFormState}
+        validationSchema={signInSchema}
+        onSubmit={setFormState}
+      >
+        <Form className={style.form}>
+          {form.children.map((input) => (
+            <CustomInput
+              key={input.name}
+              type={input.type}
+              label={input.label}
+              name={input.name}
+              id={input.name}
+              faIcon={input.faIcon as IconProp}
+              autoFocus={input.autofocus}
+            />
+          ))}
+          <CustomButton className={style.btn} type="submit" title="Log in" />
+        </Form>
+      </Formik>
     </Modal>,
     document.body
   );

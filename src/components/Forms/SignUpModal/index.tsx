@@ -1,17 +1,15 @@
 import ReactDOM from "react-dom";
 import style from "./style.module.css";
 import { useState, useEffect } from "react";
-import { Modal, FormMaker, CustomButton } from "../../components";
-import { faIdCard, faLock, faExclamation } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { string as yup } from "yup";
-import * as yup from "yup";
+import { Modal, CustomButton, CustomInput } from "../../components";
+import { faIdCard, faLock } from "@fortawesome/free-solid-svg-icons";
+import * as Yup from "yup";
 import axios from "axios";
 import { NavigateFunction } from "react-router";
 import { useDispatch } from "react-redux";
 import { PASSWORD_LENGTH } from "../../../constants";
 import { IFormState } from "@/pages/pages";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 
 interface ISignUpModal {
   isOpen: boolean;
@@ -32,13 +30,16 @@ export const SignUpModal = ({ isOpen, onClose, navigate }: ISignUpModal) => {
     ],
   };
 
-  const signUpSchema = yup.object().shape({
-    login: yup.string().trim().min(2, "Too short!").max(128, "Too long!").required("Required!"),
-    password: yup.string().trim().min(PASSWORD_LENGTH, `Password require at least ${PASSWORD_LENGTH} characters`),
-    rePassword: yup
-      .string()
+  const signUpSchema = Yup.object().shape({
+    login: Yup.string().trim().min(2, "Too short!").max(128, "Too long!").required("Required!"),
+    password: Yup.string()
       .trim()
-      .oneOf([yup.ref("password"), null], "Passwords don't match"),
+      .min(PASSWORD_LENGTH, `Password require at least ${PASSWORD_LENGTH} characters`)
+      .required("Required!"),
+    rePassword: Yup.string()
+      .trim()
+      .oneOf([Yup.ref("password"), null], "Passwords don't match")
+      .required("Required!"),
   });
   /* using redux store dispatch*/
   const dispatch = useDispatch();
@@ -75,7 +76,7 @@ export const SignUpModal = ({ isOpen, onClose, navigate }: ISignUpModal) => {
 
   useEffect(() => {
     if (!(formState && Object.keys(formState).length === 0 && Object.getPrototypeOf(formState) === Object.prototype)) {
-      sendDataToServer({ login: formState.login, password: formState.password });
+      sendDataToServer({ login: formState.login || "", password: formState.password || "" });
     }
   }, [formState.login, formState.password]);
 
@@ -90,53 +91,21 @@ export const SignUpModal = ({ isOpen, onClose, navigate }: ISignUpModal) => {
         validationSchema={signUpSchema}
         onSubmit={submitData}
       >
-        {({ errors }) => (
-          <Form className={style.form}>
-            <div className={style.groupControl}>
-              <label htmlFor="login">Login</label>
-              <Field className={style.input} type="text" id="login" name="login" />
-              {!errors.login ? (
-                <FontAwesomeIcon
-                  style={{ display: `${errors.login ? "none" : "inline-block"}` }}
-                  icon={faIdCard}
-                  className={style.icon}
-                />
-              ) : (
-                <FontAwesomeIcon title={errors.login} icon={faExclamation} className={style.errorIcon} />
-              )}
-            </div>
-            <ErrorMessage className={style.errorMessage} name="login" component="div" />
-            <div className={style.groupControl}>
-              <label htmlFor="password">Password</label>
-              <Field className={style.input} type="password" id="password" name="password" />
-              {!errors.password ? (
-                <FontAwesomeIcon
-                  style={{ display: `${errors.password ? "none" : "inline-block"}` }}
-                  icon={faLock}
-                  className={style.icon}
-                />
-              ) : (
-                <FontAwesomeIcon title={errors.password} icon={faExclamation} className={style.errorIcon} />
-              )}
-            </div>
-            <ErrorMessage className={style.errorMessage} name="password" component="div" />
-            <div className={style.groupControl}>
-              <label htmlFor="password">Repeat password</label>
-              <Field className={style.input} type="password" name="rePassword" />
-              {!errors.rePassword ? (
-                <FontAwesomeIcon
-                  style={{ display: `${errors.rePassword ? "none" : "inline-block"}` }}
-                  icon={faLock}
-                  className={style.icon}
-                />
-              ) : (
-                <FontAwesomeIcon title={errors.rePassword} icon={faExclamation} className={style.errorIcon} />
-              )}
-            </div>
-            <ErrorMessage className={style.errorMessage} name="rePassword" component="div" />
-            <CustomButton className={style.button} title="Register" type="submit" />
-          </Form>
-        )}
+        <Form className={style.form}>
+          {form.children.map((input) => {
+            return (
+              <CustomInput
+                type={input.type}
+                label={input.label}
+                name={input.name}
+                id={input.name}
+                faIcon={input.faIcon}
+                autofocus={input.autofocus}
+              />
+            );
+          })}
+          <CustomButton className={style.button} title="Register" type="submit" />
+        </Form>
       </Formik>
     </Modal>,
     document.body

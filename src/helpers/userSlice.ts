@@ -21,63 +21,63 @@ interface IUserAction {
   payload: string;
 }
 
-const initialState = {
-  userName: "",
-  userId: null,
-  avatar: "",
-  loggedInTime: null,
-  role: "user",
-  ballance: 0,
-  cartItems: [],
-};
+// const initialState = {
+//   userName: "",
+//   userId: null,
+//   avatar: "",
+//   loggedInTime: null,
+//   role: "user",
+//   ballance: 0,
+//   cartItems: [],
+// };
 
 //user data for test reasons
-// const initialState = {
-//   userName: "Denis",
-//   userId: 1,
-//   avatar: "/assets/images/avatars/Morty.jpg",
-//   loggedInTime: Date(),
-//   role: "admin",
-//   ballance: 25.96,
-//   cartItems: [
-//     {
-//       gameId: 1,
-//       gameName: "World of warcraft",
-//       gamePrice: 23.99,
-//       gameCurrency: "$",
-//       gamePlatforms: ["pc"],
-//       selectedPlatform: "pc",
-//       quantity: 1,
-//     },
-//     {
-//       gameId: 6,
-//       gameName: "Fallout 2",
-//       gamePrice: 10.99,
-//       gameCurrency: "$",
-//       gamePlatforms: ["pc"],
-//       selectedPlatform: "pc",
-//       quantity: 1,
-//     },
-//     {
-//       gameId: 7,
-//       gameName: "Minecraft",
-//       gamePrice: 0.99,
-//       gameCurrency: "$",
-//       gamePlatforms: ["xboxOne", "playstation5"],
-//       selectedPlatform: "xboxOne",
-//       quantity: 1,
-//     },
-//     {
-//       gameId: 10,
-//       gameName: "Overwatch",
-//       gamePrice: 18.99,
-//       gameCurrency: "$",
-//       gamePlatforms: ["pc", "xboxOne", "playstation5"],
-//       selectedPlatform: "playstation5",
-//       quantity: 1,
-//     },
-//   ],
-// };
+const initialState = {
+  userName: "Denis",
+  userId: 1,
+  avatar: "/assets/images/avatars/Morty.jpg",
+  loggedInTime: Date(),
+  role: "admin",
+  ballance: 25.96,
+  cartItems: [
+    {
+      gameId: 1,
+      gameName: "World of warcraft",
+      gamePrice: 23.99,
+      gameCurrency: "$",
+      gamePlatforms: ["pc"],
+      selectedPlatform: "pc",
+      quantity: 1,
+    },
+    {
+      gameId: 6,
+      gameName: "Fallout 2",
+      gamePrice: 10.99,
+      gameCurrency: "$",
+      gamePlatforms: ["pc"],
+      selectedPlatform: "pc",
+      quantity: 1,
+    },
+    {
+      gameId: 7,
+      gameName: "Minecraft",
+      gamePrice: 0.99,
+      gameCurrency: "$",
+      gamePlatforms: ["xboxOne", "playstation5"],
+      selectedPlatform: "xboxOne",
+      quantity: 1,
+    },
+    {
+      gameId: 10,
+      gameName: "Overwatch",
+      gamePrice: 18.99,
+      gameCurrency: "$",
+      gamePlatforms: ["pc", "xboxOne", "playstation5"],
+      selectedPlatform: "playstation5",
+      quantity: 1,
+    },
+  ],
+};
 
 export const userReducer = (state: IUserState = initialState, action: IUserAction) => {
   switch (action.type) {
